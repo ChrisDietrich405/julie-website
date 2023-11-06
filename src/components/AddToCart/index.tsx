@@ -10,30 +10,28 @@ interface CartItem {
   amount: number;  
 }
 
-const AddToCart = ({id}: any) => {
+const AddToCart = ({data}: any) => {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   
-  const handleClick = (id: any) => {
+  const handleClick = () => {
     setOpen(true)
-    const positionIndex = cart.findIndex((cartItem) => cartItem.id === id)
+    console.log(data)
+    const positionIndex = cart.findIndex((cartItem) => cartItem.id === data._id)
     if(positionIndex === -1) {
-      setCart((cart) => [...cart, { ...id, amount: 1}])
+      setCart([...cart, {id: data._id, price: data.price, image: data.image, amount: 1}])
+      console.log(cart)
     } else {
       let newArray = [...cart ] // this gives me all my previous cart properties from one cart
       let selectedItem = newArray[positionIndex]
+      console.log(selectedItem)
       selectedItem = {...selectedItem, amount: selectedItem.amount + 1}  
       newArray[positionIndex] = selectedItem
       setCart(newArray)
-      console.log(newArray)
     }
- 
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 
-  // useEffect(() => {
-  //   localStorage.setItem("cart", JSON.stringify(cart));
-  //   console.log(cart)
-  // }, [cart])
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -46,20 +44,29 @@ const AddToCart = ({id}: any) => {
     setOpen(false);
   };
 
+  // useEffect(() => {
+  //   if()
+  //   const storedData = localStorage.setItem("cart", JSON.stringify(cart));
+  //   // console.log(cart)
+  // }, [cart]);
 
   useEffect(() => {
-    const prevDataJSON: string | null = localStorage.getItem("cart");
-  
-    if (prevDataJSON) {
-      const prevData = JSON.parse(prevDataJSON); 
-      setCart(prevData);
+    try {
+      const prevDataJSON: string | null = localStorage.getItem("cart");
+      if (prevDataJSON) {
+        const prevData = JSON.parse(prevDataJSON);
+        setCart(prevData);
+      }
+    } catch (error) {
+      console.error("Error parsing data from localStorage:", error);
     }
   }, []);
+  
   
   return (
     <div>
       {" "}
-      <Button variant="contained" color="secondary" onClick={() => handleClick(id)}>
+      <Button variant="contained" color="secondary" onClick={handleClick}>
         Add to cart
       </Button>
       {cart.map((item) => {

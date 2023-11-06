@@ -10,3 +10,6 @@ if (!mongoose.models.available_works) {
 }
 export const AvailableWorksModel = mongoose.models.available_works;
 
+//model is a mongoose method to join the collection with the schema
+
+//the models are all the collections (an object containing all of the collections)
