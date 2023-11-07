@@ -8,28 +8,54 @@ import { CartItem } from "@/types/cartItem";
 const AddToCart = ({ data }: any) => {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [disableBtn, setDisableBtn] = useState(false);
+
 
   const handleClick = () => {
     setOpen(true);
-
-    const positionIndex = cart.findIndex(
-      (cartItem) => cartItem.id === data._id
-    );
-    if (positionIndex === -1) {
-      setCart([
-        ...cart,
-        { id: data._id, price: data.price, image: data.image, amount: 1 },
-      ]);
+    setDisableBtn(true);
+  
+    // Check if the item is already in the cart
+    const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === data._id);
+  
+    if (existingItemIndex === -1) {
+      // If the item is not in the cart, add it with a quantity of 1
+      setCart([...cart, { id: data._id, price: data.price, image: data.image, amount: 1 }]);
     } else {
-      let newArray = [...cart]; // this gives me all my previous cart properties from one cart
-      newArray[positionIndex] = {
-        ...newArray[positionIndex],
-        amount: newArray[positionIndex].amount + 1,
+      // If the item is already in the cart, update its quantity
+      const updatedCart = [...cart];
+      updatedCart[existingItemIndex] = {
+        ...updatedCart[existingItemIndex],
+        amount: updatedCart[existingItemIndex].amount + 1,
       };
-      setCart(newArray);
+      setCart(updatedCart);
     }
+  
     localStorage.setItem("cart", JSON.stringify(cart));
   };
+  
+
+  // const handleClick = () => {
+  //   setOpen(true);
+
+  //   const positionIndex = cart.findIndex(
+  //     (cartItem) => cartItem.id === data._id
+  //   );
+  //   if (positionIndex === -1) {
+  //     setCart([
+  //       ...cart,
+  //       { id: data._id, price: data.price, image: data.image, amount: 1 },
+  //     ]);
+  //   } else {
+  //     let newArray = [...cart];
+  //     newArray[positionIndex] = {
+  //       ...newArray[positionIndex],
+  //       amount: newArray[positionIndex].amount + 1,
+  //     };
+  //     setCart(newArray);
+  //   }
+  //   localStorage.setItem("cart", JSON.stringify(cart));
+  // };
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -57,7 +83,12 @@ const AddToCart = ({ data }: any) => {
   return (
     <div>
       {" "}
-      <Button variant="contained" color="secondary" onClick={handleClick}>
+      <Button
+        variant="contained"
+        disabled={disableBtn}
+        color="secondary"
+        onClick={handleClick}
+      >
         Add to cart
       </Button>
       <Snackbar

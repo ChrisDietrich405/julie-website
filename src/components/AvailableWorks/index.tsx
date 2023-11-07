@@ -34,8 +34,7 @@ export default function RowAndColumnSpacing() {
   }, []);
 
   return (
-    <>
-   
+    <>  
       <Grid
         container
         rowSpacing={1}
@@ -47,7 +46,7 @@ export default function RowAndColumnSpacing() {
             <Grid key={`firstArrayIndex ${index}`} item xs={6}>
               <Item>
                 <Image
-                  // className={styles.image}
+              
                   width={333}
                   height={333}
                   alt="slideshow"
@@ -67,30 +66,7 @@ export default function RowAndColumnSpacing() {
           );
         })}
 
-        {/* {pairs[1].map((art: any, index: any) => {
-          return (
-            <Grid key={`secondArrayIndex ${index}`} item xs={6}>
-              <Item>
-                <Image
-                  className={styles.image}
-                  width={333}
-                  height={333}
-                  alt="slideshow"
-                  src={art.image}
-                />
-                <Typography sx={{ marginBottom: 2 }} component="p">
-                  Simply fill out the form and I'll be in touch soon.
-                </Typography>
-
-                <Link href={`/available-works/${art.id}`}>
-                  <Button variant="contained" color="secondary">
-                    About
-                  </Button>
-                </Link>
-              </Item>
-            </Grid>
-          );
-        })} */}
+       
       </Grid>
     </>
   );

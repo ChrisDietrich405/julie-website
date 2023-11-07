@@ -53,6 +53,7 @@ export default function Navbar() {
       if (prevDataJSON) {
         const prevData = JSON.parse(prevDataJSON);
         setCart(prevData);
+        console.log(prevData);
       }
     } catch (error) {
       console.error("Error parsing data from localStorage:", error);
@@ -91,7 +92,16 @@ export default function Navbar() {
           <Link href="/checkout">
             {cart.map((item) => {
               return (
-                <span style={{position: "absolute", top: "2px", right: "27px", color: "#000"}}>{item.amount}</span>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "2px",
+                    right: "27px",
+                    color: "#000",
+                  }}
+                >
+                  {item.amount}
+                </span>
               );
             })}
             <ShoppingCartIcon sx={{ color: "#000" }} />

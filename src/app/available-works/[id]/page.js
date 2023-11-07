@@ -4,12 +4,20 @@ import { Grid, Typography, TextField } from "@mui/material";
 import AddToCart from "@/components/AddToCart";
 
 async function getData(id) {
-  const res = await fetch(`http://localhost:3000/api/available-works/${id}`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+  try {
+    const res = await fetch(`http://localhost:3000/api/available-works/${id}`);
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    // Handle the error gracefully, e.g., show an error message to the user.
+    // You can return a default value or an empty object if needed.
+    return {};
   }
-  return res.json();
 }
 
 export default async function AvailableWorksDetails({ params: { id } }) {
@@ -25,7 +33,7 @@ export default async function AvailableWorksDetails({ params: { id } }) {
       >
         <Grid item xs={6} sx={{ display: "flex", justifyContent: "end" }}>
           <Image
-            // className={styles.image}
+
             width={333}
             height={333}
             alt="slideshow"
@@ -37,19 +45,16 @@ export default async function AvailableWorksDetails({ params: { id } }) {
             Title
           </Typography>
           <Typography sx={{ marginBottom: 2 }} component="p">
-            {data.price}
+            ${data.price}
           </Typography>
           <Typography sx={{ marginBottom: 2 }} component="p">
             is simply dummy text of the printing and typesetting industry. Lorem
             Ipsum has been the industry's standard dummy text ever since the
             1500s,
           </Typography>
-          <AddToCart data={data}/>
-
-         
+          <AddToCart data={data} />
         </Grid>
       </Grid>
-    
     </Container>
   );
 }

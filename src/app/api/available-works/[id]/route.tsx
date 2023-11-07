@@ -2,7 +2,12 @@ import mongoose from "@/lib/mongoose";
 import { AvailableWorksModel } from "@/app/models/available-works";
 import { NextResponse } from "next/server";
 
+// interface Id {
+//   id: string
+// }
+
 export const GET = async (
+  // params: Id
   { params }: { params: { id: string } }
 ) => {
   try {
