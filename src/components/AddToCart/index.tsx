@@ -3,35 +3,33 @@
 import { Alert, Button, Snackbar } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-interface CartItem {
-  id: number;
-  price: number; 
-  image: string;
-  amount: number;  
-}
+import { CartItem } from "@/types/cartItem";
 
-const AddToCart = ({data}: any) => {
+const AddToCart = ({ data }: any) => {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
-  
+
   const handleClick = () => {
-    setOpen(true)
-    console.log(data)
-    const positionIndex = cart.findIndex((cartItem) => cartItem.id === data._id)
-    if(positionIndex === -1) {
-      setCart([...cart, {id: data._id, price: data.price, image: data.image, amount: 1}])
-      console.log(cart)
+    setOpen(true);
+
+    const positionIndex = cart.findIndex(
+      (cartItem) => cartItem.id === data._id
+    );
+    if (positionIndex === -1) {
+      setCart([
+        ...cart,
+        { id: data._id, price: data.price, image: data.image, amount: 1 },
+      ]);
     } else {
-      let newArray = [...cart ] // this gives me all my previous cart properties from one cart
-      let selectedItem = newArray[positionIndex]
-      console.log(selectedItem)
-      selectedItem = {...selectedItem, amount: selectedItem.amount + 1}  
-      newArray[positionIndex] = selectedItem
-      setCart(newArray)
+      let newArray = [...cart]; // this gives me all my previous cart properties from one cart
+      newArray[positionIndex] = {
+        ...newArray[positionIndex],
+        amount: newArray[positionIndex].amount + 1,
+      };
+      setCart(newArray);
     }
     localStorage.setItem("cart", JSON.stringify(cart));
-  }
-
+  };
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -44,12 +42,6 @@ const AddToCart = ({data}: any) => {
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   if()
-  //   const storedData = localStorage.setItem("cart", JSON.stringify(cart));
-  //   // console.log(cart)
-  // }, [cart]);
-
   useEffect(() => {
     try {
       const prevDataJSON: string | null = localStorage.getItem("cart");
@@ -61,8 +53,7 @@ const AddToCart = ({data}: any) => {
       console.error("Error parsing data from localStorage:", error);
     }
   }, []);
-  
-  
+
   return (
     <div>
       {" "}
@@ -70,9 +61,7 @@ const AddToCart = ({data}: any) => {
         Add to cart
       </Button>
       {cart.map((item) => {
-        return (
-          <h1>{item.amount}</h1>
-        )
+        return <h1>{item.amount}</h1>;
       })}
       <Snackbar
         open={open}

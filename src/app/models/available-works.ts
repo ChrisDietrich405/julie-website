@@ -7,7 +7,7 @@ if (!mongoose.models.available_works) {
     image: String,
   });
   mongoose.model("available_works", availableWorksSchema);
-}
+}  
 export const AvailableWorksModel = mongoose.models.available_works;
 
 //model is a mongoose method to join the collection with the schema
