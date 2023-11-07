@@ -60,14 +60,11 @@ const AddToCart = ({ data }: any) => {
       <Button variant="contained" color="secondary" onClick={handleClick}>
         Add to cart
       </Button>
-      {cart.map((item) => {
-        return <h1>{item.amount}</h1>;
-      })}
       <Snackbar
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Item added to cart.

@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import * as React from "react";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
@@ -8,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+
+import { CartItem } from "@/types/cartItem";
 
 const navLinks = [
   {
@@ -37,9 +41,23 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
   const appBarStyle = {
     backgroundColor: "white",
   };
+
+  useEffect(() => {
+    try {
+      const prevDataJSON: string | null = localStorage.getItem("cart");
+      if (prevDataJSON) {
+        const prevData = JSON.parse(prevDataJSON);
+        setCart(prevData);
+      }
+    } catch (error) {
+      console.error("Error parsing data from localStorage:", error);
+    }
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -71,6 +89,11 @@ export default function Navbar() {
             );
           })}
           <Link href="/checkout">
+            {cart.map((item) => {
+              return (
+                <span style={{position: "absolute", top: "2px", right: "27px", color: "#000"}}>{item.amount}</span>
+              );
+            })}
             <ShoppingCartIcon sx={{ color: "#000" }} />
           </Link>
         </Toolbar>
