@@ -1,9 +1,8 @@
 import mongoose from "@/lib/mongoose";
 import { AvailableWorksModel } from "@/app/models/available-works";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export const GET = async (
-  request: Request,
   { params }: { params: { id: string } }
 ) => {
   try {
