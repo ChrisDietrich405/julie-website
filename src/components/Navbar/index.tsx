@@ -56,7 +56,7 @@ export default function Navbar() {
       const cartData = JSON.parse(storedData);
       setCart(cartData);
     }
-  }, [localStorage]);
+  }, []);
 
   // useEffect(() => {
   //   function handleStorageChange() {
@@ -72,6 +72,7 @@ export default function Navbar() {
   // }, [localStorage]);
 
   const length = cart.length;
+  // console.log(length, cart);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

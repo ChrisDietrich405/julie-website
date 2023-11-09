@@ -1,32 +1,30 @@
 "use client";
 
 import { Alert, Button, Snackbar } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { CartContext } from "@/contextAPI/artworkAPI";
 
-interface CartItem {
-  id: number;
-  price: number;
-  image: string;
-}
+import { ICartContext } from "@/app/types";
 
 const AddToCart = ({ data }: any) => {
+  const {cart, setCart}: ICartContext = useContext(CartContext);
   const [open, setOpen] = useState(false);
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [disableBtn, setDisableBtn] = useState(false);
 
   const handleClick = (data: any) => {
     setOpen(true);
     setDisableBtn(true);
-    const positionIndex = cart.findIndex((cartItem) => cartItem.id === data.id);
+    const positionIndex = cart?.findIndex((cartItem: any) => cartItem.id === data.id);
+    debugger
     if (positionIndex === -1) {
-      setCart((cart) => [...cart, { id: data.id, price: data.price, image: data.image }]);
+      setCart((cart) => [
+        ...cart,
+        { id: data.id, price: data.price, image: data.image },
+      ]);
+
     }
   };
 
-  useEffect(() => {
-    if(cart.length) {
-    localStorage.setItem("cart", JSON.stringify(cart))}
-  }, [cart]);
 
   const handleClose = (
     event: React.SyntheticEvent | Event,

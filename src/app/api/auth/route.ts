@@ -45,6 +45,4 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   );
 
   return NextResponse.json({ token, status: 200, message: "User logged in" });
-
- 
 };

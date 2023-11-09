@@ -4,12 +4,13 @@ import { NextResponse } from "next/server";
 import { Params } from "@/app/types/params";
 
 export const GET = async ({ params }: Params) => {
-  try {
+  
+  try { 
     const id = new mongoose.Types.ObjectId(params.id);
     const individualWork = await AvailableWorksModel.findById(id);
 
     if (individualWork) {
-      console.log(individualWork, id);
+      // console.log("HELLOOOOO", individualWork, id);
       return NextResponse.json(individualWork, { status: 200 });
     } else {
       return NextResponse.json(
@@ -18,7 +19,7 @@ export const GET = async ({ params }: Params) => {
       );
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

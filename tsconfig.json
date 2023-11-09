@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/available-works/[id]/page.js"
+    "src/app/available-works/[id]/page.tsx"
 , "src/app/middleware/auth.js"  ],
   "exclude": ["node_modules"]
 }

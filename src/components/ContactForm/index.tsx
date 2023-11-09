@@ -32,7 +32,7 @@ const ContactForm = () => {
         // lastName: lastNameRef.current?.value,
       };
 
-      console.log(templateParams);
+      // console.log(templateParams);
 
       await emailjs.send(
         process.env.NEXT_PUBLIC_SERVICE_ID as string,
