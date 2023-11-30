@@ -1,4 +1,6 @@
-version: "3.8"
+version: "3.8" 
+#  //dockercompose version
+
 
 services:
   mongodb:
@@ -12,7 +14,7 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - node-webapp-network
+      - node-webapp-network    
 
   julie-website-mongo:
     build:
