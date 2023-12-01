@@ -13,22 +13,22 @@ services:
       - C:\Users\chris\OneDrive\Portfolio\mongodb:/data/db
     ports:
       - "27017:27017"
-    networks:
-      - node-webapp-network    
+    # networks:
+    #   - node-webapp-network    
 
-  julie-website-mongo:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: julie-website-mongo
-    ports:
-      - "3000:3000"
+  # julie-website-mongo:
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   container_name: julie-website-mongo
+  #   ports:
+  #     - "3000:3000"
     
-    depends_on:
-      - mongodb
+  #   depends_on:
+  #     - mongodb
      
-    networks:
-      - node-webapp-network
-networks:
-  node-webapp-network:
-    driver: bridge
+  #   networks:
+  #     - node-webapp-network
+# networks:
+#   node-webapp-network:
+#     driver: bridge
