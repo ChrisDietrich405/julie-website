@@ -1,19 +1,14 @@
-FROM node:18
+FROM node:alpine AS development
 
-WORKDIR /app
+ENV NODE_ENV development
 
-COPY package.json . 
+WORKDIR /react-app
 
-RUN npm install --legacy-peer-deps
+COPY package.json /react-app
+
+RUN npm install 
 
 COPY . .
-
-RUN NODE_ENV=development npm i
-
-RUN npm run build
-
-
-EXPOSE 3000
 
 CMD ["npm", "start"]
 
