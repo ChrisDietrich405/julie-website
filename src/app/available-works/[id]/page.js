@@ -2,14 +2,31 @@ import Image from "next/image";
 import { Container } from "@mui/joy";
 import { Grid, Typography, TextField } from "@mui/material";
 import AddToCart from "@/components/AddToCart";
+import axios from "axios";
+
+const translateDynamoDBObject = (dbObject) => {
+  return {
+    price: dbObject.price.N,
+    measurements: dbObject.measurements.S,
+    image: dbObject.image.S,
+    ID: dbObject.ID.S,
+    title: dbObject.title.S,
+  };
+};
 
 async function getData(id) {
-  const res = await fetch(`http://localhost:3000/api/available-works/${id}`);
+  const response = await axios.get(
+    `https://lq9oqysp3l.execute-api.us-east-1.amazonaws.com/dev/individual-work?id=${id}`,
+    {
+      headers: {
+        "x-api-key": process.env.API_KEY,
+      },
+    }
+  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
+  const individualWork = translateDynamoDBObject(response.data.body);
+
+  return individualWork;
 }
 
 export default async function AvailableWorksDetails({ params: { id } }) {
