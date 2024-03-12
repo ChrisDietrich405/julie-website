@@ -7,9 +7,9 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <>
       <Slideshow />
-      <Container>
+      <Container className="main-content">
         <Typography sx={{ textAlign: "center", my: 3 }} component="h5">
           Available Works
         </Typography>
@@ -24,6 +24,6 @@ export default function Home() {
           industry.
         </Typography>
       </Container>
-    </main>
+    </>
   );
 }

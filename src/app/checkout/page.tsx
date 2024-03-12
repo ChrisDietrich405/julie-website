@@ -26,15 +26,15 @@ const Checkout = () => {
   const router = useRouter();
 
   const handleRedirect = () => {
-      if (!userId) {
-        router.push("/login");
-      } else {
-        router.push("/delivery-details")
-      }
-  }
+    if (!userId) {
+      router.push("/login");
+    } else {
+      router.push("/delivery-details");
+    }
+  };
 
   return (
-    <Container sx={{ marginTop: "30px" }}>
+    <Container className="main-content">
       <Grid container spacing={2}>
         <Grid item lg={9}>
           {cart.map((cartItem) => {
@@ -48,15 +48,11 @@ const Checkout = () => {
                       alt="Picture of Julie"
                       src="/images/art1.jpg"
                     />
-                    <Stack rowGap={3} className={styles.card_content_items}>
-                      <Typography variant="h3" fontSize={24} fontWeight={600}>
-                        {cartItem.title}
-                      </Typography>
-                      <Typography fontSize={24} fontWeight={600}>
-                        {cartItem.measurements}
-                      </Typography>
-                      <Typography fontSize={24} fontWeight={600}>
-                        ${cartItem.price}
+                    <Stack className={styles.card_content_items}>
+                      <Typography variant="h3">{cartItem.title}</Typography>
+                      <Typography variant="h5">${cartItem.price}</Typography>
+                      <Typography style={{ marginTop: "20px" }}>
+                        Measurements: {cartItem.measurements}
                       </Typography>
                     </Stack>
                   </CardContent>

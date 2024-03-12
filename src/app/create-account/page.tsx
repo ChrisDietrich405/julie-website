@@ -4,6 +4,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { Container } from "@mui/joy";
+import Grid from "@mui/material/Grid";
 
 import styles from "./styles.module.css";
 
@@ -47,82 +48,100 @@ const CreateAccount = () => {
 
   return (
     <Container
+      className={`"main-content" ${styles.container_background}`}
       maxWidth="xl"
-      style={{ padding: 0, margin: 0, height: "100vh" }}
-      className={styles.container_background}
     >
       <form onSubmit={onSubmit} className={styles.form}>
-        <h2>Create account</h2>
-        <label htmlFor="firstName" className={styles.label}>
-          First Name
-          <input
-            type="text"
-            name="firstName"
-            id="firstName"
-            className={styles.input}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </label>
-        <label htmlFor="lastName" className={styles.label}>
-          Last Name
-          <input
-            type="text"
-            name="lastName"
-            id="lastName"
-            className={styles.input}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </label>
-        <label htmlFor="streetAddress" className={styles.label}>
-          Street Address
-          <input
-            type="text"
-            name="streetAddress"
-            id="streetAddress"
-            className={styles.input}
-            value={streetAddress}
-            onChange={(e) => setStreetAddress(e.target.value)}
-          />
-        </label>
-        <label htmlFor="city" className={styles.label}>
-          City
-          <input
-            type="text"
-            name="city"
-            id="city"
-            className={styles.input}
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </label>
-        <label htmlFor="email" className={styles.label}>
-          Email
-          <input
-            type="text"
-            name="email"
-            id="email"
-            className={styles.input}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <label htmlFor="password" className={styles.label}>
-          Password
-          <input
-            type="password"
-            name="password"
-            id="password"
-            className={styles.input}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-
-        <button type="submit" className={styles.button}>
-          Submit
-        </button>
+        <h2 style={{ marginBottom: "20px" }}>Create account</h2>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <label htmlFor="firstName" className={styles.label}>
+              Name
+              <input
+                type="text"
+                name="firstName"
+                id="firstName"
+                className={styles.input}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </label>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <label htmlFor="streetAddress" className={styles.label}>
+              Street Address
+              <input
+                type="text"
+                name="streetAddress"
+                id="streetAddress"
+                className={styles.input}
+                value={streetAddress}
+                onChange={(e) => setStreetAddress(e.target.value)}
+              />
+            </label>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <label htmlFor="city" className={styles.label}>
+              City
+              <input
+                type="text"
+                name="city"
+                id="city"
+                className={styles.input}
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </label>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {" "}
+            <label htmlFor="email" className={styles.label}>
+              Email
+              <input
+                type="text"
+                name="email"
+                id="email"
+                className={styles.input}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {" "}
+            <label htmlFor="password" className={styles.label}>
+              Password
+              <input
+                type="password"
+                name="password"
+                id="password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {" "}
+            <label htmlFor="password" className={styles.label}>
+              Password Confirmation
+              <input
+                type="confirmation-password"
+                name="confirmation-password"
+                id="confirmation-password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </Grid>
+          <Grid item xs={12}>
+            {" "}
+            <button type="submit" className={styles.button}>
+              Submit
+            </button>
+          </Grid>
+        </Grid>
       </form>
     </Container>
   );

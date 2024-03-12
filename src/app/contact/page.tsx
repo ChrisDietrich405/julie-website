@@ -7,18 +7,18 @@ import ContactForm from "../../components/ContactForm";
 
 const Contact = () => {
   return (
-    <Container>
+    <Container className="main-content">
       <Typography level="h1" component="h1">
         Contact
       </Typography>
+      <Typography sx={{ margin: 2, textAlign: "center" }} component="p">
+        Simply fill out the form and I'll be in touch soon.
+      </Typography>
       <Grid container spacing={2} sx={{ my: 3 }}>
         <Grid item xs={6} justifyContent="center">
-          <Typography sx={{ marginBottom: 2 }} component="p">
-            Simply fill out the form and I'll be in touch soon.
-          </Typography>
           <Image
-            width={333}
-            height={333}
+            width={500}
+            height={500}
             alt="Picture of Julie"
             src="/images/art1.jpg"
           />

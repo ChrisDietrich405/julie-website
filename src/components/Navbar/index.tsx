@@ -25,16 +25,16 @@ const navLinks = [
     route: "/about",
   },
   {
-    title: "Contact",
-    route: "/contact",
-  },
-  {
     title: "Portfolio",
     route: "/portfolio",
   },
   {
     title: "Available Works",
     route: "/available-works",
+  },
+  {
+    title: "Contact",
+    route: "/contact",
   },
 ];
 
@@ -101,7 +101,7 @@ export default function Navbar() {
 
           <Badge badgeContent={length} color="primary">
             <ShoppingCartIcon
-              sx={{ color: "#000" }}
+              sx={{ color: "#000", cursor: "pointer" }}
               onClick={() => router.push("/checkout")}
             />
           </Badge>

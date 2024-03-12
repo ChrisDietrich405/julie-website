@@ -69,10 +69,8 @@ const Login = () => {
   return (
     <Container
       maxWidth="xl"
-      style={{ padding: 0, margin: 0, height: "100vh" }}
-      className={styles.container_background}
+      className={`"main-content" ${styles.container_background}`}
     >
-      
 
       {loading ? (
         <div className={styles.loader}>

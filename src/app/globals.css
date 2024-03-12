@@ -18,6 +18,11 @@ h1 {
   text-align: center;
 }
 
+.main-content {
+  padding-top: 48px;
+  padding-bottom: 48px; 
+}
+
 .btn {
   background-color: var(--secondary) !important;
   color: var(--tertiary) !important;
