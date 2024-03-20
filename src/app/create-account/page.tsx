@@ -24,7 +24,7 @@ const CreateAccount = () => {
     try {
       await axios.post("http://localhost:3000/api/user", {
         firstName,
-        lastName,
+        // lastName,
         streetAddress,
         city,
         email,
@@ -121,7 +121,7 @@ const CreateAccount = () => {
               />
             </label>
           </Grid>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             {" "}
             <label htmlFor="password" className={styles.label}>
               Password Confirmation
@@ -134,7 +134,7 @@ const CreateAccount = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             {" "}
             <button type="submit" className={styles.button}>
