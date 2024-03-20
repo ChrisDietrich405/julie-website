@@ -3,16 +3,16 @@ import { UsersModel } from "@/app/models/users/user-schema";
 import bcrypt from "bcryptjs";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  const { firstName, lastName, streetAddress, city, email, password } =
+  const { name, streetAddress, city, email, password, confirmPassword } =
     await req.json();
 
   if (
-    !firstName ||
-    !lastName ||
+    !name ||
     !streetAddress ||
     !city ||
     !email ||
-    !password
+    !password ||
+    !confirmPassword
   ) {
     return NextResponse.json(
       {
@@ -54,12 +54,12 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new UsersModel({
-      firstName,
-      lastName,
+      name,
       streetAddress,
       city,
       email,
       password: hashedPassword,
+      confirmPassword
     });
 
     await newUser.save();

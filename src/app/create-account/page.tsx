@@ -9,12 +9,12 @@ import Grid from "@mui/material/Grid";
 import styles from "./styles.module.css";
 
 const CreateAccount = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const router = useRouter();
 
@@ -23,12 +23,12 @@ const CreateAccount = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:3000/api/user", {
-        firstName,
-        // lastName,
+        name,
         streetAddress,
         city,
         email,
         password,
+        confirmPassword
       });
 
       router.push("/login");
@@ -62,8 +62,8 @@ const CreateAccount = () => {
                 name="firstName"
                 id="firstName"
                 className={styles.input}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </label>
           </Grid>
@@ -121,20 +121,20 @@ const CreateAccount = () => {
               />
             </label>
           </Grid>
-          {/* <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             {" "}
-            <label htmlFor="password" className={styles.label}>
+            <label htmlFor="confirmation-password" className={styles.label}>
               Password Confirmation
               <input
                 type="confirmation-password"
                 name="confirmation-password"
                 id="confirmation-password"
                 className={styles.input}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </label>
-          </Grid> */}
+          </Grid> 
           <Grid item xs={12}>
             {" "}
             <button type="submit" className={styles.button}>
