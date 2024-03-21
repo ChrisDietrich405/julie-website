@@ -6,7 +6,6 @@ interface OrdersDocument extends Document {
     email: String;
     phoneNumber: Number;
   };
-
   deliveryAddress: {
     streetAddress: String;
     city: String;

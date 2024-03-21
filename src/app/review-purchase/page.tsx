@@ -13,7 +13,6 @@ const ReviewPurchase = () => {
 
   useEffect(() => {
     const orderCode = localStorage.getItem("orderCode");
-    console.log("ORDERcODE", orderCode);
     if (orderCode) {
       setOrderCodeState(orderCode);
     }
@@ -32,7 +31,6 @@ const ReviewPurchase = () => {
     const response = await axios.get(
       `http://localhost:3000/api/orders/${orderCodeState}`
     );
-    console.log(response);
   };
 
   return (

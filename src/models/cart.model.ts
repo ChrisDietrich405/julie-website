@@ -3,7 +3,8 @@ export interface ICartItem {
   price: number,
   image: string,
   measurements: string,
-  title: string
+  title: string,
+  customerId: string
 }
 
 export type ICart = ICartItem[]

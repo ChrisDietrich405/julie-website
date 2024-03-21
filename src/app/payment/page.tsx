@@ -16,7 +16,6 @@ const Payment = () => {
   };
 
   const updatePayment = async () => {
-
     await OrdersApi.put(orderCodeState, {type: 'credit card'});
   };
 

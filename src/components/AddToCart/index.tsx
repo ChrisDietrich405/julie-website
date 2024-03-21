@@ -5,7 +5,7 @@ import { Alert, Button, Snackbar } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 
 const AddToCart = ({ data }: any) => {
-  console.log(data)
+  console.log(data);
   const [open, setOpen] = useState(false);
   const { cart, setCart } = useContext(cartContext);
   const [disableBtn, setDisableBtn] = useState(false);
@@ -62,6 +62,7 @@ const AddToCart = ({ data }: any) => {
         color="secondary"
         onClick={() => handleClick(data)}
       >
+        {" "}
         Add to cart
       </Button>
       <Snackbar

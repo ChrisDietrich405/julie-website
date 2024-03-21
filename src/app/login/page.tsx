@@ -41,11 +41,11 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3000/api/auth", {
+      const response = await axios.post("/api/auth", {
         email,
         password,
       });
-
+      console.log(response)
       setUserId(response.data.userId);
 
       localStorage.setItem("token", `Bearer ${response.data.token}`);

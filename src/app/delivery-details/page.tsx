@@ -69,7 +69,7 @@ const CreateAccount: React.FC = () => {
                 sx={{
                   paddingY: 3
                 }}
-              >Fill the information bellow</Typography>
+              >Fill the information below</Typography>
               <CheckoutForm clientSecret={clientSecret}/>
             </Box>
             <Box flex={1}>
