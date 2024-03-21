@@ -1,8 +1,7 @@
 import { Document } from "mongoose";
 
 interface UserDocument extends Document {
-    firstName: String,
-    lastName: String,
+    name: String,
     streetAddress: String,
     city: String,
     email: String,

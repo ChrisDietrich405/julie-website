@@ -5,6 +5,7 @@ import { Alert, Button, Snackbar } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 
 const AddToCart = ({ data }: any) => {
+  console.log(data)
   const [open, setOpen] = useState(false);
   const { cart, setCart } = useContext(cartContext);
   const [disableBtn, setDisableBtn] = useState(false);

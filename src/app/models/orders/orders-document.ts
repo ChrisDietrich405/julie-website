@@ -2,8 +2,7 @@ import { Document } from "mongoose";
 
 interface OrdersDocument extends Document {
   customer: {
-    firstName: String;
-    lastName: String;
+    name: String;
     email: String;
     phoneNumber: Number;
   };

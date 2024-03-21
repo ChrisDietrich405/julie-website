@@ -19,8 +19,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const user = await UsersModel.findById(id);
 
   if (
-    !customer.firstName ||
-    !customer.lastName ||
+    !customer.name ||
     !deliveryAddress.streetAddress ||
     !deliveryAddress.city ||
     !deliveryAddress.zipCode ||

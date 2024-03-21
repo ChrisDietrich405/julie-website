@@ -36,7 +36,7 @@ async function getData() {
       "https://lq9oqysp3l.execute-api.us-east-1.amazonaws.com/dev/available-works",
       {
         headers: {
-          "x-api-key": process.env.API_KEY,
+          "x-api-key": process.env.AWS_API_KEY,
         },
       }
     );

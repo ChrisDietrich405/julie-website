@@ -6,7 +6,7 @@ import axios from "axios";
 
 const translateDynamoDBObject = (dbObject) => {
   return {
-    price: dbObject.price.N,
+    price: parseFloat(dbObject.price.N),
     measurements: dbObject.measurements.S,
     image: dbObject.image.S,
     ID: dbObject.ID.S,
@@ -19,7 +19,7 @@ async function getData(id) {
     `https://lq9oqysp3l.execute-api.us-east-1.amazonaws.com/dev/individual-work?id=${id}`,
     {
       headers: {
-        "x-api-key": process.env.API_KEY,
+        "x-api-key": process.env.AWS_API_KEY,
       },
     }
   );

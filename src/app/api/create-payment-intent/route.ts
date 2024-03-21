@@ -5,6 +5,7 @@ import {ICart} from "@/models";
 const stripe = new Stripe(process.env.STRIPE_KEY as string)
 
 export async function POST(req: NextRequest) {
+  console.log("HWLLO", req)
 
   const body: { items: ICart } = await req.json();
 
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
         enabled: true,
       },
     });
+
 
     return NextResponse.json(
       {

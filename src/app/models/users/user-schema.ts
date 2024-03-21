@@ -4,11 +4,7 @@ import UserDocument from "./user-document";
 
 if (!mongoose.models.users) {
   const userSchema = new Schema<UserDocument>({
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
+    name: {
       type: String,
       required: true,
     },

@@ -19,8 +19,11 @@ const CreateAccount = () => {
   const router = useRouter();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    console.log("hello");
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Confirm password doesn't equal Password");
+    }
     try {
       await axios.post("http://localhost:3000/api/user", {
         name,
@@ -28,7 +31,6 @@ const CreateAccount = () => {
         city,
         email,
         password,
-        confirmPassword
       });
 
       router.push("/login");
@@ -55,12 +57,12 @@ const CreateAccount = () => {
         <h2 style={{ marginBottom: "20px" }}>Create account</h2>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <label htmlFor="firstName" className={styles.label}>
+            <label htmlFor="name" className={styles.label}>
               Name
               <input
                 type="text"
-                name="firstName"
-                id="firstName"
+                name="name"
+                id="name"
                 className={styles.input}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -126,7 +128,7 @@ const CreateAccount = () => {
             <label htmlFor="confirmation-password" className={styles.label}>
               Password Confirmation
               <input
-                type="confirmation-password"
+                type="password"
                 name="confirmation-password"
                 id="confirmation-password"
                 className={styles.input}
@@ -134,7 +136,7 @@ const CreateAccount = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </label>
-          </Grid> 
+          </Grid>
           <Grid item xs={12}>
             {" "}
             <button type="submit" className={styles.button}>

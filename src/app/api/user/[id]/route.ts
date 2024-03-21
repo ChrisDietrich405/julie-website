@@ -21,7 +21,7 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
       return NextResponse.json({ status: 401, message: "Unauthorized user" });
     }
 
-    const { firstName, lastName, streetAddress, email, password, newPassword } =
+    const { name, streetAddress, email, password, newPassword } =
       await req.json();
 
     const matchedPassword = await bcrypt.compare(password, user.password);
@@ -33,8 +33,7 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     await user.updateOne({
-      firstName,
-      lastName,
+      name,
       streetAddress,
       password: hashedPassword,
       email,

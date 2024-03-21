@@ -12,15 +12,16 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
 const CreateAccount: React.FC = () => {
   const {cart} = useContext(cartContext)
   const [clientSecret, setClientSecret] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amountFormatted, setAmountFormatted] = useState('');
 
   const createPaymentIntent = async () => {
     const response = await StripeApi.CreatePaymentIntent(cart)
 
     const {data} = response;
+    console.log(cart)
 
-    setAmount(data.amount.toLocaleString('en-US', {
-      style: 'currency',
+    setAmountFormatted(data.amount.toLocaleString('en-US', {
+      style: 'currency',  
       currency: 'USD',
     }))
 
@@ -73,9 +74,9 @@ const CreateAccount: React.FC = () => {
             </Box>
             <Box flex={1}>
               {
-                amount &&
+                amountFormatted &&
                   <Typography>
-                      Total: {amount}
+                      Total: {amountFormatted}
                   </Typography>
 
               }

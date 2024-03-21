@@ -5,11 +5,7 @@ import OrdersDocument from "./orders-document";
 if (!mongoose.models.orders) {
   const ordersSchema = new Schema<OrdersDocument>({
     customer: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      lastName: {
+      name: {
         type: String,
         required: true,
       },
