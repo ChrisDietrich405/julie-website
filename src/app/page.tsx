@@ -1,4 +1,4 @@
-// https://www.janehindmarchart.com/portfolio
+//chrisdietrich3666@gmail.com helloo
 import Slideshow from "@/components/Slideshow";
 import { Container } from "@mui/material";
 import Typography from "@mui/joy/Typography";

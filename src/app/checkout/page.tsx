@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Grid,
@@ -29,15 +29,20 @@ const Checkout = () => {
   router.prefetch('/delivery-details')
 
   const handleRedirect = () => {
-
-    console.log('teste ', userId)
-
     if (!userId) {
       router.push("/login");
     } else {
       router.push("/delivery-details");
     }
   };
+
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/api/cart", {
+  //     headers: {
+  //       "x-decoded-token": 
+  //     }
+  //   })
+  // }, [])
 
   return (
     <Container className="main-content">

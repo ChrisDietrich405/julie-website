@@ -17,6 +17,7 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET as string);
 
     const decodedToken = await jose.jwtVerify(tokenNumber, secret);
+    console.log("hello", decodedToken)
 
     if (!decodedToken.payload.id) {
       return NextResponse.json("Unauthorized user", { status: 401 });
