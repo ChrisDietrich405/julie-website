@@ -12,6 +12,34 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif !important;
 }
 
+.table {
+  width: 100%;
+}
+
+.table td {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+}
+
+.table th {
+  color: var(--tertiary);
+  background-color: var(--secondary);
+  padding: 16px;
+  text-transform: uppercase;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
 h1 {
   width: 1200px;
   margin: 20px auto;
@@ -20,7 +48,7 @@ h1 {
 
 .main-content {
   padding-top: 48px;
-  padding-bottom: 48px; 
+  padding-bottom: 48px;
 }
 
 .btn {
@@ -31,7 +59,7 @@ h1 {
 .btn.btn-large {
   text-transform: uppercase;
   padding: 14px 40px;
-  margin-left: auto;
+  /* margin-left: auto; */
   display: block;
 }
 
