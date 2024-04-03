@@ -2,16 +2,33 @@ import { NextResponse, NextRequest } from "next/server";
 import mongoose from "@/lib/mongoose";
 import { CartModel } from "@/app/models/cart";
 
-export const PATCH = async (req: NextRequest, res: NextResponse) => {
+// interface CartRequest {
+//   id: Number;
+//   price: Number;
+//   image: String;
+//   measurements: String;
+//   title: String;
+//   customerId: Number;
+// }
+
+export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
 
-  const { id, price, image, measurements, title, customerId } = req.body;
+  const { id, price, image, measurements, title } = await req.json()
 
-  const userId = requestHeaders.get("x-decoded-id");
+  const customerId = requestHeaders.get("x-decoded-id");
 
-  if (!userId) {
+  if (!customerId) {
     return NextResponse.json({ status: 401, message: "Unauthorized user" });
   }
+
+  const foundCart = await CartModel.findOne({customerId})
+
+  if(foundCart) {
+    console.log("YWHWHWHWHWHW", foundCart)
+  }
+
+
 
   const updatedCartItem = {
     id,
@@ -37,21 +54,21 @@ export const PATCH = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-export const GET = async(req: NextRequest, res: NextResponse) => {
+export const GET = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
   const userId = requestHeaders.get("x-decoded-id");
-  console.log(userId)
+  console.log("Hello", userId);
 
   if (!userId) {
     return NextResponse.json({ status: 401, message: "Unauthorized user" });
-  } 
+  }
 
   try {
     const cartItems = await CartModel.find({ customerId: userId });
 
     return NextResponse.json({ status: 200, data: cartItems });
   } catch (error) {
-    console.error('Error retrieving cart items:', error);
+    console.error("Error retrieving cart items:", error);
     return NextResponse.json({ status: 500, message: "Internal server error" });
   }
-}
+};

@@ -17,7 +17,7 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET as string);
 
     const decodedToken = await jose.jwtVerify(tokenNumber, secret);
-    console.log("hello", decodedToken)
+
 
     if (!decodedToken.payload.id) {
       return NextResponse.json("Unauthorized user", { status: 401 });
@@ -26,6 +26,8 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
     const requestHeaders = new Headers(req.headers);
 
     requestHeaders.set("x-decoded-id", `${decodedToken.payload.id}`);
+
+    console.log(decodedToken.payload.id)
 
     return NextResponse.next({
       request: {

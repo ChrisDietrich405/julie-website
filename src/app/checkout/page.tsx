@@ -36,13 +36,14 @@ const Checkout = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetch("http://localhost:3000/api/cart", {
-  //     headers: {
-  //       "x-decoded-token":
-  //     }
-  //   })
-  // }, [])
+  useEffect(() => {
+    const token: any = localStorage.getItem("token");
+    fetch("http://localhost:3000/api/cart", {
+      headers: {
+        "x-decoded-token": token,
+      },
+    });
+  }, []);
 
   return (
     <Container className="main-content">
