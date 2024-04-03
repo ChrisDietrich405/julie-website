@@ -2,15 +2,6 @@ import { NextResponse, NextRequest } from "next/server";
 import mongoose from "@/lib/mongoose";
 import { CartModel } from "@/app/models/cart";
 
-// interface CartRequest {
-//   id: Number;
-//   price: Number;
-//   image: String;
-//   measurements: String;
-//   title: String;
-//   customerId: Number;
-// }
-
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
 
@@ -56,15 +47,15 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
-  const userId = requestHeaders.get("x-decoded-id");
-  console.log("Hello", userId);
-
-  if (!userId) {
+  // const customerId = requestHeaders.get("x-decoded-id");
+  const customerId = "660dd631e5c7a047f01edebc"
+  console.log(customerId)
+  if (!customerId) {
     return NextResponse.json({ status: 401, message: "Unauthorized user" });
   }
 
   try {
-    const cartItems = await CartModel.find({ customerId: userId });
+    const cartItems = await CartModel.find({ customerId });
 
     return NextResponse.json({ status: 200, data: cartItems });
   } catch (error) {

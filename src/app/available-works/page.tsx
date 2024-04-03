@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 import {
   Box,
@@ -12,16 +13,16 @@ import {
   Typography,
 } from "@mui/material";
 
+import { AvailableWorksApi } from "../../services";
+
 async function getData() {
   try {
-    const res = await fetch("http://localhost:3000/api/available-works");
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
+    //@ts-ignore
+    const { data } = await axios.get('http://localhost:3001/api/available-works');
 
-    const data = await res.json();
-    console.log(data);
+    console.log('data ', data)
+
     return data;
   } catch (error) {
     console.log(error);

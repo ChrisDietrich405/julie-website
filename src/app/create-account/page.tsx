@@ -25,7 +25,7 @@ const CreateAccount = () => {
       toast.error("Confirm password doesn't equal Password");
     }
     try {
-      await axios.post("http://localhost:3000/api/user", {
+      await axios.post("/api/user", {
         name,
         streetAddress,
         city,

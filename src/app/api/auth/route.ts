@@ -63,7 +63,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     process.env.JWT_SECRET as string,
     { expiresIn: "2d" }
   );
-
+  console.log(token);
   return NextResponse.json({
     userId: existingAccount._id,
     token,
