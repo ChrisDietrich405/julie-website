@@ -1,31 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
 
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
-
-import { AvailableWorksApi } from "../../services";
+import {Box, Button, Card, CardContent, Container, Grid, Stack, Typography,} from "@mui/material";
+import {AvailableWorksApi} from "@/services";
 
 async function getData() {
   try {
-
-    //@ts-ignore
-    const { data } = await axios.get('http://localhost:3001/api/available-works');
-
-    console.log('data ', data)
+    const {data} = await AvailableWorksApi.getAll();
 
     return data;
   } catch (error) {
-    console.log(error);
+    console.log('Something is wrong!')
   }
 }
 
@@ -40,7 +25,7 @@ export default async function Page() {
           <Grid
             container
             rowSpacing={5}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            columnSpacing={{xs: 1, sm: 2, md: 3}}
           >
             {data?.map((item: any, index: any) => {
               return (
