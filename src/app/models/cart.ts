@@ -1,19 +1,15 @@
 import mongoose from "@/lib/mongoose";
 import { ObjectId } from "mongoose";
 import UserDocument from "./users/user-document";
-// import { UsersModel } from "./users";
 import AvailableWorksDocument from "./available-works/available-works-document";
 import { AvailableWorksModel } from "./available-works/available-works-schema";
 import { UsersModel } from "./users/user-schema";
-// import {
-//   AvailableWorksModel,
-//   AvailableWorksDocument,
-// } from "./available-works/available-works-schema";
+
 
 const { Schema } = mongoose;
 
 interface CartDocument extends Document {
-  availableWorks: AvailableWorksDocument[];
+  items: AvailableWorksDocument[];
   userId: String;
 }
 
@@ -22,7 +18,7 @@ const cartSchema = new Schema<CartDocument>({
     type: String,
     required: true,
   },
-  availableWorks: {
+  items: {
     type: [AvailableWorksModel.schema],
     required: true,
   },
