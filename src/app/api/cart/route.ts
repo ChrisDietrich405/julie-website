@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {CartModel} from "@/app/models/cart";
 import {AvailableWorksModel} from "@/app/models/available-works/available-works-schema";
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
 
   const {id, price, image, measurements, title} = await req.json()
@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-export const PUT = async (req: NextRequest, res: NextResponse) => {
+export const PUT = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
 
   const userId = requestHeaders.get('x-decoded-id');
@@ -60,7 +60,7 @@ export const PUT = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
 
   const userId = requestHeaders.get('x-decoded-id');
