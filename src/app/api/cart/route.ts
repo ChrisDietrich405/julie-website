@@ -1,21 +1,21 @@
-import { NextResponse, NextRequest } from "next/server";
-import mongoose from "@/lib/mongoose";
-import { CartModel } from "@/app/models/cart";
+import {NextRequest, NextResponse} from "next/server";
+import {CartModel} from "@/app/models/cart";
+import {AvailableWorksModel} from "@/app/models/available-works/available-works-schema";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
 
-  const { id, price, image, measurements, title } = await req.json()
+  const {id, price, image, measurements, title} = await req.json()
 
   const customerId = requestHeaders.get("x-decoded-id");
 
   if (!customerId) {
-    return NextResponse.json({ status: 401, message: "Unauthorized user" });
+    return NextResponse.json({status: 401, message: "Unauthorized user"});
   }
 
-  const foundCart = await CartModel.findOne({customer_id: "65fb75a386d407041a265cea"})
+  const foundCart = await CartModel.findOne()
 
-  if(foundCart) {
+  if (foundCart) {
     console.log("YWHWHWHWHWHW", foundCart)
   }
 
@@ -39,51 +39,43 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     });
   } catch (error) {
     console.error("Error updating cart item:", error);
-    return NextResponse.json({ status: 500, message: "Internal server error" });
+    return NextResponse.json({status: 500, message: "Internal server error"});
   }
 };
 
 export const PUT = async (req: NextRequest, res: NextResponse) => {
-  // const requestHeaders = new Headers(req.headers);
-  const customerId = "660dd631e5c7a047f01edebc"
-  const { cart } = await req.json()
+  const requestHeaders = new Headers(req.headers);
+
+  const userId = requestHeaders.get('x-decoded-id');
+
+  const {cart} = await req.json()
 
   try {
-    // const cartItems = await CartModel.findOneAndUpdate({ customerId }, { :cart });
-    // console.log(cartItems)
+    const foundCart =
+      await CartModel.findOneAndUpdate({userId}, {$set: {items: cart}}, {returnOriginal: false})
 
-    // MyModel.findOneAndUpdate({}, { myArray: newData }, { new: true }, (err, doc) => {
-    //   if (err) {
-    //     console.error('Error updating document:', err);
-    //     return;
-    //   }
-    //   console.log('Document updated successfully:', doc);
-    // });
-  
-    // cartItems.update(...cartItems, updatedCartItem)
-
-    // return NextResponse.json({ status: 200, data: cartItems });
+    return NextResponse.json({status: 200, data: foundCart});
   } catch (error) {
-    console.error("Error retrieving cart items:", error);
-    return NextResponse.json({ status: 500, message: "Internal server error" });
+    return NextResponse.json({status: 500, message: "Internal server error"});
   }
 };
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
-  // const customerId = requestHeaders.get("x-decoded-id");
-  const customerId = "660dd631e5c7a047f01edebc"
-  console.log(customerId)
-  if (!customerId) {
-    return NextResponse.json({ status: 401, message: "Unauthorized user" });
+
+  const userId = requestHeaders.get('x-decoded-id');
+
+  if (!userId) {
+    return NextResponse.json({status: 401, message: "Unauthorized user"});
   }
 
   try {
-    const cartItems = await CartModel.find({ customerId });
+    const {items} = await CartModel.findOne({userId}) ?? {};
 
-    return NextResponse.json({ status: 200, data: cartItems });
+    const availableWorks = await AvailableWorksModel.find({_id: {$in: items}});
+
+    return NextResponse.json({status: 200, data: availableWorks});
   } catch (error) {
-    console.error("Error retrieving cart items:", error);
-    return NextResponse.json({ status: 500, message: "Internal server error" });
+    return NextResponse.json({status: 500, message: "Internal server error"});
   }
 };
