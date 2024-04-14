@@ -1,15 +1,14 @@
 "use client";
-import React, { useState, FormEvent, useContext } from "react";
+import React, {FormEvent, useContext, useState} from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import { AxiosError } from "axios";
-import { toast } from "react-toastify";
-import { Oval } from "react-loader-spinner";
-import { Container } from "@mui/joy";
+import {useRouter} from "next/navigation";
+import axios, {AxiosError} from "axios";
+import {toast} from "react-toastify";
+import {Oval} from "react-loader-spinner";
+import {Container} from "@mui/joy";
 
-import { userContext } from "../context/userContext";
-import { cartContext } from "@/app/context/cartContext";
+import {userContext} from "../context/userContext";
+import {cartContext} from "@/app/context/cartContext";
 
 import styles from "./styles.module.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,12 +31,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { userId, setUserId } = useContext(userContext);
-  const { cart } = useContext(cartContext);
+  const {userId, setUserId} = useContext(userContext);
+  const {cart} = useContext(cartContext);
 
   const router = useRouter();
-
-  router.prefetch('/delivery-details')
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +49,7 @@ const Login = () => {
       localStorage.setItem("token", `Bearer ${response.data.token}`);
 
       if (cart.length === 0) {
-        router.push("/", );
+        router.push("/");
       }
 
       if (cart.length > 0) {
@@ -75,7 +72,7 @@ const Login = () => {
 
       {loading ? (
         <div className={styles.loader}>
-          <Oval />
+          <Oval/>
         </div>
       ) : (
         <form onSubmit={onSubmit} className={styles.form}>
@@ -107,7 +104,7 @@ const Login = () => {
             Submit
           </button>
 
-          <p style={{ marginBottom: "10px" }}>New to Julie Dtrick?</p>
+          <p style={{marginBottom: "10px"}}>New to Julie Dtrick?</p>
           <Link shallow href="/create-account">Create an account</Link>
         </form>
       )}

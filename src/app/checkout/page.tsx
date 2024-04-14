@@ -1,32 +1,16 @@
 "use client";
-import React, { useEffect } from "react";
-import {
-  Container,
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Stack,
-} from "@mui/material";
+import React, {useContext, useEffect} from "react";
+import {Button, Container,} from "@mui/material";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
-import { useContext } from "react";
-import { cartContext } from "@/app/context/cartContext";
-
-import styles from "./styles.module.css";
-import { userContext } from "../context/userContext";
+import {useRouter} from "next/navigation";
+import {cartContext} from "@/app/context/cartContext";
+import {userContext} from "../context/userContext";
 
 const Checkout = () => {
-  const { cart } = useContext(cartContext);
-  const { userId } = useContext(userContext);
+  const {cart} = useContext(cartContext);
+  const {userId} = useContext(userContext);
 
   const router = useRouter();
-
-  router.prefetch("/login");
-  router.prefetch("/delivery-details");
 
   const handleRedirect = () => {
     if (!userId) {
@@ -76,7 +60,7 @@ const Checkout = () => {
         })}
       </table>
       <Button
-        style={{ margin: "20px 0 0 auto" }}
+        style={{margin: "20px 0 0 auto"}}
         className="btn btn-large"
         onClick={handleRedirect}
       >
