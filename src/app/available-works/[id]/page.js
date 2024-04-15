@@ -42,6 +42,9 @@ export default async function AvailableWorksDetails({params: {id}}) {
           <Typography sx={{marginBottom: 2}} variant="h4" component="h2">
             ${data.price}
           </Typography>
+          <Typography sx={{marginBottom: 2}} variant="h5" component="h5">
+            {data.measurements}
+          </Typography>
           <Typography sx={{marginBottom: 2}} component="p">
             is simply dummy text of the printing and typesetting industry. Lorem
             Ipsum has been the industry's standard dummy text ever since the
