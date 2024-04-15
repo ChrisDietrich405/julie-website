@@ -1,19 +1,18 @@
 "use client";
-import { useEffect, useContext } from "react";
-import { useRouter } from "next/navigation";
+import {useContext} from "react";
+import {useRouter} from "next/navigation";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { cartContext } from "@/app/context/cartContext";
-import { userContext } from "@/app/context/userContext";
+import {cartContext} from "@/app/context/cartContext";
+import {userContext} from "@/app/context/userContext";
 
 const navLinks = [
   {
@@ -47,8 +46,8 @@ const navLinksFunction = (isLoggedIn: boolean) => [
 ];
 
 export default function Navbar() {
-  const { cart } = useContext(cartContext);
-  const { setUserId, userId } = useContext(userContext);
+  const {cart} = useContext(cartContext);
+  const {setUserId, userId} = useContext(userContext);
 
   const router = useRouter();
 
@@ -63,36 +62,49 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{flexGrow: 1}}>
       <AppBar position="static" style={appBarStyle}>
-        <Toolbar sx={{ flexGrow: 1, backgroundColor: "#eeeff0" }}>
+        <Toolbar sx={{flexGrow: 1, backgroundColor: "#eeeff0"}}>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, display: { sm: "block", md: "none" } }}
+            sx={{mr: 2, display: {sm: "block", md: "none"}}}
           >
-            <MenuIcon />
+            <MenuIcon/>
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, color: "black" }}
-          >
-            Julie Dietrich Art
-          </Typography>
+
+          <Box flexGrow={1}>
+            <Button
+              variant="text"
+              component="h1"
+              sx={{
+                color: "black",
+                width: 'auto',
+                justifyContent: 'start',
+                padding: 0,
+                fontWeight: 500,
+                fontSize: '1.25rem',
+                lineHeight: 1.6,
+                textTransform: 'capitalize'
+              }}
+              onClick={() => router.push('/')}
+            >
+              Julie Dietrich Art
+            </Button>
+          </Box>
           {navLinksFunction(!!userId).map(({route, title}, index) => {
             return (
               <Link
                 shallow={route !== '/available-works'}
-                key={index}
+                key={`navbar-item-${index}`}
                 href={route}
                 onClick={() => {
                   title === "Log out" ? handleLogout() : undefined;
                 }}
               >
-                <Button sx={{ mx: 2 }} variant="text" className="navbar-btn">
+                <Button sx={{mx: 2}} variant="text" className="navbar-btn">
                   {title}
                 </Button>
               </Link>
@@ -101,7 +113,7 @@ export default function Navbar() {
 
           <Badge badgeContent={length} color="primary">
             <ShoppingCartIcon
-              sx={{ color: "#000", cursor: "pointer" }}
+              sx={{color: "#000", cursor: "pointer"}}
               onClick={() => router.push("/checkout")}
             />
           </Badge>
