@@ -1,14 +1,15 @@
 "use client";
-import React, {useContext, useEffect} from "react";
-import {Button, Container,} from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Container } from "@mui/material";
 import Image from "next/image";
-import {useRouter} from "next/navigation";
-import {cartContext} from "@/app/context/cartContext";
-import {userContext} from "../context/userContext";
+import { useRouter } from "next/navigation";
+import { cartContext } from "@/app/context/cartContext";
+import { userContext } from "../context/userContext";
+import axios from "axios";
 
 const Checkout = () => {
-  const {cart} = useContext(cartContext);
-  const {userId} = useContext(userContext);
+  const [cart, setCart] = useState([]);
+  const { userId } = useContext(userContext);
 
   const router = useRouter();
 
@@ -21,12 +22,15 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    const token: any = localStorage.getItem("token");
-    fetch("http://localhost:3000/api/cart", {
-      headers: {
-        "x-decoded-token": token,
-      },
-    });
+    const func = async () => {
+      const token: any = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:3000/api/cart", {
+        headers: {
+          "x-decoded-id": "660dd631e5c7a047f01edebc",
+        },
+      });
+    };
+    func()
   }, []);
 
   return (
@@ -60,7 +64,7 @@ const Checkout = () => {
         })}
       </table>
       <Button
-        style={{margin: "20px 0 0 auto"}}
+        style={{ margin: "20px 0 0 auto" }}
         className="btn btn-large"
         onClick={handleRedirect}
       >
