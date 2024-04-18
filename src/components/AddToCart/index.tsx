@@ -1,79 +1,34 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartContext";
-import { Alert, Button, Snackbar } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
+import {useGetCart, useUpdateCart} from "@/app/hooks/services/cart";
+import {LoadingButton} from "@mui/lab";
 
-const AddToCart = ({ data }: any) => {
-  const [open, setOpen] = useState(false);
-  const { cart, setCart } = useContext(cartContext);
-  const [disableBtn, setDisableBtn] = useState(false);
+const AddToCart = ({id}: { id: string }) => {
+  const {data, refetch, isFetching} = useGetCart();
 
-  const handleClick = (data: any) => {
-    setOpen(true);
-    setDisableBtn(true);
-
-    const positionIndex = cart.findIndex(
-      (cartItem) => cartItem.id === data._id
-    );
-
-    if (positionIndex === -1) {
-      setCart((cart) => [
-        ...cart,
-        {
-          id: data._id,
-          price: data.price,
-          image: data.image,
-          measurements: data.measurements,
-          title: data.title,
-        },
-      ]);
+  const {mutate, isPending} = useUpdateCart({
+    onSuccess: () => {
+      refetch()
     }
-  };
+  });
 
-  useEffect(() => {
-    const positionIndex = cart.findIndex(
-      (cartItem) => cartItem.id === data._id
-    );
+  const cart = data?.data ?? []
 
-    if (positionIndex >= 0) {
-      setDisableBtn(true);
-    }
-  }, []);
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
+  const cartIds = [...cart].map(item => item._id);
 
   return (
     <div>
       {" "}
-      <Button
-        disabled={disableBtn}
+      <LoadingButton
         variant="contained"
+        loading={isPending || isFetching}
+        disabled={cartIds.includes(id)}
         color="secondary"
-        onClick={() => handleClick(data)}
+        onClick={() => mutate([...cartIds, id])}
       >
-        {" "}
         Add to cart
-      </Button>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Item added to cart.
-        </Alert>
-      </Snackbar>
+      </LoadingButton>
     </div>
   );
 };

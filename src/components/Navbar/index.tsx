@@ -1,5 +1,4 @@
 "use client";
-import {useContext} from "react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
@@ -10,9 +9,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-
-import {cartContext} from "@/app/context/cartContext";
-import {userContext} from "@/app/context/userContext";
+import {useGetCart} from "@/app/hooks/services/cart";
+import {useCookies} from "react-cookie";
 
 const navLinks = [
   {
@@ -46,8 +44,11 @@ const navLinksFunction = (isLoggedIn: boolean) => [
 ];
 
 export default function Navbar() {
-  const {cart} = useContext(cartContext);
-  const {setUserId, userId} = useContext(userContext);
+  const [cookies, _, removeCookie] = useCookies(['token']);
+
+  const {data} = useGetCart();
+
+  const cart = data?.data ?? [];
 
   const router = useRouter();
 
@@ -58,7 +59,7 @@ export default function Navbar() {
   const length = cart?.length;
 
   const handleLogout = () => {
-    setUserId("");
+    removeCookie('token')
   };
 
   return (
@@ -94,7 +95,8 @@ export default function Navbar() {
               Julie Dietrich Art
             </Button>
           </Box>
-          {navLinksFunction(!!userId).map(({route, title}, index) => {
+
+          {navLinksFunction(!!cookies.token).map(({route, title}, index) => {
             return (
               <Link
                 shallow={route !== '/available-works'}

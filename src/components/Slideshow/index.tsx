@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
+import styles from "./styles.module.css";
 
 const slideshow1 = "/images/art2.jpg";
 const slideshow2 = "/images/art3.jpg";
 const slideshow3 = "/images/art4.jpg";
-
-import styles from "./styles.module.css";
 
 export default function Slideshow() {
   const imageArray = [slideshow1, slideshow2, slideshow3];
@@ -40,7 +39,7 @@ export default function Slideshow() {
               index === i ? styles.active : styles.inactive
             }`}
             src={image}
-            key={i}
+            key={`slide-show-${i}`}
           ></Image>
         ))}
       </div>
