@@ -1,5 +1,5 @@
 "use client";
-import React, {FormEvent, useContext, useState} from "react";
+import React, {FormEvent, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import axios, {AxiosError} from "axios";
@@ -7,11 +7,11 @@ import {toast} from "react-toastify";
 import {Oval} from "react-loader-spinner";
 import {Container} from "@mui/joy";
 
-import {userContext} from "../context/userContext";
-import {cartContext} from "@/app/context/cartContext";
-
 import styles from "./styles.module.css";
 import "react-toastify/dist/ReactToastify.css";
+
+import {useGetCart} from "@/app/hooks/services/cart";
+import {useCookies} from "react-cookie";
 
 <Oval
   height={80}
@@ -27,14 +27,14 @@ import "react-toastify/dist/ReactToastify.css";
 />;
 
 const Login = () => {
+  const [, setCookie] = useCookies(['token']);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const {userId, setUserId} = useContext(userContext);
-  const {cart} = useContext(cartContext);
-
   const router = useRouter();
+
+  const {refetch} = useGetCart({enabled: false});
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,17 +44,16 @@ const Login = () => {
         email,
         password,
       });
-      setUserId(response.data.userId);
 
-      localStorage.setItem("token", `Bearer ${response.data.token}`);
+      refetch();
 
-      if (cart.length === 0) {
-        router.push("/");
-      }
+      setCookie('token', response.data.token, {
+        path: '/',
+        expires: response.data.expires
+      })
 
-      if (cart.length > 0) {
-        router.push("/delivery-details");
-      }
+      router.push("/");
+
     } catch (error: unknown) {
       const errorMessage = (error as AxiosError<{ message: string }>).response
         ?.data.message;

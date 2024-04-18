@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
+import {NextRequest, NextResponse} from "next/server";
+import {headers} from "next/headers";
 import * as jose from "jose";
 
 export const config = {
@@ -18,16 +18,13 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
 
     const decodedToken = await jose.jwtVerify(tokenNumber, secret);
 
-
     if (!decodedToken.payload.id) {
-      return NextResponse.json("Unauthorized user", { status: 401 });
+      return NextResponse.json("Unauthorized user", {status: 401});
     }
 
     const requestHeaders = new Headers(req.headers);
 
     requestHeaders.set("x-decoded-id", `${decodedToken.payload.id}`);
-
-    console.log(decodedToken.payload.id)
 
     return NextResponse.next({
       request: {
@@ -35,6 +32,6 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
       },
     });
   } catch (error) {
-    return NextResponse.json("Server failed", { status: 500 });
+    return NextResponse.json("Server failed", {status: 500});
   }
 };
