@@ -1,9 +1,9 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import { useGetCart } from "../hooks/services/cart";
+import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import {
   Box,
-  Button,
   CircularProgress,
   Container,
   Divider,
@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import CheckoutForm from "@/components/forms/CheckoutForm/CheckoutForm";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { cartContext } from "@/app/context/cartContext";
 import { StripeApi } from "@/services";
 import { currencyFormat } from "@/helpers";
 import { LoadingButton } from "@mui/lab";
@@ -20,17 +19,17 @@ import { LoadingButton } from "@mui/lab";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
 
 const CreateAccount: React.FC = () => {
-  const { cart } = useContext(cartContext);
   const [clientSecret, setClientSecret] = useState("");
   const [amountFormatted, setAmountFormatted] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const { data } = useGetCart()
+  const cart = data?.data ?? []
 
   const createPaymentIntent = async () => {
     const response = await StripeApi.CreatePaymentIntent(cart);
 
     const { data } = response;
-    console.log(cart);
 
     setAmountFormatted(currencyFormat(data.amount));
 

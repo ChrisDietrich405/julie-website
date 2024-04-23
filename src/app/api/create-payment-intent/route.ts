@@ -9,8 +9,9 @@ export async function POST(req: NextRequest) {
   const body: { items: ICart } = await req.json();
 
   const {items} = body;
-
+  
   const amount = items.reduce((total, item) => total + item.price, 0)
+  console.log(amount)
 
   if (!Array.isArray(items) || !items.length) return NextResponse.json({
       error: {
