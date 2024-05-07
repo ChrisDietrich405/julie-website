@@ -36,6 +36,11 @@ export async function POST(req: NextRequest) {
         status: 201,
         amount,
         clientSecret: paymentIntent.client_secret,
+        user: {
+          fullName: 'Smart Chris',
+          email: 'server@gmail.com',
+          streetAddress: '111 Oak Ave'
+        }
       },
       {
         status: 201,

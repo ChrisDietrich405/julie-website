@@ -19,6 +19,9 @@ import { LoadingButton } from "@mui/lab";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
 
 const CreateAccount: React.FC = () => {
+  const [ user, setUser ] = useState({
+    email: ''
+  });
   const [clientSecret, setClientSecret] = useState("");
   const [amountFormatted, setAmountFormatted] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -30,6 +33,10 @@ const CreateAccount: React.FC = () => {
     const response = await StripeApi.CreatePaymentIntent(cart);
 
     const { data } = response;
+
+    if (data?.user) {
+      setUser(data.user)
+    }
 
     setAmountFormatted(currencyFormat(data.amount));
 
@@ -85,6 +92,7 @@ const CreateAccount: React.FC = () => {
               Payment
             </Typography>
             <CheckoutForm
+              user={user}
               clientSecret={clientSecret}
               onDisabled={(value) => setDisabled(value)}
               onLoad={(load) => setLoading(load)}
