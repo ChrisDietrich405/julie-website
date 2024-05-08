@@ -18,7 +18,7 @@ export const userContext = createContext<{
 export const UserContextProvider = ({ children }: any) => {
   const [ cookie ] = useCookies(['token']);
 
-  const { data } = useGetUser(cookie.token);
+  const { data } = useGetUser({ token: cookie.token });
 
   const user = data?.data;
 

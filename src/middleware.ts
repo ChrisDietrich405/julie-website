@@ -3,7 +3,7 @@ import {headers} from "next/headers";
 import * as jose from "jose";
 
 export const config = {
-  matcher: ["/api/user/:path+"],
+  matcher: ['/api/user', '/api/cart', '/api/create-payment-intent'],
 };
 
 export const middleware = async (req: NextRequest, res: NextResponse) => {
@@ -32,6 +32,6 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
       },
     });
   } catch (error) {
-    return NextResponse.json("Server failed", {status: 500});
+    return NextResponse.json('Middleware error', {status: 500});
   }
 };

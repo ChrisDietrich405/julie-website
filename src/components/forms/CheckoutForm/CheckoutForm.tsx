@@ -9,14 +9,15 @@ import {
 } from "@stripe/react-stripe-js";
 import { Alert, Snackbar, Stack, Box } from "@mui/material";
 import { StripeElementType } from "@stripe/stripe-js";
+import {IUser} from "@/models";
 
 type CheckoutFormProps = {
   clientSecret: string;
   onDisabled: (disabled: boolean ) => void;
   onLoad: (load: boolean ) => void;
-  user: any;
+  user?: IUser;
 }
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, onDisabled, onLoad, user }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisabled, onLoad }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -95,24 +96,20 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, onDisabled, o
             <h3>Contact info</h3>
             <LinkAuthenticationElement options={{
               defaultValues: {
-                email: user.email
+                email: user?.email ?? ''
               }
             }} />
 
             <h3>Address</h3>
             <AddressElement
-              onChange={handleChange}
+              onChange={(data) => console.log(data)}
               options={{
                 defaultValues: {
-                  name: user.fullName,
+                  name: user?.name,
                   address: {
-                    line1: user.streetAddress,
-                    line2: user.streetAddress,
-                    country: 'USA',
-                    city: 'Baltimore',
-                    state: 'Maryland',
-                    postal_code: '21061'
-                  }
+                    city: user?.city,
+                    country: 'USA'
+                  },
                 },
                 mode: "shipping",
                 fields: {

@@ -4,7 +4,6 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import axios, {AxiosError} from "axios";
 import {toast} from "react-toastify";
-import {Oval} from "react-loader-spinner";
 import {Container} from "@mui/joy";
 
 import styles from "./styles.module.css";
@@ -12,19 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import {useGetCart} from "@/app/hooks/services/cart";
 import {useCookies} from "react-cookie";
-
-<Oval
-  height={80}
-  width={80}
-  color="#4fa94d"
-  wrapperStyle={{}}
-  wrapperClass=""
-  visible={true}
-  ariaLabel="oval-loading"
-  secondaryColor="#4fa94d"
-  strokeWidth={2}
-  strokeWidthSecondary={2}
-/>;
+import {CircularProgress} from "@mui/material";
 
 const Login = () => {
   const [, setCookie] = useCookies(['token']);
@@ -71,7 +58,7 @@ const Login = () => {
 
       {loading ? (
         <div className={styles.loader}>
-          <Oval/>
+          <CircularProgress color="secondary" />
         </div>
       ) : (
         <form onSubmit={onSubmit} className={styles.form}>
