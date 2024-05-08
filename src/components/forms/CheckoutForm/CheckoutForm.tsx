@@ -31,6 +31,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    Promise.all([elements?.getElement('address')?.getValue(), elements?.getElement('linkAuthentication')]).then(res => {
+      console.log('resposta', res)
+    })
+
     elements?.submit();
 
     onLoad(true)
@@ -102,7 +106,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
 
             <h3>Address</h3>
             <AddressElement
-              onChange={(data) => console.log(data)}
+              onChange={handleChange}
               options={{
                 defaultValues: {
                   name: user?.name,
