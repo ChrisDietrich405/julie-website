@@ -57,7 +57,7 @@ export default async function Page() {
 
                         <Typography variant="h4">{item.title}</Typography>
                         <Link href={`/available-works/${item._id}`}>
-                          <Button fullWidth variant="contained" color="primary">
+                          <Button className="btn" sx={{width: "240px"}}>
                             Details
                           </Button>
                         </Link>

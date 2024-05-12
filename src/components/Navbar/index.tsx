@@ -92,7 +92,7 @@ export default function Navbar() {
               }}
               onClick={() => router.push('/')}
             >
-              Julie Dietrich Art
+              JustArt
             </Button>
           </Box>
 

@@ -1,4 +1,4 @@
-//chrisdietrichdev@gmail.com helloo
+//chris@gmail.com secret
 import Slideshow from "@/components/Slideshow";
 import { Container } from "@mui/material";
 import Typography from "@mui/joy/Typography";

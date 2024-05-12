@@ -13,7 +13,7 @@ const About = () => {
         <Grid
           item
           xs={4}
-          sx={{ display: "flex", justifyContent: "space-evenly" }}
+          sx={{ display: "flex", justifyContent: "space-between" }}
         >
           <Image
             src="/images/art1.jpg"
@@ -24,11 +24,13 @@ const About = () => {
         </Grid>
         <Grid
           item
-          xs={8}
+          xs={6}
           sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            marginLeft:"20px",
+            width: "30%"
           }}
         >
           <Typography component="p" sx={{ mb: 3 }}>

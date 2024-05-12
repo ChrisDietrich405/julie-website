@@ -1,6 +1,6 @@
 :root {
   --primary: #eeeff0;
-  --secondary: #3492dc;
+  --secondary: #000;
   --tertiary: #fff;
 }
 
@@ -54,6 +54,12 @@ h1 {
 .btn {
   background-color: var(--secondary) !important;
   color: var(--tertiary) !important;
+}
+
+.btn:hover {
+  background-color: #ccc !important;
+  color: #000 !important;
+  transition: 1s;
 }
 
 .btn.btn-large {
