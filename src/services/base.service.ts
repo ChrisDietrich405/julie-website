@@ -3,7 +3,7 @@ import {Cookies} from 'react-cookie';
 
 const cookies = new Cookies();
 
-const port = process.env.PORT ?? '3001'
+const port = process.env.PORT ?? '3000'
 
 const config: CreateAxiosDefaults = {
   baseURL: `http://localhost:${port}`,

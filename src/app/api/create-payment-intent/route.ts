@@ -5,6 +5,15 @@ import {ICart} from "@/models";
 const stripe = new Stripe(process.env.STRIPE_KEY as string)
 
 export async function POST(req: NextRequest) {
+  const requestHeaders = new Headers(req.headers);
+
+  const userId = requestHeaders.get("x-decoded-id");
+
+  console.log('teste', userId)
+
+  if (!userId) {
+    return NextResponse.json({status: 401, message: "Unauthorized user"});
+  }
 
   const body: { items: ICart } = await req.json();
 
@@ -36,6 +45,11 @@ export async function POST(req: NextRequest) {
         status: 201,
         amount,
         clientSecret: paymentIntent.client_secret,
+        user: {
+          fullName: 'Smart Chris',
+          email: 'server@gmail.com',
+          streetAddress: '111 Oak Ave'
+        }
       },
       {
         status: 201,

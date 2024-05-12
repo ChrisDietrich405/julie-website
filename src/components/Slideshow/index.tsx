@@ -40,6 +40,8 @@ export default function Slideshow() {
             }`}
             src={image}
             key={`slide-show-${i}`}
+            fetchPriority={i == 0 ? 'high' : 'low'}
+            loading={i == 0 ? 'eager' : 'lazy'}
           ></Image>
         ))}
       </div>

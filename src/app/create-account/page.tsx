@@ -35,12 +35,6 @@ const CreateAccount = () => {
 
       router.push("/login");
       toast.success("Created account successfully");
-      //   if (response.data.account.profile_id === 1) {
-      //     Router.push("/invoice-dashboard");
-      //   }
-      //   if (response.data.account.profile_id === 2) {
-      //     Router.push("/useraccount");
-      //   }
     } catch (error: unknown) {
       const errorMessage = (error as AxiosError<{ message: string }>).response
         ?.data.message;

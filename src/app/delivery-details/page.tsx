@@ -1,6 +1,7 @@
 "use client";
+import React, {useContext, useEffect, useState} from "react";
+import dynamic from "next/dynamic";
 import { useGetCart } from "../hooks/services/cart";
-import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import {
   Box,
@@ -10,37 +11,34 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import CheckoutForm from "@/components/forms/CheckoutForm/CheckoutForm";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { StripeApi } from "@/services";
 import { currencyFormat } from "@/helpers";
 import { LoadingButton } from "@mui/lab";
+import {userContext} from "@/app/context/userContext";
+import {useCreatePaymentIntent} from "@/app/hooks";
+
+const CheckoutForm = dynamic(() => import("@/components/forms/CheckoutForm/CheckoutForm"))
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
 
 const CreateAccount: React.FC = () => {
+  const { user } = useContext(userContext)
+
   const [clientSecret, setClientSecret] = useState("");
   const [amountFormatted, setAmountFormatted] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-  const { data } = useGetCart()
+
+  const { data, isSuccess: cartSuccess } = useGetCart()
   const cart = data?.data ?? []
 
-  const createPaymentIntent = async () => {
-    const response = await StripeApi.CreatePaymentIntent(cart);
+  const { mutate,isSuccess } = useCreatePaymentIntent({
+    onSuccess: ({data}) => {
+      setAmountFormatted(currencyFormat(data.amount));
 
-    const { data } = response;
-
-    setAmountFormatted(currencyFormat(data.amount));
-
-    setClientSecret(data.clientSecret);
-  };
-
-  useEffect(() => {
-    if (cart.length) {
-      createPaymentIntent();
+      setClientSecret(data.clientSecret);
     }
-  }, [cart]);
+  });
 
   const options: StripeElementsOptions = {
     clientSecret,
@@ -49,7 +47,12 @@ const CreateAccount: React.FC = () => {
     },
     loader: "auto",
   };
-  return !clientSecret ? (
+
+  useEffect(() => {
+    cartSuccess && mutate(cart)
+  }, [cartSuccess]);
+
+  return !clientSecret && !isSuccess ? (
     <Box
       textAlign="center"
       paddingY={2}
@@ -61,7 +64,10 @@ const CreateAccount: React.FC = () => {
       <CircularProgress />
     </Box>
   ) : (
-    <Elements stripe={stripePromise} options={options}>
+    <Elements
+      stripe={stripePromise}
+      options={options}
+      children={
       <Container
         maxWidth="xl"
         sx={{
@@ -85,6 +91,7 @@ const CreateAccount: React.FC = () => {
               Payment
             </Typography>
             <CheckoutForm
+              user={user}
               clientSecret={clientSecret}
               onDisabled={(value) => setDisabled(value)}
               onLoad={(load) => setLoading(load)}
@@ -141,7 +148,8 @@ const CreateAccount: React.FC = () => {
           </Stack>
         </Stack>
       </Container>
-    </Elements>
+    }
+    />
   );
 };
 

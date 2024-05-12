@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { UsersModel } from "@/app/models/users/user-schema";
 import bcrypt from "bcryptjs";
+import {Params} from "@/app/types/params";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const { name, streetAddress, city, email, password } =
@@ -71,4 +72,34 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       }
     );
   }
+};
+
+export const GET = async (req: NextRequest, { params }: Params) => {
+
+  const requestHeaders = new Headers(req.headers);
+
+  const userId = requestHeaders.get("x-decoded-id");
+
+  try {
+    const user = await UsersModel.findOne({ _id: userId });
+
+    if ( !user) {
+      return NextResponse.json({
+        status: 404,
+        data: 'Not founded',
+      });
+    }
+
+    const { name, email, city, streetAddress } = user;
+
+    return NextResponse.json({
+      name,
+      email,
+      city,
+      streetAddress,
+    });
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json({ status: 500, message: "Server failed" });
+    }
 };

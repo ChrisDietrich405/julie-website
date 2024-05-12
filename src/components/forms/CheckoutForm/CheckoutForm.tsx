@@ -9,13 +9,15 @@ import {
 } from "@stripe/react-stripe-js";
 import { Alert, Snackbar, Stack, Box } from "@mui/material";
 import { StripeElementType } from "@stripe/stripe-js";
+import {IUser} from "@/models";
 
 type CheckoutFormProps = {
   clientSecret: string;
   onDisabled: (disabled: boolean ) => void;
   onLoad: (load: boolean ) => void;
+  user?: IUser;
 }
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, onDisabled, onLoad }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisabled, onLoad }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -28,6 +30,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, onDisabled, o
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    Promise.all([elements?.getElement('address')?.getValue(), elements?.getElement('linkAuthentication')]).then(res => {
+      console.log('resposta', res)
+    })
 
     elements?.submit();
 
@@ -92,12 +98,23 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, onDisabled, o
         >
           <Stack flex={2} gap={3}>
             <h3>Contact info</h3>
-            <LinkAuthenticationElement />
+            <LinkAuthenticationElement options={{
+              defaultValues: {
+                email: user?.email ?? ''
+              }
+            }} />
 
             <h3>Address</h3>
             <AddressElement
               onChange={handleChange}
               options={{
+                defaultValues: {
+                  name: user?.name,
+                  address: {
+                    city: user?.city,
+                    country: 'USA'
+                  },
+                },
                 mode: "shipping",
                 fields: {
                   phone: "always",

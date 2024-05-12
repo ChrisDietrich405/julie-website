@@ -7,27 +7,23 @@ import {
   useEffect,
 } from "react";
 
+import {useCookies} from "react-cookie";
+import {useGetUser} from "@/app/hooks";
+import {IUser} from "@/models";
+
 export const userContext = createContext<{
-  userId: string;
-  setUserId: Dispatch<SetStateAction<string>>;
-}>({ userId: "", setUserId: () => {} });
+  user?: IUser;
+}>({ user: undefined});
 
 export const UserContextProvider = ({ children }: any) => {
-  const [userId, setUserId] = useState("");
+  const [ cookie ] = useCookies(['token']);
 
-  useEffect(() => {
-    localStorage.setItem("userId", userId);
-  }, [userId]);
+  const { data } = useGetUser({ token: cookie.token });
 
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      setUserId(userId);
-    }
-  }, []);
+  const user = data?.data;
 
   return (
-    <userContext.Provider value={{ userId, setUserId }}>
+    <userContext.Provider value={{ user }}>
       {children}
     </userContext.Provider>
   );
