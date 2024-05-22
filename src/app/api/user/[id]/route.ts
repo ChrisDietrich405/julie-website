@@ -41,7 +41,6 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
 
     return NextResponse.json({ status: 200, message: "User updated" });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ status: 500, message: "Server failed" });
   }
 };
@@ -51,7 +50,6 @@ export const GET = async (req: NextRequest, { params }: Params) => {
 
   try {
     const id = new mongoose.Types.ObjectId(params.id);
-    console.log(id);
 
     const user = await UsersModel.findById(id);
 
@@ -68,7 +66,6 @@ export const GET = async (req: NextRequest, { params }: Params) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ status: 500, message: "Server failed" });
   }
 };

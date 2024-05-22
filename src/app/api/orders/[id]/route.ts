@@ -21,7 +21,6 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
 
     return NextResponse.json({ status: 200, message: "User updated" });
   } catch (error: any) {
-    console.log(error);
     return NextResponse.json({ status: 500, message: error.message });
   }
 };
@@ -53,7 +52,6 @@ export const GET = async (req: NextRequest, {params}: Params) => {
     });
 
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ status: 200, message: error });
   }
 };

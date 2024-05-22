@@ -6,7 +6,6 @@ import {Params} from "@/app/types/params";
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const { name, streetAddress, city, email, password } =
     await req.json();
-  console.log(req.json())
   if (
     !name ||
     !streetAddress ||
@@ -99,7 +98,6 @@ export const GET = async (req: NextRequest, { params }: Params) => {
       streetAddress,
     });
     } catch (error) {
-      console.log(error);
       return NextResponse.json({ status: 500, message: "Server failed" });
     }
 };
