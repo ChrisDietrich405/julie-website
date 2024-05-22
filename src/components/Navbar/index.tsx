@@ -46,7 +46,7 @@ const navLinksFunction = (isLoggedIn: boolean) => [
 export default function Navbar() {
   const [cookies, _, removeCookie] = useCookies(['token']);
 
-  const {data} = useGetCart();
+  const {data, isError} = useGetCart({ refetchInterval: 10000 });
 
   const cart = data?.data ?? [];
 
@@ -56,7 +56,7 @@ export default function Navbar() {
     backgroundColor: "white",
   };
 
-  const length = cart?.length;
+  const length = isError ? 0 : cart?.length;
 
   const handleLogout = () => {
     removeCookie('token')

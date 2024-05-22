@@ -25,3 +25,5 @@ ApplicationApi.interceptors.request.use(
     return config;
   }
 )
+
+export const handleApi = (server?: boolean) => server ? BaseApi : ApplicationApi;

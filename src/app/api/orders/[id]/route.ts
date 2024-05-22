@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 import { Params } from "@/app/types/params";
 import { OrdersModel } from "@/app/models/orders/orders-schema";
+import {AvailableWorksModel} from "@/app/models/available-works/available-works-schema";
 
 export const PUT = async (req: NextRequest, { params }: Params) => {
   const payment = await req.json();
@@ -25,22 +26,34 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
   }
 };
 
-export const GET = async (req: NextRequest, { params }: Params) => {
+export const GET = async (req: NextRequest, {params}: Params) => {
   const requestHeaders = new Headers(req.headers);
 
+  const { id } = params;
+
   try {
-    const order = await OrdersModel.findOne({ orderCode: params.id });
+    const order = await OrdersModel.findOne({ _id: id });
 
     if (!order) {
-      return NextResponse.json({ status: 404, message: "Not found" });
+      return NextResponse.json({
+        message: 'Not found',
+      }, {
+        status: 401,
+      });
     }
 
+    const { customer, deliveryAddress } = order;
+
+    const availableWorks = await AvailableWorksModel.find({ _id: order.availableWorks });
+
     return NextResponse.json({
-      status: 200,
-      data: order,
+      customer,
+      deliveryAddress,
+      availableWorks
     });
+
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ status: 500, message: "Server failed" });
+    return NextResponse.json({ status: 200, message: error });
   }
 };

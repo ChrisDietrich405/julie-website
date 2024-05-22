@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 import mongoose from "@/lib/mongoose";
 import OrdersDocument from "./orders-document";
 
@@ -40,7 +40,13 @@ if (!mongoose.models.orders) {
     },
 
     orderCode: {
-      type: String,
+      type: Number,
+      false: false,
+      unique: true,
+    },
+
+    availableWorks: {
+      type: [String],
       required: true,
     },
 

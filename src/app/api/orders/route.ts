@@ -2,16 +2,15 @@ import { NextResponse, NextRequest } from "next/server";
 import mongoose from "@/lib/mongoose";
 import { UsersModel } from "@/app/models/users/user-schema";
 import { OrdersModel } from "@/app/models/orders/orders-schema";
-import CreateAccount from "@/app/create-account/page";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
-  const { customer, deliveryAddress } = await req.json();
+  const { customer, deliveryAddress, availableWorks } = await req.json();
 
   const userId = requestHeaders.get("x-decoded-id");
 
   if (!userId) {
-    return NextResponse.json({ status: 401, message: "Unauthorized user" });
+    return NextResponse.json({ message: "Unauthorized user" }, { status: 401});
   }
 
   const id = new mongoose.Types.ObjectId(userId);
@@ -20,10 +19,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   if (
     !customer.name ||
+    !customer.phoneNumber ||
     !deliveryAddress.streetAddress ||
     !deliveryAddress.city ||
-    !deliveryAddress.zipCode ||
-    !customer.phoneNumber
+    !deliveryAddress.zipCode
   ) {
     return NextResponse.json({
       status: 400,
@@ -35,6 +34,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   try {
     const newOrder = new OrdersModel({
+      availableWorks,
       customer,
       deliveryAddress,
       status: "shopping cart",
@@ -44,11 +44,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     await newOrder.save();
 
     return NextResponse.json({
-      status: 201,
       message: "Order created",
-      orderCode: newOrder.orderCode,
-    });
+      orderId: newOrder._id,
+    },
+      {
+        status: 201
+      });
   } catch (error: any) {
-    return NextResponse.json({ status: 500, message: error.message });
+    return NextResponse.json({ message: error.message }, { status: 500});
   }
 };

@@ -3,7 +3,12 @@ import {headers} from "next/headers";
 import * as jose from "jose";
 
 export const config = {
-  matcher: ['/api/user', '/api/cart', '/api/create-payment-intent'],
+  matcher: [
+    '/api/user',
+    '/api/cart',
+    '/api/create-payment-intent',
+    '/api/orders'
+  ],
 };
 
 export const middleware = async (req: NextRequest, res: NextResponse) => {

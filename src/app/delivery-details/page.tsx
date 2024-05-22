@@ -91,6 +91,7 @@ const CreateAccount: React.FC = () => {
               Payment
             </Typography>
             <CheckoutForm
+              cart={cart.map(item => item._id)}
               user={user}
               clientSecret={clientSecret}
               onDisabled={(value) => setDisabled(value)}
