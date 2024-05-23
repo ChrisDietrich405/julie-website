@@ -14,25 +14,25 @@ export const textStyles: TypographyOptions  = {
   },
 
   h1: {
-    fontSize: '2.5rem',
+    fontSize: '2rem',
     lineHeight: 1.2,
     fontWeight: 500,
   },
 
   h2: {
-    fontSize: '2rem',
+    fontSize: '1.5rem',
     lineHeight: 1.3,
     fontWeight: 500,
   },
 
   h3: {
-    fontSize: '1.75rem',
+    fontSize: '1.25rem',
     lineHeight: 1.4,
     fontWeight: 500,
   },
 
   h4: {
-    fontSize: '1.5rem',
+    fontSize: '1rem',
     lineHeight: 1,
     fontWeight: 500,
   },

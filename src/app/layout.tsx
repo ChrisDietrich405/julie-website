@@ -4,11 +4,8 @@ import {Roboto_Mono} from "next/font/google";
 import {ToastContainer} from "react-toastify";
 import Footer from "@/components/Footer";
 import {Providers} from "../components/Providers";
-import dynamic from "next/dynamic";
-
-const Navbar = dynamic(() => import("@/components/Navbar"), {
-  loading: () => <p>Loading...</p>,
-})
+import Navbar from "@/components/Navbar"
+import {cookies} from "next/headers";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -27,6 +24,12 @@ export default function RootLayout(
   }: {
     children: React.ReactNode;
   }) {
+
+  const cookieStore = cookies();
+  const token = cookieStore.get('token');
+
+  console.log('token ', token)
+
   return (
     <html lang="en">
     {/* <ThemeProvider theme={THEME}> */}

@@ -43,7 +43,7 @@ const navLinksFunction = (isLoggedIn: boolean) => [
   },
 ];
 
-export default function Navbar() {
+export default function  Navbar() {
   const [cookies, _, removeCookie] = useCookies(['token']);
 
   const {data, isError} = useGetCart({ refetchInterval: 10000 });
