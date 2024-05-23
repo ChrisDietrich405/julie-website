@@ -1,9 +1,9 @@
 import {ApplicationApi, BaseApi} from "@/services/base.service";
-import {AxiosResponse} from "axios";
-import {IAvailableWork, IUserResponse} from "@/models";
+import {INewUserBaseRequest, IUserResponse} from "@/models";
 
 const baseUrl = '/api/user'
 
 export const UserApi = {
-  getOne: (): Promise<IUserResponse> => ApplicationApi.get(`${baseUrl}`)
+  getOne: (): Promise<IUserResponse> => ApplicationApi.get(`${baseUrl}`),
+  create: (data: INewUserBaseRequest): Promise<void> => BaseApi.post(`${baseUrl}`, data),
 }

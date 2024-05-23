@@ -14,7 +14,6 @@ const ConfirmPayment: React.FC = () => {
 
 
   useEffect(() => {
-    console.log('elements ', elements)
   }, [elements]);
 
 

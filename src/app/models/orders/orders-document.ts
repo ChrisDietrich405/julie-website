@@ -16,6 +16,7 @@ interface OrdersDocument extends Document {
   payment: {
     type: String;
   };
+  availableWorks: String[];
 }
 
 export default OrdersDocument;

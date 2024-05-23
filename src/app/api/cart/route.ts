@@ -7,8 +7,6 @@ export const POST = async (req: NextRequest) => {
 
   const userId = requestHeaders.get("x-decoded-id");
 
-  console.log('teste cart', userId)
-
   if (!userId) {
     return NextResponse.json({status: 401, message: "Unauthorized user"});
   }

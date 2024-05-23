@@ -9,8 +9,6 @@ export async function POST(req: NextRequest) {
 
   const userId = requestHeaders.get("x-decoded-id");
 
-  console.log('teste', userId)
-
   if (!userId) {
     return NextResponse.json({status: 401, message: "Unauthorized user"});
   }
@@ -20,7 +18,6 @@ export async function POST(req: NextRequest) {
   const {items} = body;
   
   const amount = items.reduce((total, item) => total + item.price, 0)
-  console.log(amount)
 
   if (!Array.isArray(items) || !items.length) return NextResponse.json({
       error: {

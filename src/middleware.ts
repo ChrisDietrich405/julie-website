@@ -3,7 +3,12 @@ import {headers} from "next/headers";
 import * as jose from "jose";
 
 export const config = {
-  matcher: ['/api/user', '/api/cart', '/api/create-payment-intent'],
+  matcher: [
+    '/api/user',
+    '/api/cart',
+    '/api/create-payment-intent',
+    '/api/orders'
+  ],
 };
 
 export const middleware = async (req: NextRequest, res: NextResponse) => {
@@ -11,6 +16,10 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
     const headersInstance = headers();
 
     let authorization = headersInstance.get("authorization");
+
+    if (!authorization) {
+      return NextResponse.next();
+    }
 
     const tokenNumber: any = authorization?.split(" ")[1];
 

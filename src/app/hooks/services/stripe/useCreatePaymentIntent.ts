@@ -6,7 +6,7 @@ import {IPaymentIntentResponse} from "@/models/stripe.models";
 type MutationOptions = UseMutationOptions<IPaymentIntentResponse, Error, ICartItem[], unknown>;
 
 export const useCreatePaymentIntent = (mutationOptions: MutationOptions = {}) =>
-  useMutation<IPaymentIntentResponse>({
+  useMutation({
     mutationKey: ['useCreatePaymentIntent'],
     mutationFn: (items: ICartItem[]) => StripeApi.CreatePaymentIntent(items),
     ...mutationOptions

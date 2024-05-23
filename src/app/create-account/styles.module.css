@@ -3,7 +3,8 @@
   display: flex !important;
   flex-direction: column;
   justify-content: center;
-  height: 100vh;
+  height: calc(100dvh - 64px);
+  padding: 20px;
 }
 
 .form {

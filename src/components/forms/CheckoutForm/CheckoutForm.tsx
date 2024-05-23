@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 
 import {
   AddressElement,
@@ -8,21 +8,41 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { Alert, Snackbar, Stack, Box } from "@mui/material";
-import { StripeElementType } from "@stripe/stripe-js";
-import {IUser} from "@/models";
+import { IUser} from "@/models";
+
+import {usePostOrder} from "@/app/hooks";
+import {useRouter} from "next/navigation";
 
 type CheckoutFormProps = {
+  cart: string[];
   clientSecret: string;
   onDisabled: (disabled: boolean ) => void;
   onLoad: (load: boolean ) => void;
   user?: IUser;
 }
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisabled, onLoad }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisabled, cart, onLoad }) => {
+  const route = useRouter();
   const stripe = useStripe();
   const elements = useElements();
 
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
+
+  const { mutate } = usePostOrder({
+    onSuccess: async (res) => {
+
+      await stripe?.confirmPayment({
+        elements: elements ?? undefined,
+        clientSecret,
+        redirect: 'if_required',
+      });
+      route.push(`payment-success/${res.data.orderId}`)
+    },
+    onError: (error) => {
+      setOpen(true);
+      setError(error.message);
+    }
+  });
 
   const handleClose = () => {
     setOpen(false);
@@ -31,42 +51,29 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    Promise.all([elements?.getElement('address')?.getValue(), elements?.getElement('linkAuthentication')]).then(res => {
-      console.log('resposta', res)
+    const { value } = await elements?.getElement('address')?.getValue() ?? {};
+    mutate({
+      availableWorks: cart,
+      customer: {
+        name: value?.name,
+        phoneNumber: value?.phone
+      },
+      deliveryAddress: {
+        streetAddress: value?.address.line1,
+        city: value?.address.city,
+        zipCode: value?.address.postal_code
+      }
     })
 
     elements?.submit();
-
-    onLoad(true)
-
-    const response = await stripe?.confirmPayment({
-      elements: elements ?? undefined,
-      clientSecret,
-      confirmParams: {
-        return_url: "http://localhost:3000/payment-success",
-      },
-    });
-
-    if (response?.error) {
-      setOpen(true);
-      setError(response.error?.message ?? "");
-    }
-
-    onLoad(false)
   };
 
-  const handleChange = async ({
-    elementType,
-  }: {
-    elementType: StripeElementType;
-  }) => {
-    if (elementType === "address") {
-      const stripeElement = elements?.getElement(elementType);
+  const handleAddressChange = async () => {
+      const stripeElement = elements?.getElement('address');
 
       const elementValue = await stripeElement?.getValue();
 
       onDisabled(!elementValue);
-    }
   };
 
   return (
@@ -97,21 +104,20 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
           justifyContent="space-between"
         >
           <Stack flex={2} gap={3}>
-            <h3>Contact info</h3>
-            <LinkAuthenticationElement options={{
+            <LinkAuthenticationElement
+              options={{
               defaultValues: {
                 email: user?.email ?? ''
               }
             }} />
 
-            <h3>Address</h3>
             <AddressElement
-              onChange={handleChange}
+              onChange={handleAddressChange}
               options={{
                 defaultValues: {
                   name: user?.name,
                   address: {
-                    city: user?.city,
+                    line1: '',
                     country: 'USA'
                   },
                 },

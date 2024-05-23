@@ -7,4 +7,8 @@ export interface IUser {
   streetAddress: string;
 }
 
+export interface INewUserBaseRequest extends IUser {
+  password: string;
+}
+
 export type IUserResponse = AxiosResponse<IUser>
