@@ -17,11 +17,11 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
 
     let authorization = headersInstance.get("authorization");
 
-    if (!authorization) {
+    const tokenNumber: any = authorization?.split(" ")[1];
+
+    if (!tokenNumber) {
       return NextResponse.next();
     }
-
-    const tokenNumber: any = authorization?.split(" ")[1];
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET as string);
 

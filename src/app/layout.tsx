@@ -1,17 +1,9 @@
 import "./globals.css";
 import type {Metadata} from "next";
-import {Roboto_Mono} from "next/font/google";
-import {ToastContainer} from "react-toastify";
 import Footer from "@/components/Footer";
 import {Providers} from "../components/Providers";
 import Navbar from "@/components/Navbar"
-import {cookies} from "next/headers";
-
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-roboto-mono",
-});
+import {CssBaseline} from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,25 +17,16 @@ export default function RootLayout(
     children: React.ReactNode;
   }) {
 
-  const cookieStore = cookies();
-  const token = cookieStore.get('token');
-
-  console.log('token ', token)
-
   return (
     <html lang="en">
-    {/* <ThemeProvider theme={THEME}> */}
-    <body className={robotoMono.className} style={{
-      overflowX: 'hidden'
-    }}>
-    <Providers>
-      <ToastContainer/>
-      <Navbar/>
-      {children}
-      <Footer/>
-    </Providers>
-    </body>
-    {/* </ThemeProvider> */}
+      <body>
+        <Providers>
+          <CssBaseline />
+            <Navbar/>
+            {children}
+          <Footer/>
+        </Providers>
+      </body>
     </html>
   );
 }

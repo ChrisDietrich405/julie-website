@@ -6,6 +6,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+function getTokenExpiration(token: string) {
+  const decoded = jwt.decode(token);
+  return typeof decoded === 'object' && decoded !== null ? decoded.exp : null;
+}
+
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const { email, password } = await req.json();
 
@@ -64,10 +69,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     { expiresIn: "2d" }
   );
 
+  const expires = getTokenExpiration(token)
+
   return NextResponse.json({
     userId: existingAccount._id,
     token,
     status: 200,
     message: "User logged in",
+    expires
   });
 };

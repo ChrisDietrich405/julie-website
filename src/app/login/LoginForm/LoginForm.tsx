@@ -1,52 +1,41 @@
 "use client";
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useContext, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {toast} from "react-toastify";
 
 import { FormContainer } from "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import {useGetCart} from "@/app/hooks/services/cart";
 import {useCookies} from "react-cookie";
 import {Typography, TextField, Snackbar} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
 import {useAuthLogin} from "@/app/hooks";
+import {SnackbarContext} from "@/app/context/snackbarContext";
 
 const LoginForm = () => {
   const router = useRouter();
+  const { openError } = useContext(SnackbarContext)
   const [, setCookie] = useCookies(['token']);
 
-  const [open, setOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const {refetch} = useGetCart({enabled: false});
-
   const { mutate: doLogin, isPending } = useAuthLogin({
     onSuccess: (response) => {
+
+      const expirationDate = new Date(response.data.expires * 1000)
+
       setCookie('token', response.data.token, {
         path: '/',
-        expires: new Date()
+        expires: expirationDate
       })
 
-      refetch()
       router.push("/");
     },
     onError: (error) => {
-      toast.error(error.message);
-      setOpen(true);
+      openError(error.message?? '')
     }
   });
-
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
-
 
   const onSubmit = async (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -98,13 +87,6 @@ const LoginForm = () => {
         <Typography variant="body1">New to Julie Dtrick?</Typography>
         <Link shallow href="/create-account">Create an account</Link>
       </FormContainer>
-
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Somethin is wrong"
-      />
     </>
   );
 };
