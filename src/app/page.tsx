@@ -1,9 +1,7 @@
-//chris@gmail.com secret
-import Slideshow from "@/components/Slideshow";
-import { Container } from "@mui/material";
-import Typography from "@mui/joy/Typography";
+import { Container, Typography } from "@mui/material";
+import dynamic from "next/dynamic";
 
-import styles from "./page.module.css";
+const Slideshow = dynamic(() => import('@/components/Slideshow'))
 
 export default function Home() {
   return (

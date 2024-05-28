@@ -7,12 +7,12 @@ import { FormContainer } from "./styles.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import {useCookies} from "react-cookie";
-import {Typography, TextField, Snackbar} from "@mui/material";
+import {Typography, TextField} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
 import {useAuthLogin} from "@/app/hooks";
 import {SnackbarContext} from "@/app/context/snackbarContext";
 
-const LoginForm = () => {
+const LoginForm: React.FC<{route?: string}> = ({route}) => {
   const router = useRouter();
   const { openError } = useContext(SnackbarContext)
   const [, setCookie] = useCookies(['token']);
@@ -30,7 +30,7 @@ const LoginForm = () => {
         expires: expirationDate
       })
 
-      router.push("/");
+      router.push(route ? route : "/");
     },
     onError: (error) => {
       openError(error.message?? '')
@@ -84,7 +84,7 @@ const LoginForm = () => {
           Submit
         </LoadingButton>
 
-        <Typography variant="body1">New to Julie Dtrick?</Typography>
+        <Typography variant="body1">New to Julie Art?</Typography>
         <Link shallow href="/create-account">Create an account</Link>
       </FormContainer>
     </>

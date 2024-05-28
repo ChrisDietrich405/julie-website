@@ -16,7 +16,7 @@ export default function UserMenu() {
       handleLogout();
     }
 
-    const route = token ? '/' : '/login';
+    const route = token ? '/' : '/auth/login';
 
     router.push(route)
   }

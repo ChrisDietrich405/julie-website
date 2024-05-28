@@ -31,7 +31,7 @@ const CreateAccountForm = () => {
   };
 
   const onSuccess = () => {
-    router.push("/login");
+    router.push("/auth/login");
     toast.success("Created account successfully");
   }
 

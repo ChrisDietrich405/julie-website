@@ -1,14 +1,11 @@
 "use client";
-import React, { useContext } from "react";
+import React from "react";
 import { Button, Container } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { userContext } from "../context/userContext";
 import { useGetCart } from "@/app/hooks/services/cart";
 
 const Checkout = () => {
-  const { userId } = useContext(userContext);
-
   const router = useRouter();
 
   const handleRedirect = () => {
@@ -20,7 +17,7 @@ const Checkout = () => {
   const cart = data?.data ?? [];
 
   return (
-    <Container className="main-content">
+    <Container disableGutters>
       <table className="table">
         <thead>
           <tr>

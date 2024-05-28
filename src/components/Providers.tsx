@@ -12,16 +12,16 @@ export const Providers = ({children}: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({ defaultOptions: {queries: {retry: false }}})
 
   return (
-    <AppRouterCacheProvider>
-      <ThemeProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <SnackbarContextProvider>
-            <UserContextProvider>
-                {children}
-            </UserContextProvider>
-          </SnackbarContextProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-    </AppRouterCacheProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
+        <AppRouterCacheProvider options={{speedy: true}}>
+          <ThemeProvider theme={theme}>
+            <SnackbarContextProvider>
+              {children}
+            </SnackbarContextProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </UserContextProvider>
+    </QueryClientProvider>
   );
 }

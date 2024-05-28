@@ -17,7 +17,7 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
 
     let authorization = headersInstance.get("authorization");
 
-    const tokenNumber: any = authorization?.split(" ")[1];
+    const tokenNumber = authorization?.split(" ")?.[1].trim();
 
     if (!tokenNumber) {
       return NextResponse.next();

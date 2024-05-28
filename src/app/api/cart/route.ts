@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest) => {
   const userId = requestHeaders.get("x-decoded-id");
 
   if (!userId) {
-    return NextResponse.json({status: 401, message: "Unauthorized user"});
+    return NextResponse.json({message: "Unauthorized user"}, {status: 401});
   }
 
   try {
@@ -22,7 +22,7 @@ export const POST = async (req: NextRequest) => {
       message: "Cart created",
     });
   } catch (error) {
-    return NextResponse.json({status: 500, message: "Internal server error"});
+    return NextResponse.json({ message: "Internal server error"}, {status: 500});
   }
 };
 
@@ -39,7 +39,7 @@ export const PUT = async (req: NextRequest) => {
 
     return NextResponse.json({status: 200, data: foundCart});
   } catch (error) {
-    return NextResponse.json({status: 500, message: "Internal server error"});
+    return NextResponse.json({status: 500, message: "Internal server error"}, {status: 500});
   }
 };
 
@@ -50,7 +50,7 @@ export const GET = async (req: NextRequest) => {
 
 
   if (!userId) {
-    return NextResponse.json({status: 401, message: "Unauthorized user"});
+    return NextResponse.json({message: "Unauthorized user"}, {status: 401});
   }
 
   try {
@@ -71,6 +71,6 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json(availableWorks);
   } catch (error) {
-    return NextResponse.json({status: 500, message: "Internal server error"});
+    return NextResponse.json({ message: "Internal server error"}, {status: 500});
   }
 };

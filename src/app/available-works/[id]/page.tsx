@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { Container } from "@mui/joy";
-import { Grid, Typography, Button } from "@mui/material";
-import AddToCart from "@/components/AddToCart";
+import { Box, Container, Typography, Stack} from "@mui/material";
+import AddToCart from "@/app/components/AddToCart";
 import { AvailableWorksApi } from "../../../services";
 
-async function getData(id) {
+async function getData(id: string | number) {
   try {
     const { data } = await AvailableWorksApi.getOne(id);
 
@@ -14,26 +13,27 @@ async function getData(id) {
   }
 }
 
-export default async function AvailableWorksDetails({ params: { id } }) {
+export default async function AvailableWorksDetails({ params: { id } } : { params: { id: string}}) {
   const data = await getData(id);
 
+  if ( !data ) {
+    return <>error</>;
+  }
+
   return (
-    <Container sx={{ margin: "60px" }}>
-      <Grid
-        container
-        rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        sx={{ width: "100%" }}
-      >
-        <Grid item xs={6} sx={{ display: "flex", justifyContent: "end" }}>
-          <Image width={333} height={333} alt="slideshow" src={data.image} />
-        </Grid>
-        <Grid
-          item
-          xs={6}
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
+    <Container>
+      <Stack direction="row" columnGap={3} justifyContent="center">
+        <Image
+          width={333}
+          height={333}
+          alt={data.title}
+          src={data.image}
+          style={{flex: 0.4}}
+        />
+
+        <Stack
+          flex={0.5}
+          rowGap={2}
         >
           <Typography sx={{ marginBottom: 2 }} variant="h4" component="h2">
             {data.title}
@@ -49,10 +49,10 @@ export default async function AvailableWorksDetails({ params: { id } }) {
             Ipsum has been the industry's standard dummy text ever since the
             1500s,
           </Typography>
-          {/* <AddToCart id={data._id}/> */}
-          <Button className="btn" sx={{width: "150px"}}>Add to Cart</Button>
-        </Grid>
-      </Grid>
+
+          <AddToCart id={data._id} sx={{ width: 'fit-content' }} />
+        </Stack>
+      </Stack>
     </Container>
   );
 }

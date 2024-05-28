@@ -64,40 +64,26 @@ const CreateAccount: React.FC = () => {
       <CircularProgress />
     </Box>
   ) : (
+    <Container maxWidth="xl" sx={{ paddingY: 10 }}>
+      <Typography
+        variant="h1"
+        sx={{ textAlign: 'center', marginBottom: 6, width: '100%' }}
+      >
+        Delivery and Payment details
+      </Typography>
     <Elements
       stripe={stripePromise}
       options={options}
       children={
-      <Container
-        maxWidth="xl"
-        sx={{
-          paddingY: 5,
-        }}
-      >
         <Stack direction="row" columnGap={5}>
-          <Box
-            flex={1}
-            padding={0}
-            margin={0}
-            minHeight="56svh"
-            bgcolor="#fff"
-            textAlign="center"
-          >
-            <Typography
-              sx={{ textAlign: "center", my: 3 }}
-              variant="h1"
-              component="h1"
-            >
-              Payment
-            </Typography>
-            <CheckoutForm
-              cart={cart.map(item => item._id)}
-              user={user}
-              clientSecret={clientSecret}
-              onDisabled={(value) => setDisabled(value)}
-              onLoad={(load) => setLoading(load)}
-            />
-          </Box>
+          <CheckoutForm
+            cart={cart.map(item => item._id)}
+            user={user}
+            clientSecret={clientSecret}
+            onDisabled={(value) => setDisabled(value)}
+            onLoad={(load) => setLoading(load)}
+          />
+
           <Stack
             flex={1}
             sx={{
@@ -108,29 +94,18 @@ const CreateAccount: React.FC = () => {
               justifyContent: "space-between",
             }}
           >
-            <Box>
-              <Typography
-                variant="h3"
-                fontSize={18}
-                sx={{
-                  marginBottom: 2,
-                }}
-              >
-                Products
-              </Typography>
-              <Stack rowGap={1} divider={<Divider />}>
-                {cart.map(({ title, price }, index) => (
-                  <Stack key={`product-item-${index}`}>
-                    <Typography fontSize={14} fontWeight={500}>
-                      {title}
-                    </Typography>
-                    <Typography fontSize={14} fontStyle="italic">
-                      Price: {currencyFormat(price)}
-                    </Typography>
-                  </Stack>
-                ))}
-              </Stack>
-            </Box>
+            <Stack rowGap={1} divider={<Divider />}>
+              {cart.map(({ title, price }, index) => (
+                <Stack key={`product-item-${index}`}>
+                  <Typography fontSize={14} fontWeight={500}>
+                    {title}
+                  </Typography>
+                  <Typography fontSize={14} fontStyle="italic">
+                    Price: {currencyFormat(price)}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
             <Stack rowGap={1}>
               <Typography fontWeight={500}>
                 Total: {amountFormatted ?? 0}
@@ -148,9 +123,9 @@ const CreateAccount: React.FC = () => {
             </Stack>
           </Stack>
         </Stack>
-      </Container>
     }
     />
+    </Container>
   );
 };
 

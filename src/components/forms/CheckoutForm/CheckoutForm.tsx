@@ -10,7 +10,7 @@ import {
 import { Alert, Snackbar, Stack, Box } from "@mui/material";
 import { IUser} from "@/models";
 
-import {usePostOrder} from "@/app/hooks";
+import {usePostOrder, useUpdateCart} from "@/app/hooks";
 import {useRouter} from "next/navigation";
 
 type CheckoutFormProps = {
@@ -28,6 +28,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
 
+  const { mutate: updateCart } = useUpdateCart()
+
   const { mutate } = usePostOrder({
     onSuccess: async (res) => {
 
@@ -36,6 +38,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
         clientSecret,
         redirect: 'if_required',
       });
+      updateCart([])
       route.push(`payment-success/${res.data.orderId}`)
     },
     onError: (error) => {
@@ -130,10 +133,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ user, clientSecret, onDisab
 
           </Stack>
           <Box flex={1}>
-            <h3 style={{
-              marginBottom: 24
-            }}>Payment</h3>
-
             <PaymentElement />
           </Box>
         </Stack>

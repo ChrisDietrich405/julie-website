@@ -2,6 +2,8 @@ import { Schema } from "mongoose";
 import mongoose from "@/lib/mongoose";
 import OrdersDocument from "./orders-document";
 
+const autoIncrement = require('mongoose-sequence')(mongoose);
+
 if (!mongoose.models.orders) {
   const ordersSchema = new Schema<OrdersDocument>({
     customer: {
@@ -56,6 +58,8 @@ if (!mongoose.models.orders) {
       },
     },
   });
+
+  ordersSchema.plugin(autoIncrement, { inc_field: 'orderCode' });
   mongoose.model("orders", ordersSchema);
 }
 
