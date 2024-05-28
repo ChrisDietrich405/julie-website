@@ -1,5 +1,5 @@
 .container_background {
-  background: no-repeat center 0 / cover url("/art1.jpg");
+  background: no-repeat center 0 / cover url("/images/art1.webp");
   display: flex !important;
   flex-direction: column;
   justify-content: center;

@@ -3,9 +3,9 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import styles from "./styles.module.css";
 
-const slideshow1 = "/images/art2.jpg";
-const slideshow2 = "/images/art3.jpg";
-const slideshow3 = "/images/art4.jpg";
+const slideshow1 = "/images/art2.webp";
+const slideshow2 = "/images/art3.webp";
+const slideshow3 = "/images/art4.webp";
 
 export default function Slideshow() {
   const imageArray = [slideshow1, slideshow2, slideshow3];

@@ -1,6 +1,15 @@
 import {TypographyOptions} from "@mui/material/styles/createTypography";
+import {Roboto_Mono} from "next/font/google";
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto-mono",
+  weight: [ '400', '500', '600', '700' ]
+});
+
 export const textStyles: TypographyOptions  = {
-  fontFamily: 'Roboto, sans-serif',
+  fontFamily: robotoMono.style.fontFamily,
   body1: {
     fontSize: '1rem',
     lineHeight: 1.5,

@@ -16,7 +16,7 @@ const About = () => {
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
           <Image
-            src="/images/art1.jpg"
+            src="/images/art1.webp"
             alt="about picture"
             width={400}
             height={400}

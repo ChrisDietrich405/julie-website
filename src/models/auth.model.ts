@@ -11,6 +11,7 @@ export interface ILoginBaseResponse {
   status: number;
   token: string;
   userId: string;
+  expires: number;
 }
 
 export type TLoginResponse = AxiosResponse<ILoginBaseResponse>

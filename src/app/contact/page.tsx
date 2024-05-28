@@ -20,7 +20,7 @@ const Contact = () => {
             width={500}
             height={500}
             alt="Picture of Julie"
-            src="/images/art1.jpg"
+            src="/images/art1.webp"
           />
         </Grid>
         <Grid item xs={6}>
