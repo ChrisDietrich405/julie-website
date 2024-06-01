@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
 
 interface OrdersDocument extends Document {
+  customerId: String;
   customer: {
     name: String;
     email: String;

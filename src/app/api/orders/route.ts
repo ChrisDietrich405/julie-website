@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const userId = requestHeaders.get("x-decoded-id");
 
   if (!userId) {
-    return NextResponse.json({ message: "Unauthorized user" }, { status: 401});
+    return NextResponse.json({ message: "Unauthorized user" }, { status: 401 });
   }
 
   const id = new mongoose.Types.ObjectId(userId);
@@ -34,6 +34,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   try {
     const newOrder = new OrdersModel({
+      customerId: id,
       availableWorks,
       customer,
       deliveryAddress,
@@ -43,14 +44,31 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     await newOrder.save();
 
-    return NextResponse.json({
-      message: "Order created",
-      orderId: newOrder._id,
-    },
+    return NextResponse.json(
       {
-        status: 201
-      });
+        message: "Order created",
+        orderId: newOrder._id,
+      },
+      {
+        status: 201,
+      }
+    );
   } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500});
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
+};
+
+export const GET = async (req: NextRequest, res: NextResponse) => {
+  const requestHeaders = new Headers(req.headers);
+  const userId = requestHeaders.get("x-decoded-id");
+
+  if (!userId) {
+    return NextResponse.json({ message: "Unauthorized user" }, { status: 401 });
+  }
+
+  const id = new mongoose.Types.ObjectId(userId);
+
+  const allOrders = await OrdersModel.find()
+
+  
 };
