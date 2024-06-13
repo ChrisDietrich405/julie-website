@@ -3,7 +3,7 @@ import type {Metadata} from "next";
 import Footer from "@/components/Footer";
 import {Providers} from "../components/Providers";
 import Navbar from "@/components/Navbar"
-import {CssBaseline, Box} from "@mui/material";
+import {Box, CssBaseline} from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,29 +12,26 @@ export const metadata: Metadata = {
 
 type RootLayoutProps =
   {
-  children: React.ReactNode;
-}
+    children: React.ReactNode;
+  }
 
 
-export default function RootLayout({ children }:RootLayoutProps ) {
-
-  console.log('props ', children)
-
+export default function RootLayout({children}: RootLayoutProps) {
   return (
     <html lang="en">
-      <body style={{ overflowX: 'hidden'}}>
-        <Providers>
-          <CssBaseline />
-            <Navbar/>
-              <Box
-                component="main"
-                minHeight={`calc(100dvh - 355px)`}
-              >
-                {children}
-              </Box>
-          <Footer/>
-        </Providers>
-      </body>
+    <body style={{overflowX: 'hidden'}}>
+    <Providers>
+      <CssBaseline/>
+      <Navbar/>
+      <Box
+        component="main"
+        minHeight={`calc(100dvh - 355px)`}
+      >
+        {children}
+      </Box>
+      <Footer/>
+    </Providers>
+    </body>
     </html>
   );
 }
