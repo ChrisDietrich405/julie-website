@@ -10,19 +10,22 @@ import {AddShoppingCart, RemoveShoppingCart} from "@mui/icons-material";
 const AddToCart: React.FC<{ id: string } & ButtonProps> = ({id, ...props}) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [idAction, setIdAction] = useState<null | string>(null);
 
-  const {data, refetch, isFetching} = useGetCart({enabled: false});
+  const [loading, setLoading] = useState(false);
 
-  const {mutate, isPending} = useUpdateCart({
-    onSuccess: () => {
-      refetch()
+  const {data, refetch} = useGetCart({enabled: false});
+
+  const {mutate} = useUpdateCart({
+    onSuccess: async () => {
+      await refetch()
+      setLoading(false);
     }
   });
 
   const {mutate: removeItem} = useRemoveCartItem({
-    onSuccess: () => {
-      refetch()
+    onSuccess: async () => {
+      await refetch()
+      setLoading(false);
     }
   });
 
@@ -36,7 +39,7 @@ const AddToCart: React.FC<{ id: string } & ButtonProps> = ({id, ...props}) => {
     event.preventDefault()
     event.stopPropagation()
 
-    setIdAction(id)
+    setLoading(true)
 
     if (!idIsUnique) {
       return removeItem(id);
@@ -54,9 +57,9 @@ const AddToCart: React.FC<{ id: string } & ButtonProps> = ({id, ...props}) => {
   return (
     <LoadingButton
       variant="contained"
-      loading={isPending || (idAction === id && isFetching)}
+      loading={loading}
       color={idIsUnique ? 'secondary' : 'error'}
-      onClick={onClick}
+      onClick={(event) => onClick(event)}
       endIcon={idIsUnique ? <AddShoppingCart/> : <RemoveShoppingCart/>}
       {...props}
     >

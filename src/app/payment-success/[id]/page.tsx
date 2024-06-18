@@ -1,7 +1,8 @@
 import React from "react";
 import {OrdersApi} from "@/services/orders.service";
 import {Params} from "@/app/types/params";
-import {Box, Container, List, ListItem, Stack, Typography} from "@mui/material";
+import {Box, Button, Container, Paper, Stack, Typography} from "@mui/material";
+import CheckoutTable from "@/app/components/CheckoutTable";
 
 async function fetchOrder(id: string) {
   const response = await OrdersApi.getOne(id, true);
@@ -16,29 +17,44 @@ export default async function PaymentSuccess({params}: Params) {
   const renderAddress = `${deliveryAddress?.streetAddress}, ${deliveryAddress?.city} - ${deliveryAddress?.zipCode}`
 
   return (
-    <Container>
+    <Container sx={{
+      textAlign: 'center'
+    }}>
       <Typography variant="h1">Payment Success!</Typography>
-      <Box>
-        <Typography variant="h2">Customer details</Typography>
-        <Typography variant="body2" component="span" fontWeight={500}>Nome: </Typography>
-        <Typography variant="body2" component="span">{customer?.name}</Typography>
 
-        <List>
-          {
-            availableWorks?.map(item =>
-              <ListItem>
-                <Stack direction="row" columnGap={2}>
-                  <img src={item.image} alt={item.title} height={100} width={100}/>
-                  <Typography variant="h3">{item.title}</Typography>
-                </Stack>
-              </ListItem>
-            )
-          }
+      <Paper elevation={2} sx={{
+        borderRadius: 2,
+        overflow: 'hidden',
+        maxWidth: 900,
+        marginX: 'auto',
+        marginY: 5,
+      }}>
+        <Stack
+          direction="row"
+          gap={4}
+          bgcolor="lightgrey"
+          padding={2}
+          sx={{
+            textAlign: 'left'
+          }}
+        >
+          <Box
+          >
+            <Typography variant="body2" fontWeight={500}>Delivery to:</Typography>
+            <Typography variant="body2" component="span">{customer?.name}</Typography>
+          </Box>
 
-        </List>
-        <Typography variant="h2">Delivery address</Typography>
-        <Typography variant="body2">{renderAddress}</Typography>
-      </Box>
+          <Box>
+            <Typography variant="body2" fontWeight={500}>Address:</Typography>
+            <Typography variant="body2">{renderAddress}</Typography>
+          </Box>
+        </Stack>
+
+        <CheckoutTable
+          data={availableWorks}
+        />
+      </Paper>
+      <Button variant="contained">Go to my orders</Button>
     </Container>
   )
 }

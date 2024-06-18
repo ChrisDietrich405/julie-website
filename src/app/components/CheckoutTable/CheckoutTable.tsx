@@ -1,4 +1,14 @@
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableProps,
+  TableRow,
+  Typography
+} from '@mui/material';
 import {CheckoutTableProps} from "./CheckoutTable.types";
 import {RemoveShoppingCart} from "@mui/icons-material";
 import React from "react";
@@ -6,27 +16,41 @@ import {LoadingButton} from "@mui/lab";
 import Link from "next/link";
 import {currencyFormat} from "@/helpers";
 
-const CheckoutTable: React.FC<CheckoutTableProps> = ({data, loading, onRemove}) => {
+const CheckoutTable: React.FC<CheckoutTableProps & TableProps> = (
+  {
+    data,
+    hideHeader,
+    loading,
+    onRemove,
+    ...tableProps
+  }
+) => {
 
   const amount = data.reduce((total, item) => total + item.price, 0)
 
   return (<TableContainer component={Paper}>
-      <Table>
-        <TableHead sx={{
-          backgroundColor: 'primary.dark',
+      <Table {...tableProps}>
+        {
+          !hideHeader &&
+            <TableHead sx={{
+              backgroundColor: 'primary.dark',
 
-          '& th': {
-            color: '#eeeeee',
-          }
-        }}>
-          <TableRow>
-            <TableCell>IMAGE</TableCell>
-            <TableCell>NAME</TableCell>
-            <TableCell>MEASUREMENTS</TableCell>
-            <TableCell>PRICE</TableCell>
-            <TableCell>ACTIONS</TableCell>
-          </TableRow>
-        </TableHead>
+              '& th': {
+                color: '#eeeeee',
+              }
+            }}>
+                <TableRow>
+                    <TableCell>IMAGE</TableCell>
+                    <TableCell>NAME</TableCell>
+                    <TableCell>MEASUREMENTS</TableCell>
+                    <TableCell>PRICE</TableCell>
+                  {
+                    onRemove &&
+                      <TableCell>ACTIONS</TableCell>
+                  }
+                </TableRow>
+            </TableHead>
+        }
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={index} sx={{
@@ -44,17 +68,20 @@ const CheckoutTable: React.FC<CheckoutTableProps> = ({data, loading, onRemove}) 
               </TableCell>
               <TableCell>{item.measurements}</TableCell>
               <TableCell>{currencyFormat(item.price)}</TableCell>
-              <TableCell>
-                <LoadingButton
-                  loading={loading}
-                  variant="contained"
-                  color="error"
-                  startIcon={<RemoveShoppingCart/>}
-                  onClick={() => onRemove(item._id)}
-                >
-                  Remove
-                </LoadingButton>
-              </TableCell>
+              {
+                onRemove &&
+                  <TableCell>
+                      <LoadingButton
+                          loading={loading}
+                          variant="contained"
+                          color="error"
+                          startIcon={<RemoveShoppingCart/>}
+                          onClick={() => onRemove(item._id)}
+                      >
+                          Remove
+                      </LoadingButton>
+                  </TableCell>
+              }
             </TableRow>
           ))}
           <TableRow>

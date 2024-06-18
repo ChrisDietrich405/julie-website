@@ -8,6 +8,7 @@ interface TableItem {
 
 export type CheckoutTableProps = {
   data: TableItem[],
-  onRemove: (index: string) => void;
+  hideHeader?: boolean;
+  onRemove?: (index: string) => void;
   loading?: boolean;
 }
