@@ -1,60 +1,46 @@
 "use client";
 import React from "react";
-import { Button, Container } from "@mui/material";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useGetCart } from "@/app/hooks/services/cart";
+import {Box, Button, Container} from "@mui/material";
+import {useRouter} from "next/navigation";
+import {useGetCart, useRemoveCartItem} from "@/app/hooks/services/cart";
+import CheckoutTable from "@/app/components/CheckoutTable";
 
 const Checkout = () => {
   const router = useRouter();
 
-  const handleRedirect = () => {
-    router.push("/delivery-details");
-  };
-
-  const { data } = useGetCart();
+  const {data, refetch, isFetching} = useGetCart();
+  const {mutate, isPending} = useRemoveCartItem({onSuccess: () => refetch()});
 
   const cart = data?.data ?? [];
 
+  const handleRedirect = () => {
+    if (!cart.length) return;
+
+    router.push("/delivery-details");
+  };
+
   return (
     <Container disableGutters>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th className="text-left">Name</th>
-            <th>Measurements</th>
-            <th className="text-right">Price</th>
-          </tr>
-        </thead>
+      <CheckoutTable
+        data={cart}
+        loading={isFetching || isPending}
+        onRemove={(id) => mutate(id)}
+      />
 
-        <tbody>
-          {cart.map((cartItem, index) => {
-            return (
-              <tr key={`tr-item-${index}`}>
-                <td>
-                  <Image
-                    width={100}
-                    height={100}
-                    alt={cartItem.title}
-                    src={cartItem.image}
-                  />
-                </td>
-                <td>{cartItem.title}</td>
-                <td className="text-center"> {cartItem.measurements}</td>
-                <td className="text-right">${cartItem.price}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <Button
-        style={{ margin: "20px 0 0 auto" }}
-        className="btn btn-large"
-        onClick={handleRedirect}
-      >
-        Proceed to delivery details
-      </Button>
+      <Box
+        sx={{
+          marginTop: 5,
+          textAlign: 'right'
+        }}>
+
+        <Button
+          disabled={!cart.length}
+          variant="contained"
+          onClick={handleRedirect}
+        >
+          Proceed to delivery details
+        </Button>
+      </Box>
     </Container>
   );
 };

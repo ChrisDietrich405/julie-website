@@ -3,15 +3,15 @@ import Link from "next/link";
 import {Box, Card, CardContent, Chip, Stack, Typography} from "@mui/material";
 import {currencyFormat} from "@/helpers";
 import {IAvailableWork} from "@/models";
-import { AddShoppingCart } from '@mui/icons-material'
 import AddToCart from "@/app/components/AddToCart";
 
 type CardImageProps = {
   data: IAvailableWork
 }
 
-const CardImage: React.FC<CardImageProps> = ({ data}) => (
-  <Link href={`/available-works/${data._id}`} style={{ textDecoration: 'none', maxWidth: 500, marginLeft: 'auto', marginRight: 'auto'}}>
+const CardImage: React.FC<CardImageProps> = ({data}) => (
+  <Link href={`/available-works/${data._id}`}
+        style={{textDecoration: 'none', maxWidth: 500, marginLeft: 'auto', marginRight: 'auto'}}>
     <Card
       sx={{
         borderRadius: 4,
@@ -46,7 +46,7 @@ const CardImage: React.FC<CardImageProps> = ({ data}) => (
             variant="filled"
             color="info"
             label={data.measurements}
-            sx={{ position: 'absolute', top: 20, right: 20 }} />
+            sx={{position: 'absolute', top: 20, right: 20}}/>
         </Box>
 
         <Stack
@@ -57,18 +57,16 @@ const CardImage: React.FC<CardImageProps> = ({ data}) => (
         >
           <Stack rowGap={1}>
             <Typography variant="h4" fontWeight={500}>{data.title}</Typography>
-            <Typography variant="body1" >{currencyFormat(data.price)}</Typography>
+            <Typography variant="body1">{currencyFormat(data.price)}</Typography>
           </Stack>
 
           <AddToCart
-          id={data._id}
-          variant="contained"
-          size="small"
-          color="secondary"
-          endIcon={<AddShoppingCart />}
-          sx={{
-            borderRadius: 3
-          }}
+            id={data._id}
+            variant="contained"
+            size="small"
+            sx={{
+              borderRadius: 3
+            }}
           />
         </Stack>
       </CardContent>

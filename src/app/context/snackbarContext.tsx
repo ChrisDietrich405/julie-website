@@ -1,15 +1,5 @@
 "use client";
-import React, {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useState,
-  useEffect,
-} from "react";
-
-import {useCookies} from "react-cookie";
-import {useGetUser} from "@/app/hooks";
-import {IUser} from "@/models";
+import React, {createContext, useState,} from "react";
 import {Alert, AlertProps, Snackbar, SnackbarProps} from "@mui/material";
 
 type HandleSnackbar = (message: string, options?: SnackbarProps & AlertProps) => void
@@ -20,13 +10,15 @@ type SnackbarContext = {
 }
 
 export const SnackbarContext = createContext<SnackbarContext>({
-  openError: () => {},
-  openSuccess: () => {}
+  openError: () => {
+  },
+  openSuccess: () => {
+  }
 });
 
-export const SnackbarContextProvider = ({ children }: any) => {
-  const [ open, setOpen ] = useState(false);
-  const [ config, setConfig ] = useState<SnackbarProps & AlertProps>({})
+export const SnackbarContextProvider = ({children}: any) => {
+  const [open, setOpen] = useState(false);
+  const [config, setConfig] = useState<SnackbarProps & AlertProps>({})
 
   const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -37,6 +29,8 @@ export const SnackbarContextProvider = ({ children }: any) => {
   };
 
   const openError: HandleSnackbar = (message, options) => {
+
+
     setConfig({
       message,
       severity: 'error',
@@ -56,7 +50,7 @@ export const SnackbarContextProvider = ({ children }: any) => {
 
 
   return (
-    <SnackbarContext.Provider value={{ openError, openSuccess }}>
+    <SnackbarContext.Provider value={{openError, openSuccess}}>
       {children}
       <Snackbar
         open={open}
@@ -66,7 +60,9 @@ export const SnackbarContextProvider = ({ children }: any) => {
       >
         <Alert
           {...config}
-        />
+        >
+          {config.message}
+        </Alert>
       </Snackbar>
     </SnackbarContext.Provider>
   );

@@ -6,6 +6,7 @@ export const config = {
   matcher: [
     '/api/user',
     '/api/cart',
+    '/api/cart/:path*',
     '/api/create-payment-intent',
     '/api/orders'
   ],

@@ -6,11 +6,10 @@ import {useGetCart} from "@/app/hooks/services/cart";
 import {useCookies} from "react-cookie";
 
 
-export default function  ShoppingCartButton() {
+export default function ShoppingCartButton() {
   const [{token}, _, removeCookie] = useCookies(['token']);
-  const {data, isError, } = useGetCart({
+  const {data, isError,} = useGetCart({
     enabled: !!token,
-    refetchInterval: 10000,
   });
 
   const cart = data?.data ?? [];

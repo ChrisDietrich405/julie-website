@@ -1,20 +1,26 @@
 "use client";
 
-import React, {MouseEvent, useContext} from "react";
-import {useGetCart, useUpdateCart} from "@/app/hooks/services/cart";
+import React, {MouseEvent, useState} from "react";
+import {useGetCart, useRemoveCartItem, useUpdateCart} from "@/app/hooks/services/cart";
 import {LoadingButton} from "@mui/lab";
 import {ButtonProps} from "@mui/material";
-import {useRouter, usePathname} from "next/navigation";
-import {SnackbarContext} from "@/app/context/snackbarContext";
+import {usePathname, useRouter} from "next/navigation";
+import {AddShoppingCart, RemoveShoppingCart} from "@mui/icons-material";
 
-const AddToCart: React.FC<{id: string} & ButtonProps> = ({id, ...props}) => {
+const AddToCart: React.FC<{ id: string } & ButtonProps> = ({id, ...props}) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { openError } = useContext(SnackbarContext);
+  const [idAction, setIdAction] = useState<null | string>(null);
 
-  const {data, refetch, isFetching} = useGetCart({enabled: false, });
+  const {data, refetch, isFetching} = useGetCart({enabled: false});
 
   const {mutate, isPending} = useUpdateCart({
+    onSuccess: () => {
+      refetch()
+    }
+  });
+
+  const {mutate: removeItem} = useRemoveCartItem({
     onSuccess: () => {
       refetch()
     }
@@ -29,14 +35,17 @@ const AddToCart: React.FC<{id: string} & ButtonProps> = ({id, ...props}) => {
   const onClick = async (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     event.preventDefault()
     event.stopPropagation()
+
+    setIdAction(id)
+
+    if (!idIsUnique) {
+      return removeItem(id);
+    }
+
     const value = await refetch();
 
     if (value.status === 'error') {
       return router.replace(`/auth/login?url=${pathname}`)
-    }
-
-    if (cartIds.includes(id)) {
-      return openError('Available work already in cart')
     }
 
     mutate([...cartIds, id])
@@ -45,13 +54,13 @@ const AddToCart: React.FC<{id: string} & ButtonProps> = ({id, ...props}) => {
   return (
     <LoadingButton
       variant="contained"
-      loading={isPending || isFetching}
-      disabled={!idIsUnique}
-      color="secondary"
+      loading={isPending || (idAction === id && isFetching)}
+      color={idIsUnique ? 'secondary' : 'error'}
       onClick={onClick}
+      endIcon={idIsUnique ? <AddShoppingCart/> : <RemoveShoppingCart/>}
       {...props}
     >
-      { idIsUnique ? 'Add to cart' : 'In cart' }
+      {idIsUnique ? 'Add to cart' : 'Remove from cart'}
     </LoadingButton>
   );
 };

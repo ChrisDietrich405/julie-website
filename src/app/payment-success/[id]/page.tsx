@@ -11,9 +11,9 @@ async function fetchOrder(id: string) {
 
 export default async function PaymentSuccess({params}: Params) {
 
-  const { customer, deliveryAddress, availableWorks } = await fetchOrder(params.id);
+  const {customer, deliveryAddress, availableWorks} = await fetchOrder(params.id);
 
-  const renderAddress = `${deliveryAddress.streetAddress}, ${deliveryAddress.city} - ${deliveryAddress.zipCode}`
+  const renderAddress = `${deliveryAddress?.streetAddress}, ${deliveryAddress?.city} - ${deliveryAddress?.zipCode}`
 
   return (
     <Container>
@@ -28,7 +28,7 @@ export default async function PaymentSuccess({params}: Params) {
             availableWorks?.map(item =>
               <ListItem>
                 <Stack direction="row" columnGap={2}>
-                <img src={item.image} alt={item.title} height={100} width={100} />
+                  <img src={item.image} alt={item.title} height={100} width={100}/>
                   <Typography variant="h3">{item.title}</Typography>
                 </Stack>
               </ListItem>
