@@ -1,8 +1,8 @@
-import {NextRequest, NextResponse} from "next/server";
-import Stripe from 'stripe'
-import {ICart} from "@/models";
+import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
+import { ICart } from "@/models";
 
-const stripe = new Stripe(process.env.STRIPE_KEY as string)
+const stripe = new Stripe(process.env.STRIPE_KEY as string);
 
 export async function POST(req: NextRequest) {
   const requestHeaders = new Headers(req.headers);
@@ -10,57 +10,61 @@ export async function POST(req: NextRequest) {
   const userId = requestHeaders.get("x-decoded-id");
 
   if (!userId) {
-    return NextResponse.json({status: 401, message: "Unauthorized user"});
+    return NextResponse.json({ status: 401, message: "Unauthorized user" });
   }
 
   const body: { items: ICart } = await req.json();
 
-  const {items} = body;
-  
-  const amount = items.reduce((total, item) => total + item.price, 0)
+  const { items } = body;
 
-  if (!Array.isArray(items) || !items.length) return NextResponse.json({
-      error: {
-        message: 'must have at least 1 item'
+  const amount = items.reduce((total, item) => total + item.price, 0);
+  const currentAmount = amount + "00";
+
+
+  if (!Array.isArray(items) || !items.length)
+    return NextResponse.json(
+      {
+        error: {
+          message: "must have at least 1 item",
+        },
       },
-    },
-    {status: 400}
-  )
+      { status: 400 }
+    );
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount,
+      amount: parseInt(currentAmount),
       currency: "usd",
       automatic_payment_methods: {
         enabled: true,
       },
     });
 
-
     return NextResponse.json(
       {
         status: 201,
-        amount,
+        amount: parseInt(currentAmount),
         clientSecret: paymentIntent.client_secret,
         user: {
-          fullName: 'Smart Chris',
-          email: 'server@gmail.com',
-          streetAddress: '111 Oak Ave'
-        }
+          fullName: "Smart Chris",
+          email: "server@gmail.com",
+          streetAddress: "111 Oak Ave",
+        },
       },
       {
         status: 201,
       }
     );
   } catch (err) {
-    return NextResponse.json({
+    return NextResponse.json(
+      {
         error: {
-          message: (err as Error).message
-        }
+          message: (err as Error).message,
+        },
       },
       {
         status: 400,
       }
-    )
+    );
   }
 }
