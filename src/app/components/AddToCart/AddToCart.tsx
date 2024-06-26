@@ -29,9 +29,9 @@ const AddToCart: React.FC<{ id: string } & ButtonProps> = ({id, ...props}) => {
     }
   });
 
-  const cart = data?.data ?? []
+  const cart = data?.data
 
-  const cartIds = [...cart].map(item => item._id);
+  const cartIds = [...cart?.items ?? []].map(item => item._id);
 
   const idIsUnique = !cartIds.includes(id);
 

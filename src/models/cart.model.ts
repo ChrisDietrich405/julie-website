@@ -10,6 +10,9 @@ export interface ICartItem {
   customerId: string;
 }
 
-export type ICart = ICartItem[]
+export type ICart = {
+  items: ICartItem[]
+  amount: number;
+}
 
 export type ICartResponse = AxiosResponse<ICart>

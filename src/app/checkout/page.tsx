@@ -1,28 +1,30 @@
 "use client";
 import React from "react";
-import {Box, Button, Container} from "@mui/material";
+import {Box, Container} from "@mui/material";
 import {useRouter} from "next/navigation";
 import {useGetCart, useRemoveCartItem} from "@/app/hooks/services/cart";
 import CheckoutTable from "@/app/components/CheckoutTable";
+import {useCreatePaymentIntent} from "@/app/hooks";
+import {LoadingButton} from "@mui/lab";
 
 const Checkout = () => {
   const router = useRouter();
 
   const {data, refetch, isFetching} = useGetCart();
+
   const {mutate, isPending} = useRemoveCartItem({onSuccess: () => refetch()});
 
-  const cart = data?.data ?? [];
+  const {mutate: createPayment, isPending: isIntentPending} = useCreatePaymentIntent({
+    onSuccess: ({data}) =>
+      router.push(`/delivery-details/${data.clientSecret}`)
+  });
 
-  const handleRedirect = () => {
-    if (!cart.length) return;
-
-    router.push("/delivery-details");
-  };
+  const cart = data?.data;
 
   return (
     <Container disableGutters>
       <CheckoutTable
-        data={cart}
+        data={cart?.items ?? []}
         loading={isFetching || isPending}
         onRemove={(id) => mutate(id)}
       />
@@ -33,13 +35,14 @@ const Checkout = () => {
           textAlign: 'right'
         }}>
 
-        <Button
-          disabled={!cart.length}
+        <LoadingButton
+          disabled={!cart?.items.length}
+          loading={isIntentPending}
           variant="contained"
-          onClick={handleRedirect}
+          onClick={() => createPayment(cart?.items ?? [])}
         >
           Proceed to delivery details
-        </Button>
+        </LoadingButton>
       </Box>
     </Container>
   );

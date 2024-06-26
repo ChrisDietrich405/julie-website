@@ -47,11 +47,14 @@ export default function Navbar() {
             </Link>
           </Box>
 
-          <NavList />
+          <NavList/>
 
-          <UserMenu />
+          {
+            typeof window !== 'undefined' &&
+              <UserMenu/>
+          }
 
-          <ShoppingCartButton />
+          <ShoppingCartButton/>
         </Toolbar>
       </AppBar>
     </Box>

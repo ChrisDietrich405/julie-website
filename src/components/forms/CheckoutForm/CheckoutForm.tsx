@@ -143,7 +143,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabl
                   name: user?.name,
                   address: {
                     line1: '',
-                    country: 'USA'
+                    country: 'US'
                   },
                 },
                 mode: "shipping",

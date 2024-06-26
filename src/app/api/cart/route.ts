@@ -22,7 +22,7 @@ export const POST = async (req: NextRequest) => {
       message: "Cart created",
     });
   } catch (error) {
-    return NextResponse.json({ message: "Internal server error"}, {status: 500});
+    return NextResponse.json({message: "Internal server error"}, {status: 500});
   }
 };
 
@@ -69,8 +69,13 @@ export const GET = async (req: NextRequest) => {
 
     const availableWorks = await AvailableWorksModel.find({_id: {$in: items}});
 
-    return NextResponse.json(availableWorks);
+    const amount = availableWorks.reduce((total, item) => total + item.price, 0)
+
+    return NextResponse.json({
+      items: availableWorks,
+      amount
+    });
   } catch (error) {
-    return NextResponse.json({ message: "Internal server error"}, {status: 500});
+    return NextResponse.json({message: "Internal server error"}, {status: 500});
   }
 };
