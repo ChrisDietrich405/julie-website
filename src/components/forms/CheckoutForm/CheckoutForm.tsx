@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useContext, useEffect, useState} from "react";
 
 import {
   AddressElement,
@@ -8,28 +8,33 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import {Alert, Box, Snackbar, Stack} from "@mui/material";
-import {IUser} from "@/models";
 
 import {useGetCart, usePostOrder, useUpdateCart} from "@/app/hooks";
 import {useRouter} from "next/navigation";
+import {useUpdateCustomer} from "@/app/hooks/services/customer";
+import {TCustomer} from "@/app/models/customer.models";
+import {SnackbarContext} from "@/app/context/snackbarContext";
 
 type CheckoutFormProps = {
   cart: string[];
   clientSecret: string;
   onDisabled: (disabled: boolean) => void;
   onLoad: (load: boolean) => void;
-  user?: IUser;
+  customer?: TCustomer
 }
-const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabled, cart, onLoad}) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({clientSecret, customer, onDisabled, cart, onLoad}) => {
   const route = useRouter();
   const stripe = useStripe();
   const elements = useElements();
+  const {openError} = useContext(SnackbarContext)
 
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const {refetch} = useGetCart({enabled: false});
+
+  const {mutateAsync: mutateUpdateCustomer} = useUpdateCustomer();
 
   const {
     mutate: updateCart,
@@ -38,7 +43,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabl
     {onSuccess: () => refetch()}
   )
 
-  const {mutate, isPending} = usePostOrder({
+  const {mutateAsync, isPending} = usePostOrder({
     onSuccess: async (res) => {
 
       setLoading(true);
@@ -53,7 +58,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabl
 
       setLoading(false);
 
-      route.push(`payment-success/${res.data.orderId}`)
+      route.push(`/payment-success/${res.data.orderId}`)
     },
     onError: (error) => {
       setOpen(true);
@@ -67,26 +72,35 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabl
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setLoading(true);
 
-    const {value} = await elements?.getElement('address')?.getValue() ?? {};
-    mutate({
-      availableWorks: cart,
-      customer: {
-        name: value?.name,
-        phoneNumber: value?.phone
-      },
-      deliveryAddress: {
-        streetAddress: value?.address.line1,
-        city: value?.address.city,
-        zipCode: value?.address.postal_code
-      }
-    })
+    elements?.submit().then(async (data) => {
+      const {value} = await elements?.getElement('address')?.getValue() ?? {};
 
-    elements?.submit();
+      if (data.error) throw new Error('invalid field')
 
-    setLoading(false);
+      if (!value) return;
+      await mutateAsync({
+        availableWorks: cart,
+        customer: {
+          name: value?.name,
+          phoneNumber: value?.phone
+        },
+        deliveryAddress: {
+          streetAddress: value?.address.line1,
+          city: value?.address.city,
+          zipCode: value?.address.postal_code
+        }
+      })
+
+      await mutateUpdateCustomer({
+        customerId: customer?.id,
+        // @ts-ignore
+        data: value
+      })
+    }).catch(() => {
+      openError('Failed submit')
+    }).finally(() => setLoading(false))
   };
 
   const handleAddressChange = async () => {
@@ -101,6 +115,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabl
     onLoad(isPending || updateCartLoading || loading)
   }, [isPending, updateCartLoading, loading]);
 
+  // @ts-ignore
   return (
     <Stack gap={2}>
       <Snackbar
@@ -128,35 +143,40 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({user, clientSecret, onDisabl
           sx={{width: "70dvw"}}
           justifyContent="space-between"
         >
-          <Stack flex={2} gap={3}>
-            <LinkAuthenticationElement
-              options={{
-                defaultValues: {
-                  email: user?.email ?? ''
-                }
-              }}/>
+          {
+            customer &&
+              <>
+                  <Stack flex={2} gap={3}>
+                      <LinkAuthenticationElement
+                          options={{
+                            defaultValues: {
+                              email: customer?.email ?? ''
+                            }
+                          }}
+                      />
 
-            <AddressElement
-              onChange={handleAddressChange}
-              options={{
-                defaultValues: {
-                  name: user?.name,
-                  address: {
-                    line1: '',
-                    country: 'US'
-                  },
-                },
-                mode: "shipping",
-                fields: {
-                  phone: "always",
-                },
-              }}
-            />
+                      <AddressElement
+                          onChange={handleAddressChange}
+                          options={{
+                            mode: "shipping",
+                            fields: {
+                              phone: "always",
+                            },
+                            defaultValues: {
+                              name: customer.name,
+                              // @ts-ignore
+                              address: customer?.address,
+                              phone: customer.phone,
+                            }
+                          }}
+                      />
 
-          </Stack>
-          <Box flex={1}>
-            <PaymentElement/>
-          </Box>
+                  </Stack>
+                  <Box flex={1}>
+                      <PaymentElement/>
+                  </Box>
+              </>
+          }
         </Stack>
       </form>
     </Stack>

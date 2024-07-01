@@ -3,24 +3,23 @@ import React, {FormEvent, useContext, useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 
-import { FormContainer } from "./styles.css";
-import "react-toastify/dist/ReactToastify.css";
+import {FormContainer} from "./styles.css";
 
 import {useCookies} from "react-cookie";
-import {Typography, TextField} from "@mui/material";
-import {LoadingButton} from "@mui/lab";
+import {TextField, Typography} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {useAuthLogin} from "@/app/hooks";
 import {SnackbarContext} from "@/app/context/snackbarContext";
 
-const LoginForm: React.FC<{route?: string}> = ({route}) => {
+const LoginForm: React.FC<{ route?: string }> = ({route}) => {
   const router = useRouter();
-  const { openError } = useContext(SnackbarContext)
+  const {openError} = useContext(SnackbarContext)
   const [, setCookie] = useCookies(['token']);
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const { mutate: doLogin, isPending } = useAuthLogin({
+  const {mutate: doLogin, isPending} = useAuthLogin({
     onSuccess: (response) => {
 
       const expirationDate = new Date(response.data.expires * 1000)
@@ -33,7 +32,7 @@ const LoginForm: React.FC<{route?: string}> = ({route}) => {
       router.push(route ? route : "/");
     },
     onError: (error) => {
-      openError(error.message?? '')
+      openError(error.message ?? '')
     }
   });
 

@@ -7,17 +7,39 @@ export const config = {
     '/api/user',
     '/api/cart',
     '/api/cart/:path*',
-    '/api/create-payment-intent',
-    '/api/orders'
+    '/api/create-create',
+    '/api/orders',
+    '/api/customer/:path*'
   ],
 };
 
+function setHeader(headers: NextRequest['headers'], id: string) {
+  const requestHeaders = new Headers(headers);
+
+  requestHeaders.set("x-decoded-id", `${id}`);
+
+  return requestHeaders;
+}
+
 export const middleware = async (req: NextRequest, res: NextResponse) => {
+
+  const headersInstance = headers();
+
+  let authorization = headersInstance.get("authorization");
+
+  const cookie = req.cookies.get('x-decoded-id');
+
+  if (cookie?.value) {
+    const reqHeaders = setHeader(req.headers, cookie.value)
+
+    return NextResponse.next({
+      request: {
+        headers: reqHeaders,
+      },
+    })
+  }
+
   try {
-    const headersInstance = headers();
-
-    let authorization = headersInstance.get("authorization");
-
     const tokenNumber = authorization?.split(" ")?.[1].trim();
 
     if (!tokenNumber) {
@@ -32,15 +54,22 @@ export const middleware = async (req: NextRequest, res: NextResponse) => {
       return NextResponse.json("Unauthorized user", {status: 401});
     }
 
-    const requestHeaders = new Headers(req.headers);
+    const headers = setHeader(req.headers, decodedToken?.payload?.id as string)
 
-    requestHeaders.set("x-decoded-id", `${decodedToken.payload.id}`);
-
-    return NextResponse.next({
+    const response = NextResponse.next({
       request: {
-        headers: requestHeaders,
+        headers,
       },
     });
+
+    response.cookies.set('x-decoded-id', `${decodedToken.payload.id}`, {
+      httpOnly: true,
+      secure: true,
+      path: '/',
+      maxAge: decodedToken.payload.exp
+    });
+
+    return response;
   } catch (error) {
     return NextResponse.json('Middleware error', {status: 500});
   }

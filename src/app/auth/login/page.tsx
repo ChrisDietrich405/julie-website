@@ -1,8 +1,7 @@
-import React, {Context} from "react";
-import {Container} from "@mui/joy";
+import React from "react";
+import {Container} from "@mui/material";
 
 import {BackgroundBox} from "./styles.css";
-import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
 const LoginForm = dynamic(() => import('./LoginForm'));
@@ -16,7 +15,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({searchParams}) =>
   <BackgroundBox>
     <Container>
-      <LoginForm route={searchParams.url} />
+      <LoginForm route={searchParams.url}/>
     </Container>
   </BackgroundBox>
 

@@ -49,10 +49,7 @@ export default function Navbar() {
 
           <NavList/>
 
-          {
-            typeof window !== 'undefined' &&
-              <UserMenu/>
-          }
+          <UserMenu/>
 
           <ShoppingCartButton/>
         </Toolbar>

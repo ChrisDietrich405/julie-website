@@ -1,25 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import Stripe from "stripe";
-import { ICart } from "@/models";
+import {ICart} from "@/models";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
 
 export async function POST(req: NextRequest) {
-  const requestHeaders = new Headers(req.headers);
-
-  const userId = requestHeaders.get("x-decoded-id");
+  const userId = req.cookies.get('x-decoded-id')?.value;
 
   if (!userId) {
-    return NextResponse.json({ status: 401, message: "Unauthorized user" });
+    return NextResponse.json({message: "Unauthorized user"}, {status: 401});
   }
 
-  const body: { items: ICart } = await req.json();
+  const body: { items: ICart['items'], customerId?: string } = await req.json();
 
-  const { items } = body;
+  const {items, customerId} = body;
 
   const amount = items.reduce((total, item) => total + item.price, 0);
   const currentAmount = amount + "00";
-
 
   if (!Array.isArray(items) || !items.length)
     return NextResponse.json(
@@ -28,13 +25,14 @@ export async function POST(req: NextRequest) {
           message: "must have at least 1 item",
         },
       },
-      { status: 400 }
+      {status: 400}
     );
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: parseInt(currentAmount),
       currency: "usd",
+      customer: customerId,
       automatic_payment_methods: {
         enabled: true,
       },
@@ -44,12 +42,7 @@ export async function POST(req: NextRequest) {
       {
         status: 201,
         amount: parseInt(currentAmount),
-        clientSecret: paymentIntent.client_secret,
-        user: {
-          fullName: "Smart Chris",
-          email: "server@gmail.com",
-          streetAddress: "111 Oak Ave",
-        },
+        id: paymentIntent.id
       },
       {
         status: 201,

@@ -12,7 +12,7 @@ import {
 import {CheckoutTableProps} from "./CheckoutTable.types";
 import {RemoveShoppingCart} from "@mui/icons-material";
 import React from "react";
-import {LoadingButton} from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Link from "next/link";
 import {currencyFormat} from "@/helpers";
 

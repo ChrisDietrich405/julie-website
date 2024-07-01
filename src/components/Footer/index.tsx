@@ -1,5 +1,5 @@
 import {Box, Button, Container} from "@mui/material";
-import Typography from "@mui/joy/Typography";
+import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import styles from "./styles.module.css";
 

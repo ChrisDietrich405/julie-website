@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { Container, Grid } from "@mui/material";
-import Typography from "@mui/joy/Typography";
+import {Container, Grid} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 import ContactForm from "../../components/ContactForm";
 
@@ -11,10 +11,10 @@ const Contact = () => {
       <Typography level="h1" component="h1">
         Contact
       </Typography>
-      <Typography sx={{ margin: 2, textAlign: "center" }} component="p">
+      <Typography sx={{margin: 2, textAlign: "center"}} component="p">
         Simply fill out the form and I'll be in touch soon.
       </Typography>
-      <Grid container spacing={2} sx={{ my: 3 }}>
+      <Grid container spacing={2} sx={{my: 3}}>
         <Grid item xs={6} justifyContent="center">
           <Image
             width={500}
@@ -24,7 +24,7 @@ const Contact = () => {
           />
         </Grid>
         <Grid item xs={6}>
-          <ContactForm />
+          <ContactForm/>
         </Grid>
       </Grid>
     </Container>

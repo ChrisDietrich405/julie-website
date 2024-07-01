@@ -1,8 +1,8 @@
 "use client";
-import { styled } from "@mui/joy/styles";
-import { Sheet } from "@mui/joy";
+import {styled} from "@mui/material/styles";
+import {Sheet} from "@mui/material";
 
-export const Item = styled(Sheet)(({ theme }) => ({
+export const Item = styled(Sheet)(({theme}) => ({
   backgroundColor:
     theme.palette.mode === "dark" ? theme.palette.background.level1 : "#fff",
   ...theme.typography["body-sm"],
@@ -12,7 +12,7 @@ export const Item = styled(Sheet)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export const ItemDynamic = styled(Sheet)(({ theme }) => ({
+export const ItemDynamic = styled(Sheet)(({theme}) => ({
   margin: theme.spacing(2),
 }));
 

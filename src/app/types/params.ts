@@ -1,3 +1,3 @@
 export interface Params {
-  params: { id: string };
+  params: { id: string, email: string };
 }

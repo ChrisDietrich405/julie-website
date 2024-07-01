@@ -2,7 +2,7 @@
 
 import React, {MouseEvent, useState} from "react";
 import {useGetCart, useRemoveCartItem, useUpdateCart} from "@/app/hooks/services/cart";
-import {LoadingButton} from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {ButtonProps} from "@mui/material";
 import {usePathname, useRouter} from "next/navigation";
 import {AddShoppingCart, RemoveShoppingCart} from "@mui/icons-material";

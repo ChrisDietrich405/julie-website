@@ -12,11 +12,11 @@ export default function ShoppingCartButton() {
     enabled: !!token,
   });
 
-  const cart = data?.data ?? [];
+  const cart = data?.data;
 
   const router = useRouter();
 
-  const length = isError || !token ? 0 : cart?.length;
+  const length = isError || !token ? 0 : cart?.items.length;
 
   return (
     <Badge badgeContent={length} color="primary">

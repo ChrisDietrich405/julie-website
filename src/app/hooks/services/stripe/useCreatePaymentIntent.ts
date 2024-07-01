@@ -1,13 +1,16 @@
-import {useMutation, UseMutationOptions, useQuery, UseQueryOptions} from "@tanstack/react-query";
-import {StripeApi, UserApi} from "@/services";
-import {ICartItem, IUserResponse} from "@/models";
+import {useMutation, UseMutationOptions} from "@tanstack/react-query";
+import {StripeApi} from "@/services";
+import {ICartItem} from "@/models";
 import {IPaymentIntentResponse} from "@/models/stripe.models";
 
-type MutationOptions = UseMutationOptions<IPaymentIntentResponse, Error, ICartItem[], unknown>;
+type MutationOptions = UseMutationOptions<IPaymentIntentResponse, Error, {
+  items: ICartItem[],
+  customerId?: string
+}, unknown>;
 
 export const useCreatePaymentIntent = (mutationOptions: MutationOptions = {}) =>
   useMutation({
     mutationKey: ['useCreatePaymentIntent'],
-    mutationFn: (items: ICartItem[]) => StripeApi.CreatePaymentIntent(items),
+    mutationFn: ({items, customerId}) => StripeApi.CreatePaymentIntent(items, customerId),
     ...mutationOptions
   })
