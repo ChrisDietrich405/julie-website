@@ -1,4 +1,5 @@
 import React, {FormEvent, useContext, useEffect, useState} from "react";
+import emailjs from "@emailjs/browser";
 
 import {
   AddressElement,
@@ -54,11 +55,21 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({clientSecret, customer, onDi
         redirect: 'if_required',
       });
 
-      updateCart([])
-
-      setLoading(false);
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_SERVICE_ID as string,
+        process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+        {
+          name: customer?.name,
+          address: customer?.address,
+          phone: customer?.phone,
+          email: customer?.email,
+        },
+        process.env.NEXT_PUBLIC_USER_ID as string
+      );
 
       route.push(`/payment-success/${res.data.orderId}`)
+
+      setTimeout(() => updateCart([]), 2000)
     },
     onError: (error) => {
       setOpen(true);
