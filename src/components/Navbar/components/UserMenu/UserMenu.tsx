@@ -1,23 +1,19 @@
+"use client"
 import {Button} from "@mui/material";
-import {cookies} from 'next/headers'
 import Link from "next/link";
-
-function getToken() {
-  const cookieStore = cookies()
-
-  return cookieStore.get('token')?.value;
-}
+import {useCookies} from "react-cookie";
 
 export default function UserMenu() {
-  const token = getToken();
+  const [cookies, , removeCookies] = useCookies()
 
-  const route = token ? '/auth/logout' : '/auth/login';
+  const token = cookies.token;
 
   return (
-    <Link href={route}>
+    <Link href={'/auth/login'}>
       <Button
         variant="contained"
         color={token ? 'warning' : 'primary'}
+        onClick={() => removeCookies('token')}
       >
         {token ? 'Log out' : 'Log in'}
       </Button>
