@@ -5,6 +5,7 @@ interface AvailableWorksDocument extends Document {
   image: String;
   title: String;
   measurements: String;
+  status: String;
 }
 
 export default AvailableWorksDocument;

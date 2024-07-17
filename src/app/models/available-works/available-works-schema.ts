@@ -20,6 +20,10 @@ if (!mongoose.models.available_works) {
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
   });
   mongoose.model("available_works", AvailableWorksSchema);
 }

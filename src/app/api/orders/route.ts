@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import mongoose from "@/lib/mongoose";
 import { UsersModel } from "@/app/models/users/user-schema";
 import { OrdersModel } from "@/app/models/orders/orders-schema";
+import { AvailableWorksModel } from "@/app/models/available-works/available-works-schema";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
@@ -44,6 +45,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     await newOrder.save();
 
+    await AvailableWorksModel.updateMany(
+      {
+        _id: { $in: availableWorks },
+      },
+      { $set: { status: "sold" } }
+    );
+
     return NextResponse.json(
       {
         message: "Order created",
@@ -68,7 +76,5 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
   const id = new mongoose.Types.ObjectId(userId);
 
-  const allOrders = await OrdersModel.find()
-
-  
+  const allOrders = await OrdersModel.find();
 };
