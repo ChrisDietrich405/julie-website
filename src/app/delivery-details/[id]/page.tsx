@@ -1,37 +1,52 @@
 "use client";
-import React, {useContext, useState} from "react";
-import {useGetCart} from "../../hooks/services/cart";
-import {Elements} from "@stripe/react-stripe-js";
-import {Box, CircularProgress, Container, Divider, Stack, Typography,} from "@mui/material";
-import {loadStripe, StripeElementsOptions} from "@stripe/stripe-js";
-import {currencyFormat} from "@/helpers";
+import React, { useContext, useState } from "react";
+import { useGetCart } from "../../hooks/services/cart";
+import { Elements } from "@stripe/react-stripe-js";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
+import { currencyFormat } from "@/helpers";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {userContext} from "@/app/context/userContext";
-import CheckoutForm from '@/components/forms/CheckoutForm/CheckoutForm'
-import {useRetrievePaymentIntentSecret} from "@/app/hooks";
-import {useSearchCustomer} from "@/app/hooks/services/customer";
+import { userContext } from "@/app/context/userContext";
+import CheckoutForm from "@/components/forms/CheckoutForm/CheckoutForm";
+import { useRetrievePaymentIntentSecret } from "@/app/hooks";
+import { useSearchCustomer } from "@/app/hooks/services/customer";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
 
-
-export default function CreateAccount({params: {id}}: { params: { id: string } }) {
-  const {user} = useContext(userContext)
+export default function CreateAccount({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  const { user } = useContext(userContext);
 
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const {data, isSuccess: cartSuccess} = useGetCart()
-  const cart = data?.data
+  const { data, isSuccess: cartSuccess } = useGetCart();
+  const cart = data?.data;
 
-  const {data: PaymentIntentResponse} = useRetrievePaymentIntentSecret({id});
+  const { data: PaymentIntentResponse } = useRetrievePaymentIntentSecret({
+    id,
+  });
 
   const clientSecret = PaymentIntentResponse?.data?.clientSecret;
 
-  const {data: searchResponse} = useSearchCustomer({email: user?.email ?? '', enabled: !!user?.email})
+  const { data: searchResponse } = useSearchCustomer({
+    email: user?.email ?? "",
+    enabled: !!user?.email,
+  });
 
   const foundedCustomer = searchResponse?.data[0];
 
-  const cartItems = cart?.items ?? []
+  const cartItems = cart?.items ?? [];
 
   const amountFormatted = cart?.amount && currencyFormat(cart?.amount);
 
@@ -52,13 +67,13 @@ export default function CreateAccount({params: {id}}: { params: { id: string } }
       justifyContent="center"
       alignItems="center"
     >
-      <CircularProgress/>
+      <CircularProgress />
     </Box>
   ) : (
-    <Container maxWidth="xl" sx={{paddingY: 10}}>
+    <Container maxWidth="xl" sx={{ paddingY: 10 }}>
       <Typography
         variant="h1"
-        sx={{textAlign: 'center', marginBottom: 6, width: '100%'}}
+        sx={{ textAlign: "center", marginBottom: 6, width: "100%" }}
       >
         Delivery and Payment details
       </Typography>
@@ -67,9 +82,8 @@ export default function CreateAccount({params: {id}}: { params: { id: string } }
         options={options}
         children={
           <Stack direction="row" columnGap={5}>
-
             <CheckoutForm
-              cart={cartItems.map(item => item._id)}
+              cart={cartItems.map((item) => item._id)}
               customer={foundedCustomer}
               clientSecret={clientSecret}
               onDisabled={(value) => setDisabled(value)}
@@ -79,7 +93,7 @@ export default function CreateAccount({params: {id}}: { params: { id: string } }
             <Stack
               flex={1}
               sx={{
-                height: 'fit-content',
+                height: "fit-content",
                 border: "1px solid rgba(0,0,0, 0.2)",
                 borderRadius: 1,
                 padding: 2,
@@ -87,8 +101,8 @@ export default function CreateAccount({params: {id}}: { params: { id: string } }
                 justifyContent: "space-between",
               }}
             >
-              <Stack rowGap={1} divider={<Divider/>}>
-                {cartItems.map(({title, price}, index) => (
+              <Stack rowGap={1} divider={<Divider />}>
+                {cartItems.map(({ title, price }, index) => (
                   <Stack key={`product-item-${index}`}>
                     <Typography fontSize={14} fontWeight={500}>
                       {title}
@@ -108,7 +122,7 @@ export default function CreateAccount({params: {id}}: { params: { id: string } }
                   type="submit"
                   variant="contained"
                   form="checkout-form"
-                  sx={{marginX: "auto"}}
+                  sx={{ marginX: "auto" }}
                   disabled={disabled}
                 >
                   Confirm payment
@@ -120,4 +134,4 @@ export default function CreateAccount({params: {id}}: { params: { id: string } }
       />
     </Container>
   );
-};
+}

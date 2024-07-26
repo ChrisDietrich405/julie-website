@@ -11,10 +11,11 @@ async function fetchOrder(id: string) {
 }
 
 export default async function PaymentSuccess({params}: Params) {
-
   const {customer, deliveryAddress, availableWorks} = await fetchOrder(params.id);
 
   const renderAddress = `${deliveryAddress?.streetAddress}, ${deliveryAddress?.city} - ${deliveryAddress?.zipCode}`
+
+   
 
   return (
     <Container sx={{

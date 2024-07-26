@@ -17,6 +17,7 @@ import { TCustomer } from "@/app/models/customer.models";
 import { SnackbarContext } from "@/app/context/snackbarContext";
 import { ICartItem } from "@/models";
 import { currencyFormat } from "@/helpers";
+import { RollerShades } from "@mui/icons-material";
 
 function addressToString(address: any) {
   return `${address.line1} - ${address.city} - ${address.state} - ${address.postal_code}`;
@@ -78,6 +79,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         clientSecret,
         redirect: "if_required",
       });
+      
 
       if (customer?.name) {
         await emailjs.send(
@@ -94,11 +96,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           process.env.NEXT_PUBLIC_USER_ID as string
         );
       }
-
+      
       route.push(`/payment-success/${res.data.orderId}`);
 
       setTimeout(() => updateCart([]), 2000);
     },
+    //removing item from db
     onError: (error) => {
       setOpen(true);
       setError(error.message);
@@ -140,7 +143,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           // @ts-ignore
           data: value,
         });
-        
       })
       .catch(() => {
         openError("Failed submit");

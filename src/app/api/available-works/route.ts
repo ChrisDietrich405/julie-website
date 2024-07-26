@@ -6,6 +6,7 @@ export const GET = async () => {
     const availableWorks = await AvailableWorksModel.find({
       status: "available",
     });
+    console.log("Felipe",availableWorks);
     return NextResponse.json(availableWorks, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });

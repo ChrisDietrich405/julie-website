@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import Stripe from "stripe";
 import {Params} from "@/app/types/params";
+import { Payment } from "@mui/icons-material";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
 

@@ -1,11 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import {NavList, ShoppingCartButton, UserMenu} from "@/components/Navbar/components";
+import {
+  NavList,
+  ShoppingCartButton,
+  UserMenu,
+} from "@/components/Navbar/components";
 
 export default function Navbar() {
   const appBarStyle = {
@@ -13,17 +18,17 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={appBarStyle}>
-        <Toolbar sx={{flexGrow: 1, backgroundColor: "#eeeff0", columnGap: 3}}>
+        <Toolbar sx={{ flexGrow: 1, backgroundColor: "#eeeff0", columnGap: 3 }}>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{mr: 2, display: {sm: "block", md: "none"}}}
+            sx={{ mr: 2, display: { sm: "block", md: "none" } }}
           >
-            <MenuIcon/>
+            <MenuIcon />
           </IconButton>
 
           <Box flexGrow={1}>
@@ -33,25 +38,31 @@ export default function Navbar() {
                 component="h1"
                 sx={{
                   color: "black",
-                  width: 'auto',
-                  justifyContent: 'start',
+                  width: "auto",
+                  justifyContent: "start",
                   padding: 0,
                   fontWeight: 500,
-                  fontSize: '1.25rem',
+                  fontSize: "1.25rem",
                   lineHeight: 1.6,
-                  textTransform: 'capitalize'
+                  textTransform: "capitalize",
                 }}
               >
-                JustArt
+                JUST ART
+                {/* <Image
+                  src="/images/logo.jpg"
+                  width={50}
+                  height={50}
+                  alt="Picture of the author"
+                /> */}
               </Button>
             </Link>
           </Box>
 
-          <NavList/>
+          <NavList />
 
-          <UserMenu/>
+          <UserMenu />
 
-          <ShoppingCartButton/>
+          <ShoppingCartButton />
         </Toolbar>
       </AppBar>
     </Box>

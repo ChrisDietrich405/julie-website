@@ -1,21 +1,32 @@
-"use client"
-import {Button} from "@mui/material";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 import Link from "next/link";
-import {useCookies} from "react-cookie";
+import { useCookies } from "react-cookie";
 
 export default function UserMenu() {
-  const [cookies, , removeCookies] = useCookies()
+  const [cookies, , removeCookies] = useCookies();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const token = cookies.token;
+  useEffect(() => {
+    // Synchronize with cookies on the client side
+    setIsLoggedIn(!!cookies.token);
+  }, [cookies]);
+
+  const handleLogout = () => {
+    removeCookies('token');
+    setIsLoggedIn(false);
+  };
 
   return (
-    <Link href={'/auth/login'}>
+    <Link href={isLoggedIn ? '/' : '/auth/login'}>
       <Button
         variant="contained"
-        color={token ? 'warning' : 'primary'}
-        onClick={() => removeCookies('token')}
+        color={isLoggedIn ? 'warning' : 'primary'}
+        onClick={isLoggedIn ? handleLogout : null}
       >
-        {token ? 'Log out' : 'Log in'}
+        {isLoggedIn ? 'Log out' : 'Log in'}
       </Button>
     </Link>
   );
