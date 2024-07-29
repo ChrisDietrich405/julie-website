@@ -1,9 +1,9 @@
-import {Container, Grid, Typography} from "@mui/material";
-import {AvailableWorksApi} from "@/services";
+import { Container, Grid, Typography } from "@mui/material";
+import { AvailableWorksApi } from "@/services";
 import CardImage from "@/app/components/CardImage/CardImage";
 
 async function getData() {
-  const {data} = await AvailableWorksApi.getAll();
+  const { data } = await AvailableWorksApi.getAll();
 
   return data;
 }
@@ -13,21 +13,26 @@ export default async function Page() {
 
   return (
     <Container disableGutters>
-      <Typography variant="h1">Available Works</Typography>
-        <Grid
-          container
-          rowSpacing={5}
-          columnSpacing={{xs: 1, sm: 2, md: 3}}
-          marginTop={2}
-        >
-          {data?.map((item: any, index: any) => {
-            return (
-              <Grid key={`firstArrayIndex ${index}`} item xs={6}>
-                <CardImage data={item } />
-              </Grid>
-            );
-          })}
-        </Grid>
+      <Typography
+        sx={{ textAlign: "center", width: "100%", mb: "10px" }}
+        variant="h1"
+      >
+        Available Works
+      </Typography>
+      <Grid
+        container
+        rowSpacing={5}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        marginTop={2}
+      >
+        {data?.map((item: any, index: any) => {
+          return (
+            <Grid key={`firstArrayIndex ${index}`} item xs={12} md={6}>
+              <CardImage data={item} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </Container>
   );
 }

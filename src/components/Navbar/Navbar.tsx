@@ -33,11 +33,11 @@ export default function Navbar() {
   };
 
   // Define menu items for the drawer
-  const menuItems = [
-    { text: "Home", icon: <HomeIcon />, href: "/" },
-    { text: "About", icon: <InfoIcon />, href: "/about" },
-    { text: "Contact", icon: <ContactMailIcon />, href: "/contact" },
-  ];
+  // const menuItems = [
+  //   { text: "Home", icon: <HomeIcon />, href: "/" },
+  //   { text: "About", icon: <InfoIcon />, href: "/about" },
+  //   { text: "Contact", icon: <ContactMailIcon />, href: "/contact" },
+  // ];
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -72,14 +72,14 @@ export default function Navbar() {
             >
               <List>
                 {/* Mapping over menuItems to dynamically create the list */}
-                {menuItems.map((item, index) => (
+                {/* {menuItems.map((item, index) => (
                   <Link key={index} href={item.href} passHref>
                     <ListItem button>
                       <ListItemIcon>{item.icon}</ListItemIcon>
                       <ListItemText primary={item.text} />
                     </ListItem>
                   </Link>
-                ))}
+                ))} */}
               </List>
               <Divider />
               <NavList /> {/* Optional: Include existing navigation list if needed */}

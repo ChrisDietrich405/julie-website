@@ -1,39 +1,38 @@
 "use client";
-import React, {FormEvent, useContext, useState} from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import {FormContainer} from "./styles.css";
+import { FormContainer } from "./styles.css";
 
-import {useCookies} from "react-cookie";
-import {TextField, Typography} from "@mui/material";
+import { useCookies } from "react-cookie";
+import { TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {useAuthLogin} from "@/app/hooks";
-import {SnackbarContext} from "@/app/context/snackbarContext";
+import { useAuthLogin } from "@/app/hooks";
+import { SnackbarContext } from "@/app/context/snackbarContext";
 
-const LoginForm: React.FC<{ route?: string }> = ({route}) => {
+const LoginForm: React.FC<{ route?: string }> = ({ route }) => {
   const router = useRouter();
-  const {openError} = useContext(SnackbarContext)
-  const [, setCookie] = useCookies(['token']);
+  const { openError } = useContext(SnackbarContext);
+  const [, setCookie] = useCookies(["token"]);
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const {mutate: doLogin, isPending} = useAuthLogin({
+  const { mutate: doLogin, isPending } = useAuthLogin({
     onSuccess: (response) => {
+      const expirationDate = new Date(response.data.expires * 1000);
 
-      const expirationDate = new Date(response.data.expires * 1000)
-
-      setCookie('token', response.data.token, {
-        path: '/',
-        expires: expirationDate
-      })
+      setCookie("token", response.data.token, {
+        path: "/",
+        expires: expirationDate,
+      });
 
       router.push(route ? route : "/");
     },
     onError: (error) => {
-      openError(error.message ?? '')
-    }
+      openError(error.message ?? "");
+    },
   });
 
   const onSubmit = async (e: FormEvent<HTMLDivElement>) => {
@@ -42,15 +41,12 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
     doLogin({
       email,
       password,
-    })
+    });
   };
 
   return (
     <>
-      <FormContainer
-        component="form"
-        onSubmit={onSubmit}
-      >
+      <FormContainer component="form" onSubmit={onSubmit}>
         <Typography variant="h2">Log in</Typography>
         <TextField
           fullWidth
@@ -84,7 +80,9 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
         </LoadingButton>
 
         <Typography variant="body1">New to Julie Art?</Typography>
-        <Link shallow href="/create-account">Create an account</Link>
+        <Link shallow href="/auth/create-account">
+          Create an account
+        </Link>
       </FormContainer>
     </>
   );

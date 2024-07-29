@@ -8,3 +8,15 @@
   padding-bottom: 20px;
 }
 
+.input_wrapper {
+  display: grid;
+  padding: 5px; 
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8;
+}
+
+@media only screen and (max-width: 500px) {
+  .input_wrapper {
+    grid-template-columns: none;
+  }
+}

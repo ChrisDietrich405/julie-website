@@ -14,12 +14,8 @@ const index = () => {
         <Typography component="h4" sx={{textAlign: "center", mb: 4}}>
           Sign up to my newsletter for exclusive updates
         </Typography>
-        <Box
-          sx={{
-            display: "Grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 8,
-          }}
+        <Box className={styles.input_wrapper}
+          
         >
           <TextField id="outlined-basic-name" label="Name" variant="outlined"/>
           <TextField id="outlined-basic-email" label="Email" variant="outlined"/>
