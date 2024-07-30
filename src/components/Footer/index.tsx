@@ -11,7 +11,7 @@ const index = () => {
   return (
     <div className={styles.wrapper}>
       <Container>
-        <Typography component="h4" sx={{textAlign: "center", mb: 4}}>
+        {/* <Typography component="h4" sx={{textAlign: "center", mb: 4}}>
           Sign up to my newsletter for exclusive updates
         </Typography>
         <Box className={styles.input_wrapper}
@@ -25,8 +25,8 @@ const index = () => {
           <Typography sx={{textAlign: "center", mt: 4}}>
             Sign up to my newsletter for exclusive updates
           </Typography>
-        </Box>
-        <Box
+        </Box> */}
+        {/* <Box
           sx={{
             gap: 3,
             display: "flex",
@@ -38,9 +38,9 @@ const index = () => {
           <Button>Shipping</Button>
           <Button>FAQs</Button>
           <Button>Testimonials</Button>
-        </Box>
+        </Box> */}
         <Typography sx={{textAlign: "center"}}>
-          Copyright © Dietrich {copyrightYear()}
+          Copyright © JustArt {copyrightYear()}
         </Typography>
       </Container>
     </div>

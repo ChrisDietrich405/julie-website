@@ -47,7 +47,7 @@ export default function Navbar() {
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="black"
             aria-label="menu"
             sx={{ mr: 2, display: { sm: "block", md: "none" } }}
             onClick={toggleDrawer(true)}
