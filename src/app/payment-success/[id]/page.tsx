@@ -55,7 +55,7 @@ export default async function PaymentSuccess({params}: Params) {
           data={availableWorks}
         />
       </Paper>
-      <Button variant="contained">Go to my orders</Button>
+      {/* <Button variant="contained">Go to my orders</Button> */}
     </Container>
   )
 }
