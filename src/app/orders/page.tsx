@@ -1,9 +1,9 @@
-import BasicTable from "../components/Orders";
+import DataGrid from "../components/Orders";
 
 const ReviewOrders = () => {
   return (
     <div>
-      <BasicTable />
+      <DataGrid />
     </div>
   );
 };

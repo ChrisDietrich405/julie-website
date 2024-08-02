@@ -69,18 +69,19 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
   const userId = requestHeaders.get("x-decoded-id");
-  console.log(userId);
+
   try {
     const user = await UsersModel.findOne({ _id: userId });
 
-    if (user.email !== "chris@gmail.com") { 
-      return NextResponse.json(
-        { message: "Unauthorized user" },
-        { status: 401 }
-      );
-    }
+    // if (user.email !== "chris@gmail.com") {
+    //   return NextResponse.json(
+    //     { message: "Unauthorized user" },
+    //     { status: 401 }
+    //   );
+    // }
 
     const allOrders = await OrdersModel.find();
+    console.log(allOrders);
     return NextResponse.json(allOrders, { status: 200 });
   } catch (error) {
     return NextResponse.json({ status: 500 });
