@@ -8,10 +8,6 @@ export default [
     route: "/about",
   },
   {
-    title: "Portfolio",
-    route: "/portfolio",
-  },
-  {
     title: "Available Works",
     route: "/available-works",
   },
