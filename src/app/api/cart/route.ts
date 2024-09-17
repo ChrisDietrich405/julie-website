@@ -33,7 +33,7 @@ export const PUT = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
 
   const userId = requestHeaders.get("x-decoded-id");
-  console.log(userId)
+
 
   const { cart } = (await req.json()) as { cart: string[] };
 

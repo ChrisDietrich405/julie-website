@@ -17,7 +17,7 @@ export const UserContextProvider = ({ children }: any) => {
   const { data: user } = useGetUser({ token: cookie.token });
 
   return (
-    <userContext.Provider value={{ user }}>
+    <userContext.Provider value={{ user: user?.data ?? {} }}>
       {children}
     </userContext.Provider>
   );

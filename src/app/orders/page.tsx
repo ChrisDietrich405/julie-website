@@ -7,8 +7,6 @@ const getData = async () => {
 const ReviewOrders = () => {
   const test = getData();
 
-  console.log(test);
-
   return (
     <div>
       test

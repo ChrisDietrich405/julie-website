@@ -7,7 +7,7 @@ const getData = async () => {
 
 export default async function DataGridDemo() {
   const data = await getData();
-  console.log(data);
+
   return (
     <h1>hello</h1>
 

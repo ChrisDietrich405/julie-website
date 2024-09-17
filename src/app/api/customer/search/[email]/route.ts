@@ -1,38 +1,33 @@
-import {NextRequest, NextResponse} from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
 
 interface Params {
-  params: { email: string }
+  params: { email: string };
 }
 
-export async function GET(req: NextRequest, {params}: Params) {
-  const {email} = params;
+export async function GET(req: NextRequest, { params }: Params) {
+  const { email } = params;
 
   if (!email) {
-    return NextResponse.json({status: 401, message: "Email is missing"});
+    return NextResponse.json({ status: 401, message: "Email is missing" });
   }
 
-  const userId = req.cookies.get('x-decoded-id')?.value;
+  const userId = req.cookies.get("x-decoded-id")?.value;
+  
 
   if (!userId) {
-    return NextResponse.json({status: 401, message: "Unauthorized user"});
+    return NextResponse.json({ status: 401, message: "Unauthorized user" });
   }
-
   try {
     const customer = await stripe.customers.search({
-      query: `email:\"${email}\"`
+      query: `email:\"${email}\"`,
     });
 
-    return NextResponse.json(
-      [
-        ...customer.data,
-      ],
-      {
-        status: 201,
-      }
-    );
+    return NextResponse.json([...customer.data], {
+      status: 201,
+    });
   } catch (err) {
     return NextResponse.json(
       {
