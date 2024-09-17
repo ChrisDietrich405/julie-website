@@ -1,12 +1,12 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
-import {CartApi} from "@/services";
-import {ICartResponse, TOrderResponse} from "@/models";
+import { Order } from "@/interfaces";
 import {OrdersApi} from "@/services/orders.service";
+import {AxiosResponse} from "axios";
 
-type QueryOptions = Omit<UseQueryOptions<TOrderResponse, Error>, 'queryKey'>;
+type QueryOptions = Omit<UseQueryOptions<AxiosResponse<Order>, Error>, 'queryKey'>;
 
 export const useGetOneOrder = (id: string, queryOptions: QueryOptions = {}) =>
-  useQuery<TOrderResponse>({
+  useQuery<AxiosResponse<Order>>({
     queryKey: ['useGetOneOrder', id],
     queryFn: () => OrdersApi.getOne(id, true),
     ...queryOptions

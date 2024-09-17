@@ -1,10 +1,7 @@
 import React from "react";
-import {Container} from "@mui/material";
-
-import {BackgroundBox} from "./styles.css";
 import dynamic from "next/dynamic";
 
-const LoginForm = dynamic(() => import('./LoginForm'));
+const LoginTemplate = dynamic(() => import('./LoginTemplate'), { ssr: false } );
 
 interface LoginProps {
   searchParams: {
@@ -13,10 +10,6 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({searchParams}) =>
-  <BackgroundBox>
-    <Container>
-      <LoginForm route={searchParams.url}/>
-    </Container>
-  </BackgroundBox>
+  <LoginTemplate searchParams={searchParams} />
 
 export default Login;

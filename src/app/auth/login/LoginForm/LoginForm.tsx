@@ -1,25 +1,25 @@
 "use client";
-import React, { FormEvent, useContext, useState } from "react";
+import React, {FormEvent, useContext, useState} from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 
-import { FormContainer } from "./styles.css";
+import {FormContainer} from "./styles.css";
 
-import { useCookies } from "react-cookie";
-import { TextField, Typography } from "@mui/material";
+import {useCookies} from "react-cookie";
+import {TextField, Typography} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useAuthLogin } from "@/app/hooks";
-import { SnackbarContext } from "@/app/context/snackbarContext";
+import {useAuthLogin} from "@/app/hooks";
+import {SnackbarContext} from "@/context/snackbarContext";
 
-const LoginForm: React.FC<{ route?: string }> = ({ route }) => {
+const LoginForm: React.FC<{ route?: string }> = ({route}) => {
   const router = useRouter();
-  const { openError } = useContext(SnackbarContext);
+  const {openError} = useContext(SnackbarContext);
   const [, setCookie] = useCookies(["token"]);
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const { mutate: doLogin, isPending } = useAuthLogin({
+  const {mutate: doLogin, isPending} = useAuthLogin({
     onSuccess: (response) => {
       const expirationDate = new Date(response.data.expires * 1000);
 

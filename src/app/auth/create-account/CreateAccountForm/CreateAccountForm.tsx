@@ -7,7 +7,8 @@ import FormContainer from '@/components/forms/FormContainer'
 import LoadingButton from "@mui/lab/LoadingButton";
 import Link from "next/link";
 import {useCreateUser} from "@/app/hooks";
-import {SnackbarContext} from "@/app/context/snackbarContext";
+import {SnackbarContext} from "@/context/snackbarContext";
+import {AxiosError} from "axios";
 
 const DEFAULT_FORMDATA = {
   name: "",
@@ -36,8 +37,9 @@ const CreateAccountForm = () => {
     openSuccess("Created account successfully");
   }
 
-  const onError = (error: Error) => {
-    openError(error.message);
+  const onError = ({response}: AxiosError<{ message: string}>) => {
+
+    openError(response?.data.message ?? "");
   }
 
   const {mutate: createUser, isPending} = useCreateUser({onSuccess, onError});
@@ -46,7 +48,7 @@ const CreateAccountForm = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      openError("Confirm password doesn't equal Password");
+     return openError("Confirm password doesn't equal Password");
     }
 
     createUser(formData)

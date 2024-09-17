@@ -1,13 +1,13 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {StripeApi} from "@/services";
-import {TCustomerResponse} from "@/app/models/customer.models";
+import {CustomerResponse} from "@/interfaces/customer.interface";
 
-type QueryOptions = Omit<UseQueryOptions<TCustomerResponse, Error>, 'queryKey'>;
+type QueryOptions = Omit<UseQueryOptions<CustomerResponse, Error>, 'queryKey'>;
 
 type Props = QueryOptions & { customerId: string }
 
 export const useGetCustomer = ({customerId, ...queryOptions}: Props) =>
-  useQuery<TCustomerResponse>({
+  useQuery<CustomerResponse>({
     queryKey: ['useGetCustomer'],
     queryFn: () => StripeApi.RetrieveCustomer(customerId),
     ...queryOptions

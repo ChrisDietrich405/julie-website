@@ -1,11 +1,11 @@
 "use client";
 
 import {ThemeProvider} from "@mui/material";
-import {UserContextProvider} from "@/app/context/userContext";
+import {UserContextProvider} from "@/context/useUserContext/userContext";
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v13-appRouter';
 import {theme} from "@/theme";
 import {dehydrate, HydrationBoundary, QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {SnackbarContextProvider} from "@/app/context";
+import {SnackbarContextProvider} from "../context";
 import {useState} from "react";
 
 export const Providers = ({children}: { children: React.ReactNode }) => {

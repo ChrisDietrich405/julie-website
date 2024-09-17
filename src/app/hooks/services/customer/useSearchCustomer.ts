@@ -1,6 +1,6 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {StripeApi} from "@/services";
-import {TCustomersDataResponse} from "@/app/models/customer.models";
+import {TCustomersDataResponse} from "@/interfaces/customer.interface";
 
 type QueryOptions = Omit<UseQueryOptions<TCustomersDataResponse, Error>, 'queryKey'>;
 

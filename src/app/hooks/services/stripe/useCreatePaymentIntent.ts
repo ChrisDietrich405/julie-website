@@ -1,10 +1,10 @@
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 import {StripeApi} from "@/services";
-import {ICartItem} from "@/models";
-import {IPaymentIntentResponse} from "@/models/stripe.models";
+import {IPaymentIntentResponse} from "@/interfaces/stripe.interface";
+import {AvailableWork} from "@/interfaces/availableWork.interface";
 
 type MutationOptions = UseMutationOptions<IPaymentIntentResponse, Error, {
-  items: ICartItem[],
+  items: AvailableWork[],
   customerId?: string
 }, unknown>;
 

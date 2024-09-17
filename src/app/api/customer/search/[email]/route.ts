@@ -1,8 +1,11 @@
 import {NextRequest, NextResponse} from "next/server";
 import Stripe from "stripe";
-import {Params} from "@/app/types/params";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
+
+interface Params {
+  params: { email: string }
+}
 
 export async function GET(req: NextRequest, {params}: Params) {
   const {email} = params;

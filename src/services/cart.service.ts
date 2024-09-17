@@ -1,10 +1,12 @@
-import {ApplicationApi} from "@/services/base.service";
-import {ICartResponse} from "@/models";
+import { ApplicationApi } from "@/services/base.service";
+import { ICartResponse } from "@/interfaces";
 
-const baseUrl = '/api/cart'
+const baseUrl = "/api/cart";
 
 export const CartApi = {
   get: (): Promise<ICartResponse> => ApplicationApi.get(`${baseUrl}`),
-  update: (cart: string[]): Promise<void> => ApplicationApi.put(`${baseUrl}`, {cart}),
-  delete: (id: string): Promise<void> => ApplicationApi.delete(`${baseUrl}/${id}/remove`),
-}
+  update: (cart: string[]): Promise<void> =>
+    ApplicationApi.put(`${baseUrl}`, { cart }),
+  delete: (id: string): Promise<void> =>
+    ApplicationApi.delete(`${baseUrl}/${id}/remove`),
+};

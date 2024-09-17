@@ -1,17 +1,17 @@
-import { NextResponse, NextRequest } from "next/server";
-import { UsersModel } from "@/app/models/users/user-schema";
+import {NextRequest, NextResponse} from "next/server";
+import { UserModel } from "@/db/models";
 import bcrypt from "bcryptjs";
-import {Params} from "@/app/types/params";
+import {RoleEnum} from "@/interfaces";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  const { name, streetAddress, city, email, password } =
+  const {name, streetAddress, city, email, password} =
     await req.json();
   if (
     !name ||
     !streetAddress ||
     !city ||
     !email ||
-    !password 
+    !password
   ) {
     return NextResponse.json(
       {
@@ -38,10 +38,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     );
   }
 
-  const existingEmail = await UsersModel.findOne({ email });
+  const existingEmail = await UserModel.findOne({email});
   if (existingEmail) {
     return NextResponse.json(
-      { status: 409, message: "Duplicate email" },
+      {status: 409, message: "Duplicate email"},
       {
         status: 409,
       }
@@ -52,7 +52,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = new UsersModel({
+    const newUser = new UserModel({
       name,
       streetAddress,
       city,
@@ -62,10 +62,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     await newUser.save();
 
-    return NextResponse.json({ status: 201, message: "User created" });
+    return NextResponse.json({status: 201, message: "User created"});
   } catch (error: any) {
     return NextResponse.json(
-      { status: 500, message: error.message },
+      {status: 500, message: error.message},
       {
         status: 500,
       }
@@ -73,31 +73,36 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-export const GET = async (req: NextRequest, { params }: Params) => {
+interface Params {
+  params: { id: string }
+}
+
+export const GET = async (req: NextRequest, {params}: Params) => {
 
   const requestHeaders = new Headers(req.headers);
 
   const userId = requestHeaders.get("x-decoded-id");
 
   try {
-    const user = await UsersModel.findOne({ _id: userId });
+    const user = await UserModel.findOne({_id: userId});
 
-    if ( !user) {
+    if (!user) {
       return NextResponse.json({
         status: 404,
         data: 'Not founded',
       });
     }
 
-    const { name, email, city, streetAddress } = user;
+    const {name, email, city, streetAddress, role} = user;
 
     return NextResponse.json({
       name,
       email,
       city,
       streetAddress,
+      role
     });
-    } catch (error) {
-      return NextResponse.json({ status: 500, message: "Server failed" });
-    }
+  } catch (error) {
+    return NextResponse.json({message: "Server failed"}, {status: 500});
+  }
 };

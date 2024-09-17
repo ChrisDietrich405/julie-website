@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
-import { UsersModel } from "@/app/models/users/user-schema";
+import {NextRequest, NextResponse} from "next/server";
+import { UserModel } from "@/db";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -12,7 +12,7 @@ function getTokenExpiration(token: string) {
 }
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-  const { email, password } = await req.json();
+  const {email, password} = await req.json();
 
   if (!email || !password) {
     return NextResponse.json(
@@ -40,10 +40,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     );
   }
 
-  const existingAccount = await UsersModel.findOne({ email });
+  const existingAccount = await UserModel.findOne({email});
   if (!existingAccount) {
     return NextResponse.json(
-      { status: 401, message: "Incorrect credentials" },
+      {status: 401, message: "Incorrect credentials"},
       {
         status: 401,
       }
@@ -56,7 +56,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   );
   if (!matchedPassword) {
     return NextResponse.json(
-      { status: 401, message: "Incorrect credentials" },
+      {status: 401, message: "Incorrect credentials"},
       {
         status: 401,
       }
@@ -64,9 +64,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 
   const token = jwt.sign(
-    { id: existingAccount._id },
+    {id: existingAccount._id},
     process.env.JWT_SECRET as string,
-    { expiresIn: "2d" }
+    {expiresIn: "2d"}
   );
 
   const expires = getTokenExpiration(token)

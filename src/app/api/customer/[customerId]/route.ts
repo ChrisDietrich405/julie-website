@@ -1,6 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
 import Stripe from "stripe";
-import {TCustomer} from "@/app/models/customer.models";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
 
@@ -56,7 +55,7 @@ export async function PATCH(req: NextRequest, {params}: GetParams) {
     return NextResponse.json({status: 401, message: "Unauthorized user"});
   }
 
-  const customerRequest: TCustomer = await req.json();
+  const customerRequest: Stripe.CustomerUpdateParams = await req.json();
 
   try {
     const customer = await stripe.customers.update(params.customerId, customerRequest);

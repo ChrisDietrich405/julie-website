@@ -9,15 +9,11 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
-import InfoIcon from "@mui/icons-material/Info";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
 import Divider from "@mui/material/Divider";
-import { NavList, ShoppingCartButton, UserMenu } from "@/components/Navbar/components";
+import { NavList, ShoppingCartButton } from "@/components/Navbar/components";
+import dynamic from "next/dynamic";
+
+const UserMenu = dynamic(() => import('./components/UserMenu/UserMenu'), {ssr: false})
 
 export default function Navbar() {
   // State for controlling the drawer's open/close status
@@ -32,13 +28,6 @@ export default function Navbar() {
     backgroundColor: "white",
   };
 
-  // Define menu items for the drawer
-  // const menuItems = [
-  //   { text: "Home", icon: <HomeIcon />, href: "/" },
-  //   { text: "About", icon: <InfoIcon />, href: "/about" },
-  //   { text: "Contact", icon: <ContactMailIcon />, href: "/contact" },
-  // ];
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={appBarStyle}>
@@ -47,7 +36,7 @@ export default function Navbar() {
           <IconButton
             size="large"
             edge="start"
-            color="black"
+            color="inherit"
             aria-label="menu"
             sx={{ mr: 2, display: { sm: "block", md: "none" } }}
             onClick={toggleDrawer(true)}
@@ -70,17 +59,6 @@ export default function Navbar() {
               onClick={toggleDrawer(false)}
               onKeyDown={toggleDrawer(false)}
             >
-              <List>
-                {/* Mapping over menuItems to dynamically create the list */}
-                {/* {menuItems.map((item, index) => (
-                  <Link key={index} href={item.href} passHref>
-                    <ListItem button>
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText primary={item.text} />
-                    </ListItem>
-                  </Link>
-                ))} */}
-              </List>
               <Divider />
               <NavList /> {/* Optional: Include existing navigation list if needed */}
             </Box>

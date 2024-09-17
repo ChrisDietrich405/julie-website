@@ -8,8 +8,8 @@ export const config = {
     "/api/cart",
     "/api/cart/:path*",
     "/api/create-create",
-    "/api/orders",
     "/api/customer/:path*",
+    "/api/orders/:path*",
   ],
 };
 

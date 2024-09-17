@@ -1,12 +1,13 @@
-import { NextResponse, NextRequest } from "next/server";
-import mongoose from "@/lib/mongoose";
-import { UsersModel } from "@/app/models/users/user-schema";
-import { OrdersModel } from "@/app/models/orders/orders-schema";
-import { AvailableWorksModel } from "@/app/models/available-works/available-works-schema";
+import { NextRequest, NextResponse } from "next/server";
+import mongoose from "@/db/mongoose";
+import { UserModel, OrderModel } from "@/db/models";
+
+import { AvailableWorkModel } from "@/db/models";
+import {RoleEnum} from "@/interfaces";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
-  const { customer, deliveryAddress, availableWorks } = await req.json();
+  const { customer, deliveryAddress, availableWorks, price } = await req.json();
 
   const userId = requestHeaders.get("x-decoded-id");
 
@@ -16,7 +17,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   const id = new mongoose.Types.ObjectId(userId);
 
-  const user = await UsersModel.findById(id);
+  const user = await UserModel.findById(id);
 
   if (
     !customer.name ||
@@ -31,21 +32,22 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     });
   }
 
-  customer.email = user.email;
+  customer.email = user?.email;
 
   try {
-    const newOrder = new OrdersModel({
+    const newOrder = new OrderModel({
       customerId: id,
       availableWorks,
       customer,
       deliveryAddress,
-      status: "shopping cart",
+      status: "Waiting",
       orderCode: "2",
+      price
     });
 
     await newOrder.save();
 
-    await AvailableWorksModel.updateMany(
+    await AvailableWorkModel.updateMany(
       {
         _id: { $in: availableWorks },
       },
@@ -71,19 +73,19 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
   const userId = requestHeaders.get("x-decoded-id");
 
   try {
-    const user = await UsersModel.findOne({ _id: userId });
+    const user = await UserModel.findOne({ _id: userId });
 
-    // if (user.email !== "chris@gmail.com") {
-    //   return NextResponse.json(
-    //     { message: "Unauthorized user" },
-    //     { status: 401 }
-    //   );
-    // }
+    if (user?.role !== RoleEnum.ADMIN) {
+      return NextResponse.json(
+        { message: "Unauthorized user" },
+        { status: 401 }
+      );
+    }
 
-    const allOrders = await OrdersModel.find();
-    console.log(allOrders);
+    const allOrders = await OrderModel.find().populate('availableWorks');
+
     return NextResponse.json(allOrders, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ status: 500 });
+    return NextResponse.json({ status: 500 }, { status: 500 });
   }
 };

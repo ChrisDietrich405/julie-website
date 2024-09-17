@@ -1,6 +1,5 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
-import {CartApi, StreetMapApi} from "@/services";
-import {ICartResponse} from "@/models";
+import {StreetMapApi} from "@/services";
 
 type QueryOptions = Omit<UseQueryOptions<any, Error>, 'queryKey'>;
 

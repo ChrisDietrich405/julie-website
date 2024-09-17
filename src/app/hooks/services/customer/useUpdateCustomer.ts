@@ -1,10 +1,10 @@
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 import {StripeApi} from "@/services";
-import {TCustomer, TCustomerResponse} from "@/app/models/customer.models";
+import {Customer, CustomerResponse} from "@/interfaces/customer.interface";
 
-type MutationOptions = UseMutationOptions<TCustomerResponse, Error, {
+type MutationOptions = UseMutationOptions<CustomerResponse, Error, {
   customerId?: string,
-  data: Partial<TCustomer>
+  data: Partial<Customer>
 }, unknown>;
 
 export const useUpdateCustomer = (mutationOptions: MutationOptions = {}) =>

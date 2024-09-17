@@ -20,11 +20,11 @@ export default function UserMenu() {
   };
 
   return (
-    <Link href={isLoggedIn ? '/' : '/auth/login'}>
+    <Link shallow href={isLoggedIn ? '/' : '/auth/login'}>
       <Button
         variant="contained"
         color={isLoggedIn ? 'warning' : 'primary'}
-        onClick={isLoggedIn ? handleLogout : null}
+        onClick={isLoggedIn ? handleLogout : undefined}
       >
         {isLoggedIn ? 'Log out' : 'Log in'}
       </Button>

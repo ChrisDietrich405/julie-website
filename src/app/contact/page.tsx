@@ -15,7 +15,7 @@ const Contact = () => {
         Contact
       </Typography>
       <Typography sx={{ margin: 2, textAlign: "center" }} component="p">
-        Simply fill out the form and I'll be in touch soon.
+        Simply fill out the form and I&apos;ll be in touch soon.
       </Typography>
       <Grid container spacing={2} sx={{ my: 3 }}>
         <Grid item xs={12} justifyContent="center">

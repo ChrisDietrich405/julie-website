@@ -1,9 +1,9 @@
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
-import {CartApi} from "@/services";
 import {OrdersApi} from "@/services/orders.service";
-import {TOrderResponse} from "@/models";
+import {Order} from "@/interfaces";
+import {AxiosResponse} from "axios";
 
-type MutationOptions = UseMutationOptions<TOrderResponse, Error, any, unknown>;
+type MutationOptions = UseMutationOptions<AxiosResponse<Order>, Error, any, unknown>;
 
 export const usePostOrder = (mutationOptions: MutationOptions = {}) =>
   useMutation({

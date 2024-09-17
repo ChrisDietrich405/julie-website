@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import Stripe from "stripe";
-import {ICart} from "@/models";
+import { Cart } from "@/interfaces/cart.interface";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({message: "Unauthorized user"}, {status: 401});
   }
 
-  const body: { items: ICart['items'], customerId?: string } = await req.json();
+  const body: { items: Cart['items'], customerId?: string } = await req.json();
 
   const {items, customerId} = body;
 

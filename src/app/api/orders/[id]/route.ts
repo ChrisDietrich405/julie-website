@@ -1,17 +1,19 @@
-import { NextResponse, NextRequest } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 
-import { Params } from "@/app/types/params";
-import { OrdersModel } from "@/app/models/orders/orders-schema";
-import {AvailableWorksModel} from "@/app/models/available-works/available-works-schema";
+import {AvailableWorkModel, OrderModel} from "@/db/models";
 
-export const PUT = async (req: NextRequest, { params }: Params) => {
+interface Params {
+  params: { id: string; }
+}
+
+export const PUT = async (req: NextRequest, {params}: Params) => {
   const payment = await req.json();
 
   try {
-    const order = await OrdersModel.findOne({ orderCode: params.id });
+    const order = await OrderModel.findOne({orderCode: params.id});
 
     if (!order) {
-      return NextResponse.json({ status: 404, message: "Not found" });
+      return NextResponse.json({status: 404, message: "Not found"});
     }
 
     await order.updateOne({
@@ -19,19 +21,19 @@ export const PUT = async (req: NextRequest, { params }: Params) => {
       status: "new",
     });
 
-    return NextResponse.json({ status: 200, message: "User updated" });
+    return NextResponse.json({status: 200, message: "User updated"});
   } catch (error: any) {
-    return NextResponse.json({ status: 500, message: error.message });
+    return NextResponse.json({status: 500, message: error.message});
   }
 };
 
 export const GET = async (req: NextRequest, {params}: Params) => {
   const requestHeaders = new Headers(req.headers);
 
-  const { id } = params;
+  const {id} = params;
 
   try {
-    const order = await OrdersModel.findOne({ _id: id });
+    const order = await OrderModel.findOne({_id: id});
 
     if (!order) {
       return NextResponse.json({
@@ -41,9 +43,9 @@ export const GET = async (req: NextRequest, {params}: Params) => {
       });
     }
 
-    const { customer, deliveryAddress } = order;
+    const {customer, deliveryAddress} = order;
 
-    const availableWorks = await AvailableWorksModel.find({ _id: order.availableWorks });
+    const availableWorks = await AvailableWorkModel.find({_id: order.availableWorks});
 
     return NextResponse.json({
       customer,
@@ -52,6 +54,6 @@ export const GET = async (req: NextRequest, {params}: Params) => {
     });
 
   } catch (error) {
-    return NextResponse.json({ status: 200, message: error });
+    return NextResponse.json({status: 200, message: error});
   }
 };

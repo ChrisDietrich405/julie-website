@@ -1,8 +1,7 @@
 import React from "react";
 import {OrdersApi} from "@/services/orders.service";
-import {Params} from "@/app/types/params";
-import {Box, Button, Container, Paper, Stack, Typography} from "@mui/material";
-import CheckoutTable from "@/app/components/CheckoutTable";
+import {Box, Container, Paper, Stack, Typography} from "@mui/material";
+import CheckoutTable from "../../../components/CheckoutTable";
 
 async function fetchOrder(id: string) {
   const response = await OrdersApi.getOne(id, true);
@@ -10,12 +9,11 @@ async function fetchOrder(id: string) {
   return response.data;
 }
 
-export default async function PaymentSuccess({params}: Params) {
+export default async function PaymentSuccess({params}: { params: { id: string } }) {
   const {customer, deliveryAddress, availableWorks} = await fetchOrder(params.id);
 
   const renderAddress = `${deliveryAddress?.streetAddress}, ${deliveryAddress?.city} - ${deliveryAddress?.zipCode}`
 
-   
 
   return (
     <Container sx={{
@@ -52,6 +50,7 @@ export default async function PaymentSuccess({params}: Params) {
         </Stack>
 
         <CheckoutTable
+          //@ts-ignore
           data={availableWorks}
         />
       </Paper>

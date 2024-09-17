@@ -1,5 +1,5 @@
 import {ApplicationApi, BaseApi} from "@/services/base.service";
-import {ICartResponse} from "@/models";
+import {ICartResponse} from "@/interfaces";
 
 const baseUrl = 'https://nominatim.openstreetmap.org/search'
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CartModel } from "@/app/models/cart";
-import { AvailableWorksModel } from "@/app/models/available-works/available-works-schema";
+import { CartModel } from "@/db/models";
+import { AvailableWorkModel } from "@/db/models";
 
 export const POST = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
@@ -33,6 +33,7 @@ export const PUT = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
 
   const userId = requestHeaders.get("x-decoded-id");
+  console.log(userId)
 
   const { cart } = (await req.json()) as { cart: string[] };
 
@@ -54,7 +55,6 @@ export const PUT = async (req: NextRequest) => {
 
 export const GET = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers);
-  console.log("hello", requestHeaders);
 
   const userId = requestHeaders.get("x-decoded-id");
 
@@ -76,7 +76,7 @@ export const GET = async (req: NextRequest) => {
       items = cart.items;
     }
 
-    const availableWorks = await AvailableWorksModel.find({
+    const availableWorks = await AvailableWorkModel.find({
       _id: { $in: items },
     });
 

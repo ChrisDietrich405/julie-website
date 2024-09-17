@@ -1,8 +1,8 @@
-import {ApplicationApi, BaseApi} from "@/services/base.service";
-import {ICartResponse, ILoginRequest, TLoginResponse} from "@/models";
+import { BaseApi } from "@/services/base.service";
+import { LoginRequest, LoginResponse } from "@/interfaces";
 
 const baseUrl = '/api/auth'
 
 export const AuthApi = {
-  login: (data: ILoginRequest): Promise<TLoginResponse> => BaseApi.post(`${baseUrl}`, data),
+  login: (data: LoginRequest): Promise<LoginResponse> => BaseApi.post(`${baseUrl}`, data),
 }

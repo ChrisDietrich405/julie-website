@@ -1,9 +1,10 @@
 import {ApplicationApi, BaseApi} from "@/services/base.service";
-import {INewUserBaseRequest, IUserResponse} from "@/models";
+import {UserBaseRequest, User} from "@/interfaces";
+import {AxiosResponse} from "axios";
 
 const baseUrl = '/api/user'
 
 export const UserApi = {
-  getOne: (): Promise<IUserResponse> => ApplicationApi.get(`${baseUrl}`),
-  create: (data: INewUserBaseRequest): Promise<void> => BaseApi.post(`${baseUrl}`, data),
+  getOne: (): Promise<User> => ApplicationApi.get(`${baseUrl}`),
+  create: (data: UserBaseRequest): Promise<AxiosResponse<void>> => BaseApi.post(`${baseUrl}`, data),
 }

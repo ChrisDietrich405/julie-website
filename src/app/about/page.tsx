@@ -8,7 +8,6 @@ const About = () => {
     <Container className="main-content">
       <Typography
         sx={{ textAlign: "center", width: "100%", mb: "10px" }}
-        level="h1"
         component="h1"
       >
         About Dr. Dietrich Eisler
@@ -39,19 +38,19 @@ const About = () => {
         >
           <Typography component="p" sx={{ mb: 3 }}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
+            industry. Lorem Ipsum has been the industry&apos;s standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book.
           </Typography>
           <Typography component="p" sx={{ mb: 3 }}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
+            industry. Lorem Ipsum has been the industry&apos;s standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book.
           </Typography>
           <Typography component="p" sx={{ mb: 3 }}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
+            industry. Lorem Ipsum has been the industry&apos;s standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book.
           </Typography>
@@ -59,11 +58,11 @@ const About = () => {
       </Grid>
       <Typography component="p">
         Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
+        industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever
         since the 1500s, when an unknown printer took a galley of type and
         scrambled it to make a type specimen book. Lorem Ipsum is simply dummy
         text of the printing and typesetting industry. Lorem Ipsum has been the
-        industry's standard dummy text ever since the 1500s, when an unknown
+        industry&apos;s standard dummy text ever since the 1500s, when an unknown
         printer took a galley of type and scrambled it to make a type specimen
         book.
       </Typography>

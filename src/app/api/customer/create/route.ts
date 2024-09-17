@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import Stripe from "stripe";
-import {TCustomer} from "@/app/models/customer.models";
+import {Customer} from "@/interfaces/customer.interface";
 
 const stripe = new Stripe(process.env.STRIPE_KEY as string);
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({status: 401, message: "Unauthorized user"});
   }
 
-  const customer: TCustomer = await req.json();
+  const customer: Customer = await req.json();
 
   if (!customer.name || !customer.email) {
     return NextResponse.json(

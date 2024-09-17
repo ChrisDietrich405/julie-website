@@ -1,6 +1,6 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {CartApi} from "@/services";
-import {ICartResponse} from "@/models";
+import { ICartResponse } from "@/interfaces/cart.interface";
 
 type QueryOptions = Omit<UseQueryOptions<ICartResponse, Error>, 'queryKey'>;
 

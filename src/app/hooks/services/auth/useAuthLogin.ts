@@ -1,12 +1,12 @@
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 import {AuthApi} from "@/services";
-import {ILoginRequest, TLoginResponse} from "@/models";
+import {LoginRequest, LoginResponse} from "@/interfaces/auth.interface";
 
-type MutationOptions = UseMutationOptions<TLoginResponse, Error, ILoginRequest, unknown>;
+type MutationOptions = UseMutationOptions<LoginResponse, Error, LoginRequest, unknown>;
 
 export const useAuthLogin = (mutationOptions: MutationOptions = {}) =>
-  useMutation<TLoginResponse, Error, ILoginRequest>({
+  useMutation<LoginResponse, Error, LoginRequest>({
     mutationKey: ['useAuthLogin'],
-    mutationFn: (params: ILoginRequest) => AuthApi.login(params),
+    mutationFn: (params: LoginRequest) => AuthApi.login(params),
     ...mutationOptions
   })

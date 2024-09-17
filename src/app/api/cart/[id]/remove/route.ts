@@ -1,6 +1,9 @@
-import {CartModel} from "@/app/models/cart";
+import {CartModel} from '@/db/models';
 import {NextRequest, NextResponse} from "next/server";
-import {Params} from "@/app/types/params";
+
+interface Params {
+  params: { id: string }
+}
 
 export const DELETE = async (req: NextRequest, {params}: Params) => {
   const requestHeaders = new Headers(req.headers);

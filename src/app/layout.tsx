@@ -1,9 +1,9 @@
 import "./globals.css";
 import type {Metadata} from "next";
 import Footer from "@/components/Footer";
-import {Providers} from "../components/Providers";
+import { Providers } from "@/components/Providers";
 import Navbar from "@/components/Navbar"
-import {Box, CssBaseline} from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +25,7 @@ export default function RootLayout({children}: RootLayoutProps) {
       <Navbar/>
       <Box
         component="main"
-        minHeight={`calc(100dvh - 355px)`}
+        minHeight={`calc(100dvh - 230px)`}
       >
         {children}
       </Box>

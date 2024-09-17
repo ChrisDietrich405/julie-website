@@ -1,3 +1,3 @@
 export {default} from './useDevice'
 export * from './services';
-export * from './common';
+export * from '@/hooks/common';
