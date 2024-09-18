@@ -1,8 +1,8 @@
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 
 export enum RoleEnum {
   ADMIN = 0,
-  CUSTOMER = 1
+  CUSTOMER = 1,
 }
 
 export interface User {
@@ -10,11 +10,15 @@ export interface User {
   email: string;
   name: string;
   streetAddress: string;
-  role?: RoleEnum
+  role?: RoleEnum;
+}
+
+export interface UserData {
+  data: User;
 }
 
 export interface UserBaseRequest extends User {
   password: string;
 }
 
-export type UserResponse = AxiosResponse<User>
+export type UserResponse = AxiosResponse<UserData>;

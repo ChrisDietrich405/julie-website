@@ -1,11 +1,11 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {UserApi} from "@/services";
-import {User} from "@/interfaces";
+import {UserData} from "@/interfaces";
 
-type QueryOptions = Omit<UseQueryOptions<User, Error>, 'queryKey'> & { token: string};
+type QueryOptions = Omit<UseQueryOptions<UserData, Error>, 'queryKey'> & { token: string};
 
 export const useGetUser = (queryOptions: QueryOptions) =>
-  useQuery<User>({
+  useQuery<UserData>({
     queryKey: ['useGetUser', queryOptions.token],
     queryFn: async () => UserApi.getOne(),
     ...queryOptions
