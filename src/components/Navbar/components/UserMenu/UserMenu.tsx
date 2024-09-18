@@ -4,29 +4,31 @@ import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 
 export default function UserMenu() {
   const [cookies, , removeCookies] = useCookies();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Synchronize with cookies on the client side
     setIsLoggedIn(!!cookies.token);
   }, [cookies]);
 
-  const handleLogout = () => {
-    removeCookies('token');
+  const handleLogout = async () => {
+    await axios.post("http://localhost:3000/api/auth/logout");
+
+    removeCookies("token");
     setIsLoggedIn(false);
   };
 
   return (
-    <Link shallow href={isLoggedIn ? '/' : '/auth/login'}>
+    <Link shallow href={isLoggedIn ? "/" : "/auth/login"}>
       <Button
         variant="contained"
-        color={isLoggedIn ? 'warning' : 'primary'}
+        color={isLoggedIn ? "warning" : "primary"}
         onClick={isLoggedIn ? handleLogout : undefined}
       >
-        {isLoggedIn ? 'Log out' : 'Log in'}
+        {isLoggedIn ? "Log out" : "Log in"}
       </Button>
     </Link>
   );
