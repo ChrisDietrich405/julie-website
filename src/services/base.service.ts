@@ -1,13 +1,13 @@
-import axios, {CreateAxiosDefaults} from "axios";
-import {Cookies} from 'react-cookie';
+import axios, { CreateAxiosDefaults } from "axios";
+import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
 
-const port = process.env.PORT ?? '3000'
+// const port = process.env.PORT ?? '3000'
 
 const config: CreateAxiosDefaults = {
-  baseURL: `http://localhost:${port}`,
-}
+  baseURL: `http://localhost:3000`,
+};
 
 enum HttpStatus {
   OK = 200,
@@ -23,31 +23,29 @@ enum HttpStatus {
   SERVICE_UNAVAILABLE = 503,
 }
 
-export const BaseApi = axios.create(config)
-export const ApplicationApi = axios.create(config)
+export const BaseApi = axios.create(config);
+export const ApplicationApi = axios.create(config);
 
-ApplicationApi.interceptors.request.use(
-  async (config) => {
-    let token = cookies.get('token')
+ApplicationApi.interceptors.request.use(async (config) => {
+  let token = cookies.get("token");
 
-    if (typeof window === 'undefined') {
-      const {cookies: serverCookies} = await import("next/headers");
-      token = serverCookies().get('token')?.value ?? ''
-    }
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+  if (typeof window === "undefined") {
+    const { cookies: serverCookies } = await import("next/headers");
+    token = serverCookies().get("token")?.value ?? "";
   }
-)
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 ApplicationApi.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === HttpStatus.UNAUTHORIZED) {
-      cookies.remove('token')
-      if (!window.location.pathname.includes('/auth')) {
+      cookies.remove("token");
+      if (!window.location.pathname.includes("/auth")) {
         window.location.href = `/auth/login?url=${window.location.pathname}`;
       }
     }
@@ -56,4 +54,5 @@ ApplicationApi.interceptors.response.use(
   }
 );
 
-export const handleApi = (server?: boolean) => server ? BaseApi : ApplicationApi;
+export const handleApi = (server?: boolean) =>
+  server ? BaseApi : ApplicationApi;
