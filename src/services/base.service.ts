@@ -6,7 +6,7 @@ const cookies = new Cookies();
 // const port = process.env.PORT ?? '3000'
 
 const config: CreateAxiosDefaults = {
-  baseURL: `http://localhost:3000`,
+  baseURL: process.env.BASE_URL,
 };
 
 enum HttpStatus {
