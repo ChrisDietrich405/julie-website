@@ -4,6 +4,8 @@ const getData = async () => {
   return  await BaseApi.get("/orders");
 };
 
+export const dynamic = 'force-dynamic';
+
 const ReviewOrders = () => {
   const test = getData();
 
