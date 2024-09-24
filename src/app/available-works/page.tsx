@@ -18,7 +18,7 @@ export default async function Page() {
         sx={{textAlign: "center", width: "100%", mb: "10px"}}
         variant="h1"
       >
-        Available Works hello 
+        Available Works hello   
       </Typography>
       <Grid
         container
