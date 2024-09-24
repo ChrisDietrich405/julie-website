@@ -28,7 +28,7 @@ const ReviewPurchase = () => {
 
   const getOrderDetails = async () => {
     const response = await axios.get(
-      `http://localhost:3000/api/orders/${orderCodeState}`
+      `${process.env.BASE_URL}/orders/${orderCodeState}`
     );
   };
 
