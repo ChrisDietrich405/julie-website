@@ -6,8 +6,9 @@ import {useRouter} from "next/navigation";
 import {FormContainer} from "./styles.css";
 
 import {useCookies} from "react-cookie";
-import {TextField, Typography} from "@mui/material";
+import {IconButton, InputAdornment, TextField, Typography} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useAuthLogin} from "@/app/hooks";
 import {SnackbarContext} from "@/context/snackbarContext";
 
@@ -18,6 +19,11 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  
+  // State to manage password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const {mutate: doLogin, isPending} = useAuthLogin({
     onSuccess: (response) => {
@@ -53,21 +59,34 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
           size="small"
           type="email"
           name="email"
-          label="email"
+          label="Email"
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
+        {/* Password field with toggle visibility */}
         <TextField
           fullWidth
           size="small"
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
-          label="password"
+          label="Password"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <LoadingButton
@@ -79,7 +98,7 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
           Submit
         </LoadingButton>
 
-        <Typography variant="body1">New to Julie Art?</Typography>
+        <Typography variant="body1">New to JustArt?</Typography>
         <Link shallow href="/auth/create-account">
           Create an account
         </Link>
