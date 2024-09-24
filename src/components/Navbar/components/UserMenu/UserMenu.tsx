@@ -15,7 +15,7 @@ export default function UserMenu() {
   }, [cookies]);
 
   const handleLogout = async () => {
-    await axios.post(`${process.env.BASE_URL}/auth/logout`);
+    await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/logout`);
 
     removeCookies("token");
     setIsLoggedIn(false);
