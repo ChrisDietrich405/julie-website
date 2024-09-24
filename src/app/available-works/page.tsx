@@ -4,7 +4,6 @@ import CardImage from "@/components/CardImage/CardImage";
 
 async function getData() {
   const {data} = await AvailableWorksApi.getAll();
-
   return data;
 }
 
@@ -19,7 +18,7 @@ export default async function Page() {
         sx={{textAlign: "center", width: "100%", mb: "10px"}}
         variant="h1"
       >
-        Available Works
+        Available Works hello 
       </Typography>
       <Grid
         container
