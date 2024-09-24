@@ -2,7 +2,7 @@ import {ApplicationApi, BaseApi, handleApi} from "@/services/base.service";
 import {Order, OrderData} from "@/interfaces";
 import {AxiosResponse} from "axios";
 
-const baseUrl = '/api/orders'
+const baseUrl = '/orders'
 
 export const OrdersApi = {
   post: async (params: any): Promise<AxiosResponse<Order>> =>

@@ -1,7 +1,7 @@
 import { ApplicationApi } from "@/services/base.service";
 import { ICartResponse } from "@/interfaces";
 
-const baseUrl = "/api/cart";
+const baseUrl = "/cart";
 
 export const CartApi = {
   get: (): Promise<ICartResponse> => ApplicationApi.get(`${baseUrl}`),
