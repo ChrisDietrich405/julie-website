@@ -62,6 +62,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [customerAddress, setCustomerAddress] = useState<Customer['address']>(customer?.address);
 
   const { refetch, data: cartData } = useGetCart({ enabled: false });
 
@@ -163,7 +164,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     onLoad(isPending || updateCartLoading || loading);
   }, [isPending, updateCartLoading, loading]);
 
-  // @ts-ignore
+  useEffect(() => {
+    setCustomerAddress(customer?.address)
+  }, [customer?.address]);
+
   return (
     <Stack gap={2}>
       <Snackbar
@@ -208,7 +212,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
                     },
                     defaultValues: {
                       name: customer.name,
-                      address: customer.address ? { ...customer.address, country: 'USA' } : undefined,
+                      address: customerAddress ? {...customerAddress, country: 'US'} : undefined,
                       phone: customer.phone,
                     },
                   }}
