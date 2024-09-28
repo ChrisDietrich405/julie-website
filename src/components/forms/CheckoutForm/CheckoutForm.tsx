@@ -18,7 +18,9 @@ import { SnackbarContext } from "@/context/snackbarContext";
 import { AvailableWork } from "@/interfaces";
 import { currencyFormat } from "@/helpers";
 
-function addressToString(address: any) {
+function addressToString(address: Customer['address']) {
+  if (!address) return null;
+
   return `${address.line1} - ${address.city} - ${address.state} - ${address.postal_code}`;
 }
 
@@ -100,9 +102,9 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       setTimeout(() => updateCart([]), 2000);
     },
     //removing item from db
-    onError: (error) => {
+    onError: () => {
       setOpen(true);
-      setError(error.message);
+      setError('We have a problem');
     },
   });
 
@@ -206,7 +208,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
                     },
                     defaultValues: {
                       name: customer.name,
-                      // @ts-igno
+                      address: customer.address ? { ...customer.address, country: 'USA' } : undefined,
                       phone: customer.phone,
                     },
                   }}
