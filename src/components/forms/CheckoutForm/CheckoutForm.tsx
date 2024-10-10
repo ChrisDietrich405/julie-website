@@ -18,7 +18,9 @@ import { SnackbarContext } from "@/context/snackbarContext";
 import { AvailableWork } from "@/interfaces";
 import { currencyFormat } from "@/helpers";
 
-function addressToString(address: any) {
+function addressToString(address: Customer['address']) {
+  if (!address) return null;
+
   return `${address.line1} - ${address.city} - ${address.state} - ${address.postal_code}`;
 }
 
@@ -60,6 +62,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const [open, setOpen] = React.useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [customerAddress, setCustomerAddress] = useState<Customer['address']>(customer?.address);
 
   const { refetch, data: cartData } = useGetCart({ enabled: false });
 
@@ -100,9 +103,9 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       setTimeout(() => updateCart([]), 2000);
     },
     //removing item from db
-    onError: (error) => {
+    onError: () => {
       setOpen(true);
-      setError(error.message);
+      setError('We have a problem');
     },
   });
 
@@ -161,7 +164,10 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     onLoad(isPending || updateCartLoading || loading);
   }, [isPending, updateCartLoading, loading]);
 
-  // @ts-ignore
+  useEffect(() => {
+    setCustomerAddress(customer?.address)
+  }, [customer?.address]);
+
   return (
     <Stack gap={2}>
       <Snackbar
@@ -206,7 +212,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
                     },
                     defaultValues: {
                       name: customer.name,
-                      // @ts-igno
+                      address: customerAddress ? {...customerAddress, country: 'US'} : undefined,
                       phone: customer.phone,
                     },
                   }}
