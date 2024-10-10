@@ -4,8 +4,6 @@ import { TextField, Button, Container, Stack } from "@mui/material";
 import Link from "next/link";
 import emailjs from "@emailjs/browser";
 
-import styles from "./styles.module.css";
-
 const ContactForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -28,11 +26,12 @@ const ContactForm = () => {
     try {
       const templateParams = {
         email: emailRef.current?.value,
-        // message: messageRef.current?.value,
+        message: messageRef.current?.value,
         // to_name: "Emily",
-        // firstName: firstNameRef.current?.value,
-        // lastName: lastNameRef.current?.value,
+        firstName: firstNameRef.current?.value,
+        lastName: lastNameRef.current?.value,
       };
+      console.log("hello", templateParams);
 
       await emailjs.send(
         process.env.NEXT_PUBLIC_SERVICE_ID as string,
@@ -102,7 +101,9 @@ const ContactForm = () => {
           rows={4}
         />
 
-        <Button className="btn btn-large">Submit</Button>
+        <Button type="submit" className="btn btn-large">
+          Submit
+        </Button>
       </form>
     </React.Fragment>
   );

@@ -78,6 +78,7 @@ export const GET = async (req: NextRequest) => {
 
     const availableWorks = await AvailableWorkModel.find({
       _id: { $in: items },
+      status: "available" 
     });
 
     const amount = availableWorks.reduce(

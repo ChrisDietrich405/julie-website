@@ -16,7 +16,7 @@ import dynamic from "next/dynamic";
 const UserMenu = dynamic(() => import('./components/UserMenu/UserMenu'), {ssr: false})
 
 export default function Navbar() {
-  // State for controlling the drawer's open/close status
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Function to toggle the drawer's open/close status
