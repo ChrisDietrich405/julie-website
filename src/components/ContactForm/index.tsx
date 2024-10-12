@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useRef, RefObject } from "react";
 import { TextField, Button, Container, Stack } from "@mui/material";
-import Link from "next/link";
 import emailjs from "@emailjs/browser";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ContactForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -15,11 +16,6 @@ const ContactForm = () => {
   const emailRef: any = useRef(null);
   const messageRef: any = useRef(null);
 
-  // const firstNameRef: RefObject<HTMLInputElement | null> = useRef(null);
-  // const lastNameRef: RefObject<HTMLInputElement | null> = useRef(null);
-  // const emailRef: RefObject<HTMLInputElement | null> = useRef(null);
-  // const messageRef: RefObject<HTMLTextAreaElement | null> = useRef(null);
-
   const handleFormSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -31,27 +27,27 @@ const ContactForm = () => {
         firstName: firstNameRef.current?.value,
         lastName: lastNameRef.current?.value,
       };
-      console.log("hello", templateParams);
 
       await emailjs.send(
         process.env.NEXT_PUBLIC_SERVICE_ID as string,
-        process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+        process.env.NEXT_PUBLIC_CONTACT_TEMPLATE_ID as string,
         templateParams,
         process.env.NEXT_PUBLIC_USER_ID as string
       );
 
-      alert("Your message was successfully sent");
+      toast.success("Email sent successfully");
     } catch (error) {
-      alert(error);
+      toast.error("Email not sent");
     }
   };
 
   return (
     <React.Fragment>
+      <ToastContainer />
       <form onSubmit={handleFormSubmit}>
         <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
           <TextField
-            ref={firstNameRef}
+            inputRef={firstNameRef}
             type="text"
             variant="outlined"
             color="secondary"
@@ -62,7 +58,7 @@ const ContactForm = () => {
             required
           />
           <TextField
-            ref={lastNameRef}
+            inputRef={lastNameRef}
             type="text"
             variant="outlined"
             color="secondary"
@@ -86,7 +82,7 @@ const ContactForm = () => {
           sx={{ mb: 4 }}
         />
         <TextField
-          ref={messageRef}
+          inputRef={messageRef}
           type="message"
           variant="outlined"
           color="secondary"

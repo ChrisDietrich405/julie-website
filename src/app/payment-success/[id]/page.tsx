@@ -1,7 +1,10 @@
-import React from "react";
+"use client"
+import React, { useEffect } from "react";
 import {OrdersApi} from "@/services/orders.service";
 import {Box, Container, Paper, Stack, Typography} from "@mui/material";
 import CheckoutTable from "../../../components/CheckoutTable";
+import emailjs from "@emailjs/browser";
+
 
 async function fetchOrder(id: string) {
   const response = await OrdersApi.getOne(id, true);
@@ -13,6 +16,46 @@ export default async function PaymentSuccess({params}: { params: { id: string } 
   const {customer, deliveryAddress, availableWorks} = await fetchOrder(params.id);
 
   const renderAddress = `${deliveryAddress?.streetAddress}, ${deliveryAddress?.city} - ${deliveryAddress?.zipCode}`
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+ 
+  // Name
+  // Phone 
+  // Address
+  // Order
+  // {{items}}
+  // {{totalPrice}}
+  const handleReceipt = async () => {
+    try {
+      const templateParams = {
+        email: emailRef.current?.value,
+        message: messageRef.current?.value,
+        // to_name: "Emily",
+        firstName: firstNameRef.current?.value,
+        lastName: lastNameRef.current?.value,
+      };
+      console.log("hello", templateParams);
+
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_SERVICE_ID as string,
+        process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+        templateParams,
+        process.env.NEXT_PUBLIC_USER_ID as string
+      );
+
+      alert("Your message was successfully sent");
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    handleReceipt()
+  }, []);
 
 
   return (
