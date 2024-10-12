@@ -36,6 +36,10 @@ const ContactForm = () => {
       );
 
       toast.success("Email sent successfully");
+      setFirstName("")
+      setLastName("")
+      setEmail("")
+      setMessage("")
     } catch (error) {
       toast.error("Email not sent");
     }
