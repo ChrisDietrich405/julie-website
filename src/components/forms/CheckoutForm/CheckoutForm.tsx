@@ -1,6 +1,7 @@
-import React, { FormEvent, useContext, useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 
+import { Alert, Box, Snackbar, Stack } from "@mui/material";
 import {
   AddressElement,
   LinkAuthenticationElement,
@@ -8,20 +9,18 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { Alert, Box, Snackbar, Stack } from "@mui/material";
 
 import {
   useGetCart,
   usePostOrder,
-  useUpdateCart,
-  useGetOneOrder,
+  useUpdateCart
 } from "@/app/hooks";
-import { useRouter } from "next/navigation";
 import { useUpdateCustomer } from "@/app/hooks/services/customer";
-import { Customer } from "@/interfaces/customer.interface";
 import { SnackbarContext } from "@/context/snackbarContext";
-import { AvailableWork } from "@/interfaces";
 import { currencyFormat } from "@/helpers";
+import { AvailableWork } from "@/interfaces";
+import { Customer } from "@/interfaces/customer.interface";
+import { useRouter } from "next/navigation";
 
 function addressToString(address: Customer["address"]) {
   if (!address) return null;
@@ -38,7 +37,7 @@ function calcPrice(items: AvailableWork[] = []) {
 
 function cartItems(data: AvailableWork[] = []) {
   let str = "";
-  data.map((item) => {
+  data.forEach((item) => {
     str += `${item.title} ${currencyFormat(item.price)} \n`;
   });
   return str;
@@ -72,8 +71,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   );
 
   const { refetch, data: cartData } = useGetCart({ enabled: false });
-  // const {} = useGetOneOrder({ enabled: false });
-  //to add
+
 
   const { mutateAsync: mutateUpdateCustomer } = useUpdateCustomer();
 

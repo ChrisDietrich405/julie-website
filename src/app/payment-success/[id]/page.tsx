@@ -17,12 +17,6 @@ export default async function PaymentSuccess({params}: { params: { id: string } 
 
   const renderAddress = `${deliveryAddress?.streetAddress}, ${deliveryAddress?.city} - ${deliveryAddress?.zipCode}`
 
-
- 
-
-
-
-
   return (
     <Container sx={{
       textAlign: 'center'

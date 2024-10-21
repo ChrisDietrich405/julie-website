@@ -26,6 +26,7 @@ const ContactForm = () => {
         // to_name: "Emily",
         firstName: firstNameRef.current?.value,
         lastName: lastNameRef.current?.value,
+        image: '<img src="https://github.com/chrisdietrich405.png">',
       };
 
       await emailjs.send(
@@ -36,10 +37,10 @@ const ContactForm = () => {
       );
 
       toast.success("Email sent successfully");
-      setFirstName("")
-      setLastName("")
-      setEmail("")
-      setMessage("")
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setMessage("");
     } catch (error) {
       toast.error("Email not sent");
     }
