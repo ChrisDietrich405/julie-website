@@ -1,31 +1,38 @@
 "use client";
-import React, {FormEvent, useContext, useState} from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import {FormContainer} from "./styles.css";
+import { FormContainer } from "./styles.css";
 
-import {useCookies} from "react-cookie";
-import {IconButton, InputAdornment, TextField, Typography} from "@mui/material";
+import { useCookies } from "react-cookie";
+import {
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {useAuthLogin} from "@/app/hooks";
-import {SnackbarContext} from "@/context/snackbarContext";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useAuthLogin } from "@/app/hooks";
+import { SnackbarContext } from "@/context/snackbarContext";
+import { applyInitialState } from "@mui/x-data-grid/internals";
+import { Eater } from "next/font/google";
+import { AxiosError } from "axios";
 
-const LoginForm: React.FC<{ route?: string }> = ({route}) => {
+const LoginForm: React.FC<{ route?: string }> = ({ route }) => {
   const router = useRouter();
-  const {openError} = useContext(SnackbarContext);
+  const { openError } = useContext(SnackbarContext);
   const [, setCookie] = useCookies(["token"]);
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  
-  // State to manage password visibility
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-  const {mutate: doLogin, isPending} = useAuthLogin({
+  const { mutate: doLogin, isPending } = useAuthLogin({
     onSuccess: (response) => {
       const expirationDate = new Date(response.data.expires * 1000);
 
@@ -37,7 +44,9 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
       router.push(route ? route : "/");
     },
     onError: (error) => {
-      openError(error.message ?? "");
+      if (error instanceof AxiosError) {
+        openError(error.response?.data.message);
+      }
     },
   });
 
@@ -78,10 +87,7 @@ const LoginForm: React.FC<{ route?: string }> = ({route}) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  edge="end"
-                >
+                <IconButton onClick={handleClickShowPassword} edge="end">
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>

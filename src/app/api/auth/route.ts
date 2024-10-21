@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const existingAccount = await UserModel.findOne({email});
   if (!existingAccount) {
     return NextResponse.json(
-      {status: 401, message: "Incorrect credentials"},
+      {status: 401, message: "Please enter correct credentials"},
       {
         status: 401,
       }
@@ -56,7 +56,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   );
   if (!matchedPassword) {
     return NextResponse.json(
-      {status: 401, message: "Incorrect credentials"},
+      {status: 401, message: "Please enter correct credentials"},
       {
         status: 401,
       }
