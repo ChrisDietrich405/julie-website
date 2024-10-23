@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useRef, RefObject } from "react";
-import { TextField, Button, Container, Stack } from "@mui/material";
+import React, { useState, useRef} from "react";
+import { TextField, Button, Stack } from "@mui/material";
 import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,6 @@ const ContactForm = () => {
       const templateParams = {
         email: emailRef.current?.value,
         message: messageRef.current?.value,
-        // to_name: "Emily",
         firstName: firstNameRef.current?.value,
         lastName: lastNameRef.current?.value,
         image: '<img src="https://github.com/chrisdietrich405.png">',

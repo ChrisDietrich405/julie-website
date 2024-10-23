@@ -10,11 +10,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 
-import {
-  useGetCart,
-  usePostOrder,
-  useUpdateCart
-} from "@/app/hooks";
+import { useGetCart, usePostOrder, useUpdateCart } from "@/app/hooks";
 import { useUpdateCustomer } from "@/app/hooks/services/customer";
 import { SnackbarContext } from "@/context/snackbarContext";
 import { currencyFormat } from "@/helpers";
@@ -39,6 +35,14 @@ function cartItems(data: AvailableWork[] = []) {
   let str = "";
   data.forEach((item) => {
     str += `${item.title} ${currencyFormat(item.price)} \n`;
+  });
+  return str;
+}
+
+function cartImage(data: AvailableWork[] = []) {
+  let str = "";
+  data.forEach((item) => {
+    str += `<img width="100px" src="https://julie-website-amber.vercel.app/${item.image}"/>`;
   });
   return str;
 }
@@ -72,7 +76,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   const { refetch, data: cartData } = useGetCart({ enabled: false });
 
-
   const { mutateAsync: mutateUpdateCustomer } = useUpdateCustomer();
 
   const { mutate: updateCart, isPending: updateCartLoading } = useUpdateCart({
@@ -100,6 +103,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
             email: customer.email,
             items: cartItems(cartData?.data.items),
             totalPrice: calcPrice(cartData?.data.items),
+            image: cartImage(cartData?.data.items),
           },
           process.env.NEXT_PUBLIC_USER_ID as string
         );
